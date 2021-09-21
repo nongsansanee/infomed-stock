@@ -35,6 +35,12 @@
                 <!-- Greeting word -->
                 <div class="text-pink-400 ml-2 items-end">สวัสดี, คุณเจ้าหน้าที่</div>
               </div>
+            
+              <div class=" bg-gray-500 rounded-md">
+                <form @submit.prevent="submit">
+                  <button type="submit">LOGOUT</button>
+                </form>
+              </div>
 
             </div>
 
@@ -51,13 +57,19 @@
 
 <script>
 import { ref } from 'vue'
+import { Inertia } from '@inertiajs/inertia'
 export default {
     emits: ['toggleSidebar'],
     setup() {
         const dropDownOpen = ref(false);
 
+        const submit=()=>{
+          Inertia.post('/logout')
+        }
+
         return {
           dropDownOpen,
+          submit,
         }
     },
 }

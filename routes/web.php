@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -15,13 +16,24 @@ use Inertia\Inertia;
 */
 
 // Route::get('/', function () {
-//     return view('welcome');
+//     return Inertia::render('Welcome', [
+//         'canLogin' => Route::has('login'),
+//         'canRegister' => Route::has('register'),
+//         'laravelVersion' => Application::VERSION,
+//         'phpVersion' => PHP_VERSION,
+//     ]);
 // });
+
+// Route::get('/dashboard', function () {
+//     return Inertia::render('Dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
+
+require __DIR__.'/auth.php';
 
 Route::get('/', function () {
     return Inertia::render('HelloWorld');
-})->name('helloworld');
+})->name('helloworld')->middleware('auth');
 
 Route::get('/calendar', function () {
     return Inertia::render('Calendar');
-})->name('calendar');
+})->name('calendar')->middleware('auth');
