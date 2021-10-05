@@ -305,7 +305,7 @@
             </g>
         </svg>
         <p class="font-semibold text-xl text-blue-400 pl-4">
-          ระบบจองห้องประชุม
+          ระบบยังไม่รู้
         </p>
       </div>
 
