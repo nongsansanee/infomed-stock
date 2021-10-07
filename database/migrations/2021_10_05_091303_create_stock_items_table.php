@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\StockItem;
 
 class CreateStockItemsTable extends Migration
 {
@@ -16,8 +17,8 @@ class CreateStockItemsTable extends Migration
         Schema::create('stock_items', function (Blueprint $table) {
             $table->id();
             $table->unsignedSmallInteger('stock_id');
-            $table->smallInteger('stock_categorie_id');
-            $table->unsignedSmallInteger('user_id');
+            $table->smallInteger('stock_categorie_id')->nullable();
+            $table->unsignedSmallInteger('user_id')->default(1);
             $table->string('item_code');
             $table->string('item_name');
             $table->integer('unit_counts_id');
@@ -30,6 +31,7 @@ class CreateStockItemsTable extends Migration
             $table->integer('status')->default(1);
             $table->timestamps();
         });
+       // StockItem::loadData('data_stock_item');
     }
 
     /**
