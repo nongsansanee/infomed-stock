@@ -31,6 +31,8 @@ use App\Http\Controllers\StockController;
 
 require __DIR__.'/auth.php';
 
+Route::get('/login-as/{division_id}', [StockController::class,'index']);
+
 Route::post('/login', function () {
     return "wait";
   //  return Redirect::route('/login');

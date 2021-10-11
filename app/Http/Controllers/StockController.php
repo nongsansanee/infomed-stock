@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Stock;
+use App\Models\StockItem;
 
 class StockController extends Controller
 {
@@ -14,11 +15,17 @@ class StockController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($division_id)
     {
-        $stocks = Stock::all();
+        $stocks = Stock::where('id',$division_id)->get();
+        $stock_items = StockItem::where('stock_id',$division_id)->get();
         \Log::info($stocks);
-        return Inertia::render('Stock/index',['stocks'=>$stocks]);
+        \Log::info('------------------------');
+        \Log::info($stock_items);
+        return Inertia::render('Stock/index',[
+                                'stocks'=>$stocks,
+                                'stock_items'=>$stock_items
+                                ]);
     }
 
     /**
