@@ -21,7 +21,7 @@ class CreateStockItemsTable extends Migration
             $table->unsignedSmallInteger('user_id')->default(1);
             $table->string('item_code');
             $table->string('item_name');
-            $table->integer('unit_counts_id');
+            $table->integer('unit_count_id');
             $table->integer('item_receive');
             $table->date('date_receive');
             $table->date('date_expire');

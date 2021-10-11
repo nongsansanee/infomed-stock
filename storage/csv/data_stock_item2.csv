@@ -1,4 +1,4 @@
-stocks_id,item_code,item_name,unit_counts_id,item_receive,date_receive,date_expire,price,catalog_number,lot_number
+stocks_id,item_code,item_name,unit_count_id,item_receive,date_receive,date_expire,price,catalog_number,lot_number
 1,40005051,Cortisol-CT2 Kit (100 Tubes),4,10,2019-10-17,2019-11-10,7650.5,ACTH101,396A
 1,40017210,LIAISON ACTH_100 Test,2,5,2019-10-17,2019-11-10,35000,AHGH101,234A
 1,40017209,LIAISON Aldosterone_100 Test,6,12,2019-10-17,2019-11-10,45000,ACCO101,72A

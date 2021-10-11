@@ -14,6 +14,8 @@ class StockItemSeeder extends Seeder
      */
     public function run()
     {
-        StockItem::loadData('data_stock_items2');
+        StockItem::loadData('data_stock_item2');
+      // StockItem::loadData('data_stock_item_test');
+        //StockItem::loadData('business_load_utf8');
     }
 }

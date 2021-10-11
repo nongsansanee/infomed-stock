@@ -11,17 +11,29 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
         <!-- Styles -->
-        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+        <link rel="stylesheet" href="{{ asset(mix('css/app.css')) }}">
 
         <!-- Scripts -->
         @routes
-        <script src="{{ mix('js/app.js') }}" defer></script>
+        <script src="{{ asset(mix('js/app.js')) }}" defer></script>
+        <style>
+            @font-face {
+                font-family: 'Sarabun';
+                src: url("{{ asset('fonts/Sarabun-Regular.ttf') }}");
+            }
+            body {
+                font-family: 'Sarabun';
+                /* background-color: #FCFCFC; */
+            }
+        </style>
     </head>
-    <body class="font-sans antialiased">
+    <body>
         @inertia
 
-        @env ('local')
-            <script src="http://localhost:8080/js/bundle.js"></script>
-        @endenv
+       
+        <script>
+            const base_url = "{{ env('APP_URL') }}";
+        </script>
+
     </body>
 </html>

@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\StockController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,10 +31,28 @@ use Inertia\Inertia;
 
 require __DIR__.'/auth.php';
 
+Route::post('/login', function () {
+    return "wait";
+  //  return Redirect::route('/login');
+});
+
+Route::get('/logout', function () {
+    Auth::logout();
+    return "wait";
+  //  return Redirect::route('/login');
+});
+
 Route::get('/', function () {
-    return Inertia::render('HelloWorld');
-})->name('helloworld')->middleware('auth');
+    return Inertia::render('Stock/index');
+})->name('index')->middleware('auth');
 
 Route::get('/calendar', function () {
     return Inertia::render('Calendar');
-})->name('calendar')->middleware('auth');
+})->name('calendar');
+
+// Route::get('/stock', function () {
+//     return Inertia::render('Stock/index');
+// })->name('stock');
+
+Route::get('/stock', [StockController::class,'index'])->name('stock');
+
