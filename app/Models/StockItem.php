@@ -25,8 +25,18 @@ class StockItem extends Model
         'price',
         'catalog_number',
         'lot_number',
-        'status' 
+        'status' ,
+        'profile',
     ];
+
+    protected $casts = [
+        'profile' => 'array',
+    ];
+
+    public function unitCount()
+    {
+        return $this->hasOne(UnitCount::class,'id','unit_count_id');
+    }
 
     public static function loadData($fileName){
         

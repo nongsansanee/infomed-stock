@@ -15,10 +15,11 @@ class StockSeeder extends Seeder
     public function run()
     {
         $stocks = array(
-            ['stockname' => 'คลังพัสดุทางการแพทย์ของสาขาวิชาการบริบาลผู้ป่วยนอก', 'stockengname' => 'stock office', 'user_id' => '1'],
-            ['stockname' => 'คลังพัสดุทางการแพทย์ของสาขาวิชาความดันโลหิตสูง', 'stockengname' => 'Medical Hypertension ', 'user_id' => '1'],
-            ['stockname' => 'คลังพัสดุทางการแพทย์ของสาขาวิชาเคมีบำบัด', 'stockengname' => 'Medical Oncology', 'user_id' => '1'],
-            ['stockname' => 'คลังพัสดุทางการแพทย์ของสาขาวิชาต่อมไร้ท่อ', 'stockengname' => 'Medical Endocrin', 'user_id' => '1'],
+            ['stockname' => 'คลังพัสดุทางการแพทย์ของสาขาวิชาการบริบาลผู้ป่วยนอก', 'stockengname' => 'Medical Ambulatory','unit_id'=>1, 'user_id' => '1'],
+            ['stockname' => 'คลังพัสดุทางการแพทย์ของสาขาวิชาความดันโลหิตสูง', 'stockengname' => 'Medical Hypertension ','unit_id'=>2, 'user_id' => '1'],
+            ['stockname' => 'คลังพัสดุทางการแพทย์ของสาขาวิชาเคมีบำบัด', 'stockengname' => 'Medical Oncology','unit_id'=>3, 'user_id' => '1'],
+            ['stockname' => 'คลังพัสดุทางการแพทย์ของสาขาวิชาต่อมไร้ท่อ', 'stockengname' => 'Medical Endocrin','unit_id'=>4, 'user_id' => '1'],
+            ['stockname' => 'คลังพัสดุสำนักงาน', 'stockengname' => 'stock office','unit_id'=>99, 'user_id' => '1'],
            
         );
 
@@ -26,6 +27,7 @@ class StockSeeder extends Seeder
             Stock::create([
                            'stockname' => $stock['stockname'],
                            'stockengname'=> $stock['stockengname'],
+                           'unit_id'=> $stock['unit_id'],
                            'user_id'=> $stock['user_id'],
                         ]);
         }

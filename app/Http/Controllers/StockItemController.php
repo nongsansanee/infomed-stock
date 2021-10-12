@@ -2,32 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\Stock;
 use App\Models\StockItem;
-use App\Models\Unit;
 
-class StockController extends Controller
+class StockItemController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($division_id)
+    public function index($item_id)
     {
-        $stocks = Stock::where('unit_id',$division_id)->get();
-        $stock_items = StockItem::where('stock_id',$division_id)->get();
-        $unit = Unit::where('unitid',$division_id)->first();
-        // \Log::info($stocks);
+       
+        $stock_item = StockItem::where('id',$item_id)->first();
+      
+         \Log::info($stock_item);
         // \Log::info('------------------------');
         // \Log::info($stock_items);
-        return Inertia::render('Stock/index',[
-                                'stocks'=>$stocks,
-                                'stock_items'=>$stock_items,
-                                'unit'=> $unit,
+        return Inertia::render('Stock/ItemDetail',[
+                                'stock_item'=>$stock_item,
                                 ]);
     }
 

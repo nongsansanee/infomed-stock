@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\StockController;
+use App\Http\Controllers\StockItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,4 +58,10 @@ Route::get('/calendar', function () {
 // })->name('stock');
 
 Route::get('/stock', [StockController::class,'index'])->name('stock');
+
+// Route::get('/stock-item/{id}', function () {
+//     return Inertia::render('Stock/ItemDetail');
+// })->name('stock-item');
+
+Route::get('/stock-item/{id}', [StockItemController::class,'index'])->name('stock-item');
 

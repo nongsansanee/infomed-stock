@@ -29,6 +29,7 @@ class CreateStockItemsTable extends Migration
             $table->string('catalog_number')->nullable();
             $table->string('lot_number')->nullable();
             $table->integer('status')->default(1);
+            $table->json('profile')->nullable();
             $table->timestamps();
         });
        // StockItem::loadData('data_stock_item');

@@ -18,7 +18,9 @@ class CreateStocksTable extends Migration
             $table->string('stockname');
             $table->string('stockengname')->nullable();
             $table->integer('status')->default(1);
+            $table->unsignedSmallInteger('unit_id');
             $table->unsignedSmallInteger('user_id');
+            $table->json('config')->nullable();
             $table->timestamps();
         });
     }
