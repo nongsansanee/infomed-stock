@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\StockItemController;
+use App\Http\Controllers\ReportStockController;
+use App\Http\Controllers\CreateOrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,5 +65,9 @@ Route::get('/stock', [StockController::class,'index'])->name('stock');
 //     return Inertia::render('Stock/ItemDetail');
 // })->name('stock-item');
 
-Route::get('/stock-item/{id}', [StockItemController::class,'index'])->name('stock-item');
+Route::get('/stock-item/{item_id}', [StockItemController::class,'index'])->name('stock-item');
+
+Route::get('/report-stock/{division_id}', [ReportStockController::class,'index'])->name('report-stock');
+
+Route::get('/create-order/{division_id}', [CreateOrderController::class,'index'])->name('create-order');
 

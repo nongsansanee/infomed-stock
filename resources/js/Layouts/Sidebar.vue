@@ -3,15 +3,20 @@
     <!-- you will need to add a little "X" button next to the logo in order to close it though -->
     <div class="overflow-y-auto w-2/3 md:w-1/3 lg:w-64 fixed md:top-0 md:left-0 h-screen lg:block bg-gray-100 border-r z-30" :class="sideBarOpen ? '' : 'hidden'" id="main1-nav">
 
-      <div class="w-full h-20 border-b flex px-4 items-center mb-4">
-     
-        <p class="font-semibold text-xl text-blue-400 pl-4">
+      <div class=" flex justify-center ">
+            <img src="/storage/images/logo_med_tranparent.gif" class=" w-2/3">
+             <!-- <p class="font-semibold text-2xl text-blue-400 pl-4">
           ระบบพัสดุ
-        </p>
+        </p> -->
+      </div>
+      <div class="w-full  border-t flex px-4 items-center mb-4">
+        <!-- <p class="font-semibold text-2xl text-blue-400 pl-4">
+          ระบบพัสดุ
+        </p> -->
       </div>
 
       <div class="mb-4 px-4">
-        <p class="pl-4 text-sm font-semibold mb-1">เมนูหลัก</p>
+        <p class="pl-4 text-sm font-semibold mb-1">เมนูหลักของสาขา</p>
         <Link :href="route('stock')">
         <!-- <Link :href="route('helloworld')" @click="setLinkActive('helloworld')"> -->
         <!-- <div class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer" :class="{ 'bg-gray-200': isLinkActive('helloworld') }"> -->
@@ -22,7 +27,17 @@
           <span class="text-gray-700 ml-2">เบิกใช้พัสดุ</span>
         </div>
         </Link>
-          <Link :href="route('stock')">
+        <Link :href="route('stock')">
+        <!-- <Link :href="route('helloworld')" @click="setLinkActive('helloworld')"> -->
+        <!-- <div class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer" :class="{ 'bg-gray-200': isLinkActive('helloworld') }"> -->
+        <div class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          <span class="text-gray-700 ml-2">ส่งรายงานการเบิกใช้พัสดุ</span>
+        </div>
+        </Link>
+        <Link :href="route('stock')">
         <!-- <Link :href="route('helloworld')" @click="setLinkActive('helloworld')"> -->
         <!-- <div class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer" :class="{ 'bg-gray-200': isLinkActive('helloworld') }"> -->
         <div class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
@@ -30,6 +45,16 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
           <span class="text-gray-700 ml-2">สร้างเอกสารสั่งซื้อพัสดุ</span>
+        </div>
+        </Link>
+        <Link :href="route('stock')">
+        <!-- <Link :href="route('helloworld')" @click="setLinkActive('helloworld')"> -->
+        <!-- <div class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer" :class="{ 'bg-gray-200': isLinkActive('helloworld') }"> -->
+        <div class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          <span class="text-gray-700 ml-2">ดูเอกสารสั่งซื้อพัสดุ</span>
         </div>
         </Link>
         <!-- <div class="w-full flex items-center justify-between text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer" @click="reserveRoomMenuOpen = !reserveRoomMenuOpen">
@@ -122,6 +147,14 @@
           <!-- </Link> -->
         </div>
 
+        
+        <div class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
+           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          <span class="text-gray-700 ml-2">ดูรายงานการเบิกพัสดุ</span>
+        </div>
+
         <div class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -136,12 +169,7 @@
           <span class="text-gray-700 ml-2">ตรวจรับพัสดุ</span>
         </div>
 
-        <div class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-          </svg>
-          <span class="text-gray-700 ml-2">รายงาน</span>
-        </div>
+      
       </div>
 
       <!-- <div class="mb-4 px-4">
