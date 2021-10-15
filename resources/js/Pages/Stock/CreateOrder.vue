@@ -22,173 +22,63 @@
             
         </div> -->
 
-        <!-- EX1 -->
-        <div class="mt-8">
-        
-            <h1 class=" text-center" >ข้อมูลจำนวนคงเหลือ ณ วันที่ปัจจุบัน {{$page.props.sysdate_thai}}</h1>
-            <div class="flex flex-col mt-6">
-                <div
-                    class="py-2 -my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8"
-                >
-                    <div
-                        class="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg"
-                    >
-                        <table class="min-w-full">
-                        <thead>
-                            <tr>
-                            <th
-                                class="px-2 py-3 text-md font-medium leading-4 tracking-wider text-left uppercase text-white border-b bg-blue-800"
-                            >
-                                ชื่อพัสดุ
-                            </th>
-                            <th
-                                class="px-2 py-3 text-md font-medium leading-4 tracking-wider text-left  text-white border-b bg-blue-800"
-                            >
-                                Cat.No
-                            </th>
-                            <th
-                                class="px-2 py-3 text-md font-medium leading-4 tracking-wider text-left  text-white border-b bg-blue-800"
-                            >
-                                Lot.No
-                            </th>
-                            <th
-                                class="px-2 py-3 text-md font-medium leading-4 tracking-wider text-left uppercase text-white border-b bg-blue-800"
-                            >
-                                วันหมดอายุ
-                            </th>
-                            <th
-                                class="px-2 py-3 text-md font-medium leading-4 tracking-wider text-left uppercase text-white border-b bg-blue-800"
-                            >
-                                วันที่รับเข้า
-                            </th>
-                            <th
-                                class="px-2 py-3 text-md font-medium leading-4 tracking-wider text-left uppercase text-white border-b bg-blue-800"
-                            >
-                                จำนวนคงเหลือ
-                            </th>
-                        
-                            </tr>
-                        </thead>
+    <h1 class=" m-3 text-center" >ข้อมูลจำนวนคงเหลือ ณ วันที่ปัจจุบัน {{$page.props.sysdate_thai}}</h1>
 
-                        <tbody class="bg-white">
-                           
-                            <tr v-for="(stock_item) in $page.props.stock_items" :key=stock_item.id
-                             class="hover:bg-gray-200">
-                            <td
-                                class="px-2 py-3 border-b border-gray-200 whitespace-nowrap"
-                            >
-                                <div class="flex items-center">
-                                    <div class="ml-2">
-                                     
-                                        <div
-                                        class="text-sm font-medium leading-5 "
-                                        >
-                                        <input type="checkbox" name="" id="" class="w-4 h-4 text-green-600 rounded-sm focus:ring-green-500">
-                                        {{ stock_item.item_code }}
-                                        </div>
-                                        <div class="text-sm leading-2 flex">
-                                            
-                                           <div>
-                                             <a href="#" class=" font-bold hover:text-blue-300 "
-                                                >
-                                               
-                                                {{ stock_item.item_name}}  
-                                             </a>
-                                             (หน่วย:{{ stock_item.unit_count_id}})
-                                             </div>
-                                        </div>
-                                       
-                                    </div>
-                                </div>
-                            </td>
-
-                            <td
-                                class="px-2 py-4 border-b border-gray-200 whitespace-nowrap"
-                            >
-                                <div class="text-sm leading-5 text-gray-900">
-                                {{ stock_item.catalog_number }}
-                                </div>
-                               
-                            </td>
-
-                            <td
-                                class="px-2 py-4 border-b border-gray-200 whitespace-nowrap"
-                            >
-                               {{ stock_item.lot_number }}
-                            </td>
-
-                            <td
-                                class="px-2 py-4 text-sm leading-5 text-red-600 border-b border-gray-200 whitespace-nowrap"
-                            >
-                                {{ stock_item.date_expire}}
-                            </td>
-                            <td
-                                class="px-2 py-4 text-sm leading-5  border-b border-gray-200 whitespace-nowrap"
-                            >
-                                {{ stock_item.date_receive}}
-                            </td>
-                             <td
-                                class="px-2 py-4 text-sm leading-5 text-gray-500 border-b border-gray-200 whitespace-nowrap"
-                            >
-                                <span
-                                class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full"
-                                >
-                                {{ stock_item.item_receive}}
-                                </span>
-                                <input type="number" name="" id=""  placeholder="จำนวนที่จะสั่งซื้อ"
-                                    class="block w-full mt-1 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500">
-                            </td>
-                          
-                            <!-- <td
-                                class="px-6 py-4 text-sm font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap"
-                            >
-                                <a href="#" class=" bg-green-200 px-2 text-lg text-green-800 rounded-md shadow-md hover:text-indigo-900"
-                                >เบิก</a
-                                >
-                            </td> -->
-                            </tr>
-                            
-                        </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <!-- END TABLE -->
-
-              <div class=" mt-6 flex flex-col  ">
-                <!-- <button
-                    class="px-3 py-1  text-sm text-gray-700 bg-gray-400 rounded-md hover:bg-gray-300 focus:outline-none"
-                >
-                    Cancel
-                </button> -->
-                <button
-                    class=" flex justify-center px-8 py-1   text-sm  text-white bg-green-600 rounded-md hover:bg-green-400 focus:outline-none"
+    <!-- test -->
+    <table class="min-w-full border-collapse block  md:table">
+		<thead class="block  md:table-header-group">
+			<tr class="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
+				<th class="bg-green-700 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">ชื่อพัสดุ</th>
+				<th class="bg-green-700 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">Cat.No</th>
+				<th class="bg-green-700 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">Lot.No</th>
+                <th class="bg-green-700 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">วันหมดอายุ</th>
+                <th class="bg-green-700 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">วันที่รับเข้า</th>
+                <th class="bg-green-700 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">จำนวนคงเหลือ</th>
+			</tr>
+		</thead>
+		<tbody class="block md:table-row-group">
+			<tr v-for="(stock_item) in $page.props.stock_items" :key=stock_item.id
+                class="bg-white p-2 mb-2 border-2 border-gray-500 md:border-none block md:table-row">
+				<td class="text-left  block md:table-cell md:border-b md:border-gray-400 md:rounded-l-lg">
+                    <span class="inline-block w-1/3 md:hidden font-bold">ชื่อพัสดุ</span>
+                     <input type="checkbox" name="" id="" class="w-4 h-4 border-2 border-green-800 shadow-sm text-green-600 rounded-md focus:ring-green-500">
+                    {{stock_item.item_code}}{{stock_item.item_name}}
+                </td>
+				<td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">Cat.No</span>{{stock_item.catalog_number}}</td>
+                <td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">Lot.No</span>{{stock_item.lot_number}}</td>
+                <td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">วันหมดอายุ</span>{{stock_item.date_expire}}</td>
+                <td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">วันที่รับเข้า</span>{{stock_item.date_receive}}</td>
+				<td class="text-left  block md:text-center md:table-cell md:border-b md:border-gray-400 md:rounded-r-lg">
+					<span class="inline-block w-1/3  md:hidden font-bold">จำนวนคงเหลือ</span>
+                    <span
+                        class="inline-flex px-2  text-lg font-semibold leading-5 text-green-800 bg-green-100 rounded-full"
+                        >
+                        {{stock_item.item_receive}}
+                    </span>
+                 
+                     <input type="number" name="" id=""  placeholder="จำนวนที่จะสั่งซื้อ"
+                                    class="block w-full mt-1 border-gray-400 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500">
+                  
+				</td>
+			</tr>
+			
+		</tbody>
+	</table>
+    <!-- END table -->
+    <div>
+         <button
+                    class=" m-3 w-full flex justify-center px-8 py-1   text-sm  text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-none"
                 >
                     <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg> -->
-                    ยืนยันใบสั่งซื้อ
-                </button>
+                    สร้างใบสั่งซื้อ
+        </button>
+    </div>
+    
 
-                <button
-                    class=" flex justify-center mt-3 px-8 py-1   text-sm  text-white bg-green-600 rounded-md hover:bg-green-400 focus:outline-none"
-                >
-                    <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg> -->
-                    พิมพ์ใบสั่งซื้อ
-                </button>
-                <button
-                    class=" flex justify-center mt-3 px-8 py-1   text-sm  text-white bg-green-600 rounded-md hover:bg-green-400 focus:outline-none"
-                >
-                    <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg> -->
-                    export excel file
-                </button>
-            </div>
-        </div>
-        
+      
+      
 
     </AppLayout>
 </template>
@@ -209,10 +99,10 @@ export default {
         unit:Array,
         sysdate_thai:String,
         sysdate:String,
+      
     },
     data(){
         return{
-            years:['2022','2021','2020','2019','2018'],
            
            months:[
 				{id:1,name:'มกราคม' },
@@ -230,6 +120,13 @@ export default {
 			],
         }
     },
+    computed: {
+            // a computed getter
+            // convertYearThai() {
+            // // `this` points to the vm instance
+            //     return this.order_lists['year']+543;
+            // }
+    }
 
     // setup() {
     

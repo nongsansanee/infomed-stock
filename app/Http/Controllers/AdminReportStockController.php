@@ -5,32 +5,34 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\Stock;
-use App\Models\StockItem;
-use App\Models\Unit;
+// use App\Models\Stock;
+// use App\Models\StockItem;
+// use App\Models\Unit;
+// use Carbon\Carbon;
 
-class StockController extends Controller
+class AdminReportStockController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($division_id)
+    public function index()
     {
-        \Log::info('testttttt');
-        $stocks = Stock::where('unit_id',$division_id)->get();
-        $stock_items = StockItem::where('stock_id',$division_id)->get();
-        $unit = Unit::where('unitid',$division_id)->first();
-        // \Log::info($stocks);
-        // \Log::info('------------------------');
-        // \Log::info($stock_items);
-        \Log::info('aaaaaaaaaa');
-        return Inertia::render('Stock/index',[
-                                'stocks'=>$stocks,
-                                'stock_items'=>$stock_items,
-                                'unit'=> $unit,
-                                ]);
+        // $stocks = Stock::all();
+        // $stock_items = StockItem::where('stock_id','1')->get();
+        // $unit = Unit::where('unitid',$division_id)->first();
+        $report_lists = [
+                ['id'=>'1','updated_at'=>'2021-10-05','unit_name'=>'สาขาวิชาการบริบาลผู้ป่วยนอก','status'=>'ตรวจสอบแล้ว'],
+                ['id'=>'2','updated_at'=>'2021-10-06','unit_name'=>'สาขาวิชาความดันโลหิตสูง','status'=>'ตรวจสอบแล้ว'],
+                ['id'=>'3','updated_at'=>'2021-10-07','unit_name'=>'สาขาวิชาต่อมไร้ท่อ','status'=>'รอตรวจสอบ'],
+        ];
+        return Inertia::render('Admin/ListReportStock',[
+                        // 'stocks'=>$stocks,
+                        // 'stock_items'=>$stock_items,
+                        // 'unit'=> $unit,
+                        'report_lists'=>$report_lists
+                        ]);
     }
 
     /**

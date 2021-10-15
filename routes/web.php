@@ -7,6 +7,7 @@ use App\Http\Controllers\StockController;
 use App\Http\Controllers\StockItemController;
 use App\Http\Controllers\ReportStockController;
 use App\Http\Controllers\CreateOrderController;
+use App\Http\Controllers\AdminReportStockController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,7 +60,7 @@ Route::get('/calendar', function () {
 //     return Inertia::render('Stock/index');
 // })->name('stock');
 
-Route::get('/stock', [StockController::class,'index'])->name('stock');
+Route::get('/stock/{division_id}', [StockController::class,'index'])->name('stock');
 
 // Route::get('/stock-item/{id}', function () {
 //     return Inertia::render('Stock/ItemDetail');
@@ -68,6 +69,11 @@ Route::get('/stock', [StockController::class,'index'])->name('stock');
 Route::get('/stock-item/{item_id}', [StockItemController::class,'index'])->name('stock-item');
 
 Route::get('/report-stock/{division_id}', [ReportStockController::class,'index'])->name('report-stock');
+//Route::get('/report-stock/show/{division_id}', [ReportStockController::class,'index'])->name('report-stock-show');
 
 Route::get('/create-order/{division_id}', [CreateOrderController::class,'index'])->name('create-order');
+
+Route::get('/order-list/{division_id}', [CreateOrderController::class,'show'])->name('order-list');
+
+Route::get('/admin/report-list/', [AdminReportStockController::class,'index'])->name('report-list');
 

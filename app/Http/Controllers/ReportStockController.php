@@ -18,17 +18,29 @@ class ReportStockController extends Controller
      */
     public function index($division_id)
     {
-        $stocks = Stock::where('unit_id',$division_id)->get();
-        $stock_items = StockItem::where('stock_id',$division_id)->get();
-        $unit = Unit::where('unitid',$division_id)->first();
-        // \Log::info($stocks);
-        // \Log::info('------------------------');
-        // \Log::info($stock_items);
-        return Inertia::render('Stock/ReportStock',[
-                                'stocks'=>$stocks,
-                                'stock_items'=>$stock_items,
-                                'unit'=> $unit,
-                                ]);
+        if($division_id == 27){  //หน่วยพัสดุ
+            $stocks = Stock::all();
+            $stock_items = StockItem::where('stock_id','1')->get();
+            $unit = Unit::where('unitid',$division_id)->first();
+            return Inertia::render('Stock/ReportStock',[
+                            'stocks'=>$stocks,
+                            'stock_items'=>$stock_items,
+                            'unit'=> $unit,
+                            ]);
+        }else{
+            $stocks = Stock::where('unit_id',$division_id)->get();
+            $stock_items = StockItem::where('stock_id',$division_id)->get();
+            $unit = Unit::where('unitid',$division_id)->first();
+            // \Log::info($stocks);
+            // \Log::info('------------------------');
+            // \Log::info($stock_items);
+            return Inertia::render('Stock/ReportStock',[
+                                    'stocks'=>$stocks,
+                                    'stock_items'=>$stock_items,
+                                    'unit'=> $unit,
+                                    ]);
+        }
+       
     }
 
     /**
@@ -58,9 +70,24 @@ class ReportStockController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($division_id)
     {
-        //
+        if($division_id == 27){  //หน่วยพัสดุ
+            $stocks = Stock::all();
+        }else{
+            $stocks = Stock::where('unit_id',$division_id)->get();
+        }
+       
+        $stock_items = StockItem::where('stock_id',$division_id)->get();
+        $unit = Unit::where('unitid',$division_id)->first();
+        // \Log::info($stocks);
+        // \Log::info('------------------------');
+        // \Log::info($stock_items);
+        return Inertia::render('Stock/ReportStock',[
+                                'stocks'=>$stocks,
+                                'stock_items'=>$stock_items,
+                                'unit'=> $unit,
+                                ]);
     }
 
     /**

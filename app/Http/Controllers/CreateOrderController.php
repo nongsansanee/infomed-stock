@@ -22,6 +22,8 @@ class CreateOrderController extends Controller
         $stocks = Stock::where('unit_id',$division_id)->get();
         $stock_items = StockItem::where('stock_id',$division_id)->get();
         $unit = Unit::where('unitid',$division_id)->first();
+
+    
         // \Log::info($stocks);
         // \Log::info('------------------------');
         // \Log::info($stock_items);
@@ -40,6 +42,7 @@ class CreateOrderController extends Controller
                                 'unit'=> $unit,
                                 'sysdate'=>$tmp_date_now[0],
                                 'sysdate_thai'=>$date_now_show,
+                                
                                 ]);
     }
 
@@ -70,9 +73,36 @@ class CreateOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($division_id)
     {
-        //
+        $stocks = Stock::where('unit_id',$division_id)->get();
+        // $stock_items = StockItem::where('stock_id',$division_id)->get();
+        $unit = Unit::where('unitid',$division_id)->first();
+
+        //get data order list (mock up test UI)
+        $order_lists = [
+                        ['id'=>'1','year'=>2021,'month'=>6,'status'=>'ตรวจรับพัสดุแล้ว'],
+                        ['id'=>'2','year'=>2021,'month'=>7,'status'=>'ตรวจรับพัสดุแล้ว'],
+                        ['id'=>'3','year'=>2021,'month'=>8,'status'=>'รออนุมัติ'],
+                        ['id'=>'4','year'=>2021,'month'=>9,'status'=>'ส่งใบสั่งซื้อ'],
+        ];
+        // \Log::info($stocks);
+        // \Log::info('------------------------');
+        // \Log::info($stock_items);
+
+        // $mutable = Carbon::now();
+        // //\Log::info($mutable);
+        // $tmp_date_now = explode(' ', $mutable);
+        // $split_date_now = explode('-', $tmp_date_now[0]);
+        // $year = (int) $split_date_now[0] + 543;
+        // $thaimonth = ['', 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+        // $date_now_show = $split_date_now[2].'  '.$thaimonth[(int) $split_date_now[1]].' '.$year;
+
+        return Inertia::render('Stock/OrderList',[
+                                                'stocks'=>$stocks,
+                                                'unit'=> $unit,
+                                                'order_lists' =>$order_lists,
+                                                ]);
     }
 
     /**
