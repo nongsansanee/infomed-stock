@@ -8,6 +8,7 @@ use App\Http\Controllers\StockItemController;
 use App\Http\Controllers\ReportStockController;
 use App\Http\Controllers\CreateOrderController;
 use App\Http\Controllers\AdminReportStockController;
+use App\Http\Controllers\AdminOrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,7 +69,9 @@ Route::get('/stock/{division_id}', [StockController::class,'index'])->name('stoc
 
 Route::get('/stock-item/{item_id}', [StockItemController::class,'index'])->name('stock-item');
 
-Route::get('/report-stock/{division_id}', [ReportStockController::class,'index'])->name('report-stock');
+Route::get('/create-report-stock/{division_id}', [ReportStockController::class,'index'])->name('create-report-stock');
+
+Route::get('/report-stock/{division_id}', [ReportStockController::class,'show'])->name('report-stock');
 //Route::get('/report-stock/show/{division_id}', [ReportStockController::class,'index'])->name('report-stock-show');
 
 Route::get('/create-order/{division_id}', [CreateOrderController::class,'index'])->name('create-order');
@@ -77,3 +80,4 @@ Route::get('/order-list/{division_id}', [CreateOrderController::class,'show'])->
 
 Route::get('/admin/report-list/', [AdminReportStockController::class,'index'])->name('report-list');
 
+Route::get('/admin/order-list/', [AdminOrderController::class,'index'])->name('check-order-list');

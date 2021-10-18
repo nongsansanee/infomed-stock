@@ -2,39 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\StockItem;
-use App\Models\Stock;
 
-class StockItemController extends Controller
+class AdminOrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($item_id)
+    public function index()
     {
-       
-        $stock_item = StockItem::where('id',$item_id)->first();
-        $stock = Stock::where('id',$stock_item->stock_id)->first();
-        //get data order list (mock up test UI)
-        $item_check_outs = [
-            ['id'=>'1','stock_item_id'=>1,'year'=>2021,'month'=>10,'date_check_out'=>'2021-10-25','unit'=>1,'user_id'=>1,'status'=>''],
-            ['id'=>'2','stock_item_id'=>1,'year'=>2021,'month'=>10,'date_check_out'=>'2021-10-24','unit'=>1,'user_id'=>1,'status'=>'canceled'],
-            ['id'=>'3','stock_item_id'=>1,'year'=>2021,'month'=>10,'date_check_out'=>'2021-10-23','unit'=>1,'user_id'=>1,'status'=>''],
-            ['id'=>'4','stock_item_id'=>1,'year'=>2021,'month'=>10,'date_check_out'=>'2021-10-22','unit'=>1,'user_id'=>1,'status'=>''],
-        ];
-      
-        // \Log::info($stock_item);
-        // \Log::info('------------------------');
-        // \Log::info($stock_items);
-        return Inertia::render('Stock/ItemDetail',[
-                                'stock_item'=>$stock_item,
-                                'stock' => $stock,
-                                'item_check_outs' => $item_check_outs,
-                                ]);
+        $order_lists = [
+            ['id'=>'1','updated_at'=>'2021-10-07','unit_name'=>'สาขาวิชาการบริบาลผู้ป่วยนอก','order_no'=>'2565-1-1','status'=>'รออนุมัติ'],
+            ['id'=>'2','updated_at'=>'2021-10-06','unit_name'=>'สาขาวิชาความดันโลหิตสูง','order_no'=>'2565-2-1','status'=>'อนุมัติแล้ว'],
+            ['id'=>'3','updated_at'=>'2021-10-05','unit_name'=>'สาขาวิชาต่อมไร้ท่อ','order_no'=>'2565-4-1','status'=>'ตรวจรับพัสดุแล้ว'],
+    ];
+    return Inertia::render('Admin/CheckOrder',[
+                    // 'stocks'=>$stocks,
+                    // 'stock_items'=>$stock_items,
+                    // 'unit'=> $unit,
+                    'order_lists'=>$order_lists
+                    ]);
     }
 
     /**

@@ -22,7 +22,7 @@ class ReportStockController extends Controller
             $stocks = Stock::all();
             $stock_items = StockItem::where('stock_id','1')->get();
             $unit = Unit::where('unitid',$division_id)->first();
-            return Inertia::render('Stock/ReportStock',[
+            return Inertia::render('Stock/CreateReportStock',[
                             'stocks'=>$stocks,
                             'stock_items'=>$stock_items,
                             'unit'=> $unit,
@@ -34,7 +34,7 @@ class ReportStockController extends Controller
             // \Log::info($stocks);
             // \Log::info('------------------------');
             // \Log::info($stock_items);
-            return Inertia::render('Stock/ReportStock',[
+            return Inertia::render('Stock/CreateReportStock',[
                                     'stocks'=>$stocks,
                                     'stock_items'=>$stock_items,
                                     'unit'=> $unit,
@@ -72,21 +72,24 @@ class ReportStockController extends Controller
      */
     public function show($division_id)
     {
-        if($division_id == 27){  //หน่วยพัสดุ
-            $stocks = Stock::all();
-        }else{
-            $stocks = Stock::where('unit_id',$division_id)->get();
-        }
-       
-        $stock_items = StockItem::where('stock_id',$division_id)->get();
+        $stocks = Stock::where('unit_id',$division_id)->get();
+        // $stock_items = StockItem::where('stock_id',$division_id)->get();
         $unit = Unit::where('unitid',$division_id)->first();
+
+        //get data order list (mock up test UI)
+        $report_stock_lists = [
+                        ['id'=>'1','year'=>2021,'month'=>9,'status'=>'สร้างรายงาน'],
+                        ['id'=>'2','year'=>2021,'month'=>8,'status'=>'รอหน่วยพัสดุตรวจสอบ'],
+                        ['id'=>'3','year'=>2021,'month'=>7,'status'=>'ตรวจสอบแล้ว'],
+                        ['id'=>'4','year'=>2021,'month'=>6,'status'=>'ตรวจสอบแล้ว'],
+        ];
         // \Log::info($stocks);
         // \Log::info('------------------------');
         // \Log::info($stock_items);
-        return Inertia::render('Stock/ReportStock',[
-                                'stocks'=>$stocks,
-                                'stock_items'=>$stock_items,
-                                'unit'=> $unit,
+        return Inertia::render('Stock/ReportStockList',[
+                                    'stocks'=>$stocks,
+                                    'unit'=> $unit,
+                                    'report_stock_lists' =>$report_stock_lists,
                                 ]);
     }
 
