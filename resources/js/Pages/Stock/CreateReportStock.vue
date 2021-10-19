@@ -68,9 +68,10 @@
 				<th class="bg-pink-700 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">Lot.No</th>
                 <th class="bg-pink-700 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">วันหมดอายุ</th>
                 <th class="bg-pink-700 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">วันที่รับเข้า</th>
-                <th class="bg-pink-700 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">จำนวนคงเหลือ</th>
+                <th class="bg-pink-700 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">จำนวนที่มี</th>
                 <th class="bg-pink-700 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">วันที่เบิก</th>
-                <th class="bg-pink-700 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">จำนวน</th>
+                <th class="bg-pink-700 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">เบิก</th>
+                <th class="bg-pink-700 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">คงเหลือ</th>
                 <th class="bg-pink-700 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">ผู้เบิก</th>
 			</tr>
 		</thead>
@@ -81,26 +82,35 @@
                     <span class="inline-block w-1/3 md:hidden font-bold">ชื่อพัสดุ</span>
                     {{stock_item.item_code}}-{{stock_item.item_name}}
                 </td>
-				<td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">Cat.No</span>{{stock_item.catalog_number}}</td>
-                <td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">Lot.No</span>{{stock_item.lot_number}}</td>
-                <td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">วันหมดอายุ</span>{{stock_item.date_expire}}</td>
-                <td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">วันที่รับเข้า</span>{{stock_item.date_receive}}</td>
+				<td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">Cat.No</span>AHGH103</td>
+                <td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">Lot.No</span>234AB</td>
+                <td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">วันหมดอายุ</span>2022-01-31</td>
+                <td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">วันที่รับเข้า</span>2021-10-01</td>
 				<td class="text-left  block md:text-center md:table-cell md:border-b md:border-gray-400 md:rounded-r-lg">
-					<span class="inline-block w-1/3  md:hidden font-bold">จำนวนคงเหลือ</span>
+					<span class="inline-block w-1/3  md:hidden font-bold">จำนวนที่มี</span>
                     <span
                         class="inline-flex px-2  text-lg font-semibold leading-5 text-green-800 bg-green-100 rounded-full"
                         >
-                        {{stock_item.item_receive}}
+                        10
                     </span>
                  
 				</td>
-                <td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">วันที่เบิก</span>{{stock_item.date_receive}}</td>
+                <td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">วันที่เบิก</span>2021-10-19</td>
                 <td class="text-left  block md:text-center md:table-cell md:border-b md:border-gray-400 md:rounded-r-lg">
-					<span class="inline-block w-1/3  md:hidden font-bold">จำนวน</span>
+					<span class="inline-block w-1/3  md:hidden font-bold">เบิก</span>
                     <span
                         class="inline-flex px-2  text-lg font-semibold leading-5 text-red-800 bg-red-100 rounded-full"
                         >
-                        {{stock_item.item_receive-4}}
+                        5
+                    </span>
+                 
+				</td>
+                <td class="text-left  block md:text-center md:table-cell md:border md:border-gray-400 md:rounded-r-lg">
+					<span class="inline-block w-1/3  md:hidden font-bold">คงเหลือ</span>
+                    <span
+                        class="inline-flex px-2  text-lg font-semibold leading-5 text-blue-700 bg-blue-300 rounded-full"
+                        >
+                        5
                     </span>
                  
 				</td>

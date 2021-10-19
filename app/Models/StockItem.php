@@ -19,12 +19,6 @@ class StockItem extends Model
         'item_code',
         'item_name',
         'unit_count_id',
-        'item_receive',
-        'date_receive',
-        'date_expire',
-        'price',
-        'catalog_number',
-        'lot_number',
         'status' ,
         'profile',
     ];
@@ -53,12 +47,6 @@ class StockItem extends Model
                                 'item_code'=>$stock_item['item_code'],
                                 'item_name'=>$stock_item['item_name'],
                                 'unit_count_id'=>$stock_item['unit_count_id'],
-                                'item_receive'=>$stock_item['item_receive'],
-                                'date_receive'=>$stock_item['date_receive'],
-                                'date_expire'=>$stock_item['date_expire'],
-                                'price'=>$stock_item['price'],
-                                'catalog_number'=>$stock_item['catalog_number'],
-                                'lot_number'=>$stock_item['lot_number'],
                             ]);
         }
     }

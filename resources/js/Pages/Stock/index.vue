@@ -58,14 +58,14 @@
                
             
                 <div class="flex flex-col lg:flex-row mb-2 text-md font-bold text-gray-900">
-                    <div class=" ml-2"> จำนวนคงเหลือ : </div>
-                    <div class=" ml-2 text-red-600">{{stock_item.item_receive}}</div> 
+                    <div class=" ml-2"> จำนวนที่มี : </div>
+                    <div class=" ml-2 text-red-600">{{unit_has}}</div> 
                     <div class=" ml-2"> วันหมดอายุ : </div>
-                    <div class=" ml-2 text-blue-600">{{stock_item.date_expire}}</div> 
+                    <div class=" ml-2 text-blue-600">2022-01-31</div> 
                     <div class=" ml-2"> วันที่รับเข้า : </div>
-                    <div class=" ml-2 text-blue-600">{{stock_item.date_receive}}</div> 
+                    <div class=" ml-2 text-blue-600">2021-10-01</div> 
                      <div class=" ml-2"> Cat.No/Lot.No : </div>
-                    <div class=" ml-2 text-blue-600">{{stock_item.catalog_number}}/{{stock_item.lot_number}}</div> 
+                    <div class=" ml-2 text-blue-600">AHGH103 /234A</div> 
                 </div>
               
              
@@ -77,7 +77,9 @@
                     </div>
                      <div class=" m-2">
                         <label for="">จำนวน:</label>
-                        <input type="number" name="" id=""
+                        <input type="number" name="" id="" 
+                            v-model="unit_checkout"
+                            v-on:change="checkOutItem(key)" 
                          class="w-full px-12 py- border-transparent rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500">
                      </div>
 
@@ -137,12 +139,19 @@ export default {
     },
     data(){
         return{
-           
+            unit_checkout:0,
+            unit_has:10,
         //    stocks:[
 		// 		{code:1,name:'aa' },
 		// 		{code:2,name:'bb' },	
 		// 		{code:3,name:'cc' },		
 		// 	],
+        }
+    },
+    methods:{
+        checkOutItem(index){
+            console.log(index);
+            this.unit_has = this.unit_has - this.unit_checkout;
         }
     },
 
