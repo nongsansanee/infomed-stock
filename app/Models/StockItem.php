@@ -19,6 +19,7 @@ class StockItem extends Model
         'item_code',
         'item_name',
         'unit_count_id',
+        'item_sum',
         'status' ,
         'profile',
     ];
@@ -47,6 +48,8 @@ class StockItem extends Model
                                 'item_code'=>$stock_item['item_code'],
                                 'item_name'=>$stock_item['item_name'],
                                 'unit_count_id'=>$stock_item['unit_count_id'],
+                                'item_sum'=>$stock_item['item_receive'],
+                                'price'=>$stock_item['price'],
                             ]);
         }
     }

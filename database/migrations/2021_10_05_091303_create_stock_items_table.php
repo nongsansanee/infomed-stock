@@ -21,12 +21,12 @@ class CreateStockItemsTable extends Migration
             $table->string('item_code');
             $table->string('item_name');
             $table->integer('unit_count_id');
-            // $table->integer('item_receive');
+            $table->integer('item_sum');
             // $table->date('date_receive');
             // $table->date('date_expire');
-            // $table->float('price');
-            // $table->string('catalog_number')->nullable();
-            // $table->string('lot_number')->nullable();
+            $table->float('price');
+            $table->string('catalog_number')->nullable();
+            $table->string('lot_number')->nullable();
             $table->integer('status')->default(1);
             $table->json('profile')->nullable();
             $table->timestamps();

@@ -24,6 +24,9 @@ class CreateCheckInItemsTable extends Migration
             $table->date('date_expire');
             $table->integer('item_receive');
             $table->integer('item_total')->nullable();
+            $table->float('price')->nullable();;
+            $table->string('catalog_number')->nullable();
+            $table->string('lot_number')->nullable();
             $table->string('status')->default('active');
             $table->json('profile')->nullable();
             $table->timestamps();

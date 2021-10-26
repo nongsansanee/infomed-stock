@@ -59,7 +59,7 @@
             
                 <div class="flex flex-col lg:flex-row mb-2 text-md font-bold text-gray-900">
                     <div class=" ml-2"> จำนวนที่มี : </div>
-                    <div class=" ml-2 text-red-600">{{unit_has}}</div> 
+                    <div class=" ml-2 text-red-600">{{stock_item.item_sum}}</div> 
                     <div class=" ml-2"> วันหมดอายุ : </div>
                     <div class=" ml-2 text-blue-600">2022-01-31</div> 
                     <div class=" ml-2"> วันที่รับเข้า : </div>

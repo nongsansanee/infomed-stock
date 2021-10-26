@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCheckOutItemsTable extends Migration
+class CreateItemTransactionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,18 @@ class CreateCheckOutItemsTable extends Migration
      */
     public function up()
     {
-        Schema::create('check_out_items', function (Blueprint $table) {
+        Schema::create('item_transactions', function (Blueprint $table) {
             $table->id();
             $table->unsignedSmallInteger('stock_item_id');
             $table->unsignedSmallInteger('user_id')->default(1);
+            $table->unsignedSmallInteger('order_item_id')->nullable();
             $table->smallInteger('year');
             $table->smallInteger('month');
-            $table->date('date_checkout');
-            $table->integer('unit');
-            $table->string('status')->default('checkout');
+            $table->date('date_action');
+            $table->string('action');               //checkin ,checkout
+            $table->date('date_expire')->nullable();
+            $table->integer('item_count');
+            $table->string('status')->default('active');   //active , deleted
             $table->json('profile')->nullable();
             $table->timestamps();
         });
@@ -34,6 +37,6 @@ class CreateCheckOutItemsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('check_out_items');
+        Schema::dropIfExists('item_transactions');
     }
 }
