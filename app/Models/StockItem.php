@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class StockItem extends Model
 {
@@ -28,6 +29,12 @@ class StockItem extends Model
         'profile' => 'array',
     ];
 
+    protected static function booted()
+    {
+        static::creating(function ($user) {
+            $user->slug = Str::uuid()->toString();
+        });
+    }
     public function unitCount()
     {
         return $this->hasOne(UnitCount::class,'id','unit_count_id');

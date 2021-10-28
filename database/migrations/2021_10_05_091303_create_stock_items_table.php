@@ -16,6 +16,7 @@ class CreateStockItemsTable extends Migration
     {
         Schema::create('stock_items', function (Blueprint $table) {
             $table->id();
+            $table->uuid('slug');
             $table->unsignedSmallInteger('stock_id');
             $table->unsignedSmallInteger('user_id')->default(1);
             $table->string('item_code');

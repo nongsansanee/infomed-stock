@@ -21,11 +21,11 @@ class CreateItemTransactionsTable extends Migration
             $table->smallInteger('year');
             $table->smallInteger('month');
             $table->date('date_action');
-            $table->string('action');               //checkin ,checkout
+            $table->string('action');               //checkin or checkout
             $table->date('date_expire')->nullable();
             $table->integer('item_count');
             $table->string('status')->default('active');   //active , deleted
-            $table->json('profile')->nullable();
+            $table->json('profile')->nullable();  //if action = checkin -> price ,catalog_no , lot_no
             $table->timestamps();
         });
     }

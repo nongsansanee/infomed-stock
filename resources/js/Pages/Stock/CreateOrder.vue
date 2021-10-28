@@ -42,7 +42,7 @@
 				<td class="text-left  block md:table-cell md:border-b md:border-gray-400 md:rounded-l-lg">
                     <span class="inline-block w-1/3 md:hidden font-bold">ชื่อพัสดุ</span>
                      <input type="checkbox" name="" id="" class="w-4 h-4 border-2 border-green-800 shadow-sm text-green-600 rounded-md focus:ring-green-500">
-                    {{stock_item.item_code}}{{stock_item.item_name}}
+                    {{stock_item.item_code}}:{{stock_item.item_name}}
                 </td>
 				<td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">Cat.No</span>{{stock_item.catalog_number}}</td>
                 <td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">Lot.No</span>{{stock_item.lot_number}}</td>
@@ -53,7 +53,7 @@
                     <span
                         class="inline-flex px-2  text-lg font-semibold leading-5 text-green-800 bg-green-100 rounded-full"
                         >
-                        {{stock_item.item_receive}}
+                        {{stock_item.item_sum}}
                     </span>
                  
                      <input type="number" name="" id=""  placeholder="จำนวนที่จะสั่งซื้อ"

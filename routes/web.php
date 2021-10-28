@@ -79,5 +79,6 @@ Route::get('/create-order/{division_id}', [CreateOrderController::class,'index']
 Route::get('/order-list/{division_id}', [CreateOrderController::class,'show'])->name('order-list');
 
 Route::get('/admin/report-list/', [AdminReportStockController::class,'index'])->name('report-list');
+Route::get('/admin/report-stock/{stock_slug}/{year}/{month}', [AdminReportStockController::class,'show'])->name('admin-report-stock');
 
 Route::get('/admin/order-list/', [AdminOrderController::class,'index'])->name('check-order-list');
