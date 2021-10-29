@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use App\Models\Stock;
 use App\Models\StockItem;
 use App\Models\Unit;
+use Illuminate\Support\Facades\Log;
 
 class StockController extends Controller
 {
@@ -18,14 +19,16 @@ class StockController extends Controller
      */
     public function index($division_id)
     {
-        \Log::info('testttttt');
+       // \Log::info('testttttt');
         $stocks = Stock::where('unit_id',$division_id)->get();
         $stock_items = StockItem::where('stock_id',$division_id)->get();
+       // $stock_items = StockItem::with('UnitCount:id')->where('stock_id',$division_id)->get();
         $unit = Unit::where('unitid',$division_id)->first();
         // \Log::info($stocks);
         // \Log::info('------------------------');
-        // \Log::info($stock_items);
-        \Log::info('aaaaaaaaaa');
+        
+         Log::info($stock_items);
+       // \Log::info('aaaaaaaaaa');
         return Inertia::render('Stock/index',[
                                 'stocks'=>$stocks,
                                 'stock_items'=>$stock_items,

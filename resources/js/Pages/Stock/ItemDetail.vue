@@ -6,7 +6,7 @@
     </div>
 
     <!-- Item Detail -->
-    <div class="w-full mt-3 p-2  ">
+     <div class="w-full mt-3 p-2  ">
   
       <div 
             class="w-full bg-purple-100  mt-3 border-2 border-purple-300 rounded-lg lg:max-w-full lg:flex">
@@ -22,50 +22,31 @@
         >
             <div class=" mb-2">
                 <div class="p-2 text-md font-bold text-gray-900">
-                    SAP:{{stock_item.item_code}}
-                    <label for="" class="text-blue-600">{{stock_item.item_name}}</label>
-                    (หน่วย: กล่อง{{stock_item.unit_count_id}})
-                     <Link :href="route('stock-item',stock_item.id)">
-                    <span
-                        class="inline-flex text-md font-semibold leading-5 text-green-800 bg-green-200 rounded-lg"
-                    >
-                        ประวัติการเบิก
-                    </span>
-                    </Link>
+                    SAP:{{$page.props.stock_item.item_code}}
+                    <label for="" class="text-blue-600">{{$page.props.stock_item.item_name}}</label>
+                    (หน่วย: {{$page.props.stock_item.unit_count_id}})
+                   
                 </div>
                
             
                 <div class="flex flex-col lg:flex-row mb-2 text-md font-bold text-gray-900">
                     <div class=" ml-2"> จำนวนคงเหลือ : </div>
-                    <div class=" ml-2 text-red-600">{{stock_item.item_receive}}</div> 
+                    <div class=" ml-2 text-red-600">{{$page.props.stock_item.item_sum}}</div> 
                     <div class=" ml-2"> วันหมดอายุ : </div>
-                    <div class=" ml-2 text-blue-600">{{stock_item.date_expire}}</div> 
+                    <div class=" ml-2 text-blue-600">-</div> 
                     <div class=" ml-2"> วันที่รับเข้า : </div>
-                    <div class=" ml-2 text-blue-600">{{stock_item.date_receive}}</div> 
+                    <div class=" ml-2 text-blue-600">-</div> 
                      <div class=" ml-2"> Cat.No/Lot.No : </div>
-                    <div class=" ml-2 text-blue-600">{{stock_item.catalog_number}}/{{stock_item.lot_number}}</div> 
+                    <div class=" ml-2 text-blue-600">aaa/bbb</div> 
                 </div>
-              
-             
-              
-
-               
-            </div>
-          <!-- <div class="flex items-center">
-           
-            <div class="text-sm">
-              <p class="leading-none text-gray-900">Jonathan Reinink</p>
-              <p class="text-gray-600">Aug 18</p>
-            </div>
-          </div> -->
-           
+            </div> 
         </div>
-       
       </div>
-    
     </div>
-
-    <table v-if="demo_show_stock_items != 0" class="min-w-full border-collapse block  md:table md:rounded-md">
+    <!-- END Item Detail -->
+<!-- {{$page.props.item_check_outs}} -->
+    <!-- start Table -->
+    <table  class="min-w-full border-collapse block  md:table md:rounded-md">
 		<thead class="block  md:table-header-group">
 			<tr class="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
                 <th class=" bg-blue-300 p-2 text-black font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">วันที่เบิก</th>
@@ -77,19 +58,19 @@
 		<tbody class="block md:table-row-group">
 			<tr v-for="(item_check_out) in $page.props.item_check_outs" :key=item_check_out.id
                 class="bg-white p-2 mb-2 border-2 rounded-md border-gray-500 block md:border-none  md:table-row ">
-				<td class="text-left  block md:table-cell md:border-none md:bg-blue-100 md:rounded-md"><span class="inline-block w-1/3 md:hidden font-bold">วันที่เบิก</span>{{item_check_out.date_check_out}}</td>
-                <td class="text-left  block md:table-cell md:border-none md:bg-blue-100 md:rounded-md"><span class="inline-block w-1/3 md:hidden font-bold">จำนวน</span>{{item_check_out.unit}}</td>
+				<td class="text-left  block md:table-cell md:border-none md:bg-blue-100 md:rounded-md"><span class="inline-block w-1/3 md:hidden font-bold">วันที่เบิก</span>{{item_check_out.date_action}}</td>
+                <td class="text-left  block md:table-cell md:border-none md:bg-blue-100 md:rounded-md"><span class="inline-block w-1/3 md:hidden font-bold">จำนวน</span>{{item_check_out.item_count}}</td>
                 <td class="text-left  block md:table-cell md:border-none md:bg-blue-100 md:rounded-md"><span class="inline-block w-1/3 md:hidden font-bold">ผู้เบิก</span>นายทดสอบ การเบิก</td>
                 <td 
                     class="text-left  block md:table-cell md:border-none md:bg-blue-100 md:rounded-md">
                     <span class="inline-block w-1/3 md:hidden font-bold">ผู้เบิก</span>
-                    <label for=""  v-if="item_check_out.status == 'canceled'">{{item_check_out.status}}</label>
-                    <button v-if="item_check_out.status != 'canceled'"
+                    <label for=""  v-if="item_check_out.status != 'active'">{{item_check_out.status}}</label>
+                    <!-- <button v-if="item_check_out.status != 'canceled'"
                         class="  bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded">
                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                         </svg>
-                    </button>
+                    </button> -->
                     <button v-if="item_check_out.status != 'canceled'"
                         class=" ml-3 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

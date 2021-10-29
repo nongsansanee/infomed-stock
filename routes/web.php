@@ -9,6 +9,8 @@ use App\Http\Controllers\ReportStockController;
 use App\Http\Controllers\CreateOrderController;
 use App\Http\Controllers\AdminReportStockController;
 use App\Http\Controllers\AdminOrderController;
+use App\Http\Controllers\ItemTransactionController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,7 +69,9 @@ Route::get('/stock/{division_id}', [StockController::class,'index'])->name('stoc
 //     return Inertia::render('Stock/ItemDetail');
 // })->name('stock-item');
 
-Route::get('/stock-item/{item_id}', [StockItemController::class,'index'])->name('stock-item');
+Route::get('/stock-item/{stock_item}', [ItemTransactionController::class,'show'])->name('list-stock-item');
+//เบิกพัสดุ
+Route::post('/checkout-stock-item', [ItemTransactionController::class,'store'])->name('checkout-stock-item');
 
 Route::get('/create-report-stock/{division_id}', [ReportStockController::class,'index'])->name('create-report-stock');
 

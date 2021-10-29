@@ -48,7 +48,7 @@
                         SAP:{{stock_item.item_code}}
                         <label for="" class="text-blue-600">{{stock_item.item_name}}</label>
                         (หน่วย: กล่อง{{stock_item.unit_count_id}})
-                        <Link :href="route('stock-item',stock_item.id)">
+                        <Link :href="route('list-stock-item',stock_item)">
                         <span
                             class="inline-flex text-md font-semibold leading-5 text-green-800 bg-green-200 rounded-lg"
                         >
@@ -125,15 +125,51 @@
         </div>
 
         <!-- Modal -->
- 
+        <div v-if="confirm_checkout" 
+                class="min-w-screen h-screen animated fadeIn faster  fixed  left-0 top-0 flex justify-center items-center inset-0 z-50 outline-none focus:outline-none bg-no-repeat bg-center bg-cover"  
+                id="modal-id">
+            <div class="absolute bg-black opacity-80 inset-0 z-0"></div>
+            <div class="w-full  max-w-lg p-5 relative mx-auto my-auto rounded-xl shadow-lg  bg-white ">
+            <!--content-->
+                <div class="">
+                    <!--body-->
+                    <div class="text-center p-5 flex-auto justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 -m-1 flex items-center text-red-500 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 flex items-center text-green-500 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                                    <!-- <h2 class="text-xl font-bold py-3 ">Are you sure?</h2> -->
+                                    <p class="text-md font-bold text-red-600 py-3 px-8">คุณต้องการบันทึกการเบิกพัสดุรายการนี้ใช่หรือไม่?</p> 
+                                    <p class="mt-2">{{confirm_item_name}} วันที่ {{ confirm_item_date}} จำนวน {{confirm_item_count}}</p>   
+                    </div>
+                    <!--footer-->
+                    <div class="p-3  mt-2 text-center space-x-4 md:block">
+                        <button 
+                            class="mb-2 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                            v-on:click="okConfirmCheckout"
+                            >
+                            ตกลง
+                        </button>
+                        <button 
+                            class="mb-2 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
+                            v-on:click="cancelConfirmCheckout"
+                        >
+                            ยกเลิก
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- End Modal -->
 
         <!-- add component ModalConfirm -->
-            <modal-confirm v-if="confirm_checkout" 
+            <!-- <modal-confirm v-if="confirm_checkout" 
                 :confirm_item_name="confirm_item_name"
                 :confirm_item_date="confirm_item_date"
                 :confirm_item_count="confirm_item_count"
-            ></modal-confirm>
+            ></modal-confirm> -->
         <!-- END -->
     
     </div>
@@ -150,6 +186,7 @@
 //import { usePage } from '@inertiajs/inertia-vue3'
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link } from '@inertiajs/inertia-vue3'
+import { Inertia } from '@inertiajs/inertia';
 import ModalConfirm from '@/Components/ModalConfirm.vue'
 export default {
     components: {
@@ -182,9 +219,9 @@ export default {
     },
     methods:{
         showItemBalance(index,item_has){
-            console.log(index);
-            console.log(item_has);
-            console.log(this.unit_checkout[index]);
+            // console.log(index);
+            // console.log(item_has);
+            // console.log(this.unit_checkout[index]);
    
           //  this.stock_item_sum[index].item_sum  = item_has - this.unit_checkout[index];
           //   console.log(this.stock_item_sum[index]);
@@ -204,6 +241,17 @@ export default {
         },
         cancelConfirmCheckout(){
             this.confirm_checkout = 0;
+        },
+        okConfirmCheckout(){
+            this.confirm_checkout = 0;
+            console.log('OK Confirm');
+            Inertia.post(route('checkout-stock-item'), 
+                             { 
+                                 item_slug:this.confirm_item_slug,
+                                 date:this.confirm_item_date,
+                                 unit:this.confirm_item_count,
+                              }
+                             );
         }
     },
 

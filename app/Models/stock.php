@@ -16,4 +16,8 @@ class Stock extends Model
             $user->slug = Str::uuid()->toString();
         });
     }
+
+    public function stockItems(){
+        return $this->hasMany(StockItem::class);
+    }
 }

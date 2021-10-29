@@ -39,6 +39,15 @@ class StockItem extends Model
     {
         return $this->hasOne(UnitCount::class,'id','unit_count_id');
     }
+    public function stock()
+    {
+        return $this->belongsTo(Stock::class);
+    }
+
+    public function itemTransactions()
+    {
+        return $this->hasMany(ItemTransaction::class);
+    }
 
     public static function loadData($fileName){
         
