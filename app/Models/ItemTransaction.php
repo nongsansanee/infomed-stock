@@ -31,6 +31,10 @@ class ItemTransaction extends Model
 
     public function stockItem()
     {
-        return $this->hasOne(StockItem::class);
+        return $this->belongsTo(StockItem::class);
+    }
+    public function User()
+    {
+        return $this->belongsTo(User::class);
     }
 }

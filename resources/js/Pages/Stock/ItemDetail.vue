@@ -44,7 +44,7 @@
       </div>
     </div>
     <!-- END Item Detail -->
-<!-- {{$page.props.item_check_outs}} -->
+ <!-- {{$page.props.item_check_outs}}  -->
     <!-- start Table -->
     <table  class="min-w-full border-collapse block  md:table md:rounded-md">
 		<thead class="block  md:table-header-group">
@@ -60,7 +60,7 @@
                 class="bg-white p-2 mb-2 border-2 rounded-md border-gray-500 block md:border-none  md:table-row ">
 				<td class="text-left  block md:table-cell md:border-none md:bg-blue-100 md:rounded-md"><span class="inline-block w-1/3 md:hidden font-bold">วันที่เบิก</span>{{item_check_out.date_action}}</td>
                 <td class="text-left  block md:table-cell md:border-none md:bg-blue-100 md:rounded-md"><span class="inline-block w-1/3 md:hidden font-bold">จำนวน</span>{{item_check_out.item_count}}</td>
-                <td class="text-left  block md:table-cell md:border-none md:bg-blue-100 md:rounded-md"><span class="inline-block w-1/3 md:hidden font-bold">ผู้เบิก</span>นายทดสอบ การเบิก</td>
+                <td class="text-left  block md:table-cell md:border-none md:bg-blue-100 md:rounded-md"><span class="inline-block w-1/3 md:hidden font-bold">ผู้เบิก</span>{{item_check_out.user.name}}</td>
                 <td 
                     class="text-left  block md:table-cell md:border-none md:bg-blue-100 md:rounded-md">
                     <span class="inline-block w-1/3 md:hidden font-bold">ผู้เบิก</span>

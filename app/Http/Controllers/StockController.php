@@ -27,7 +27,7 @@ class StockController extends Controller
         // \Log::info($stocks);
         // \Log::info('------------------------');
         
-         Log::info($stock_items);
+      //   Log::info($stock_items);
        // \Log::info('aaaaaaaaaa');
         return Inertia::render('Stock/index',[
                                 'stocks'=>$stocks,

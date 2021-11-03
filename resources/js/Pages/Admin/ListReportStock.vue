@@ -47,15 +47,20 @@
             <!-- </Link> -->
         </div>
         <!-- {{$page.props.report_lists}} -->
-     
+        <p v-if="item_trans.length==0"
+        class="w-full  text-center bg-pink-200"
+        >
+            ไม่พบข้อมูล
+        </p>
         <!-- show order lists -->
          <h1 class="p-2 mt-3 text-center" >รายงานการเบิกพัสดุ</h1>
 
-
+<!-- {{item_trans.length}} -->
+ 
      <table v-if="demo_show_stock_items != 0" class="min-w-full border-collapse block  md:table">
 		<thead class="block  md:table-header-group">
 			<tr class="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
-				<th class="bg-pink-700 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">ชื่อพัสดุ</th>
+				<th class="bg-pink-700 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">SAP-ชื่อพัสดุ-คงเหลือ</th>
 				<th class="bg-pink-700 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">Cat.No</th>
 				<th class="bg-pink-700 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">Lot.No</th>
                 <th class="bg-pink-700 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">วันหมดอายุ</th>
@@ -68,25 +73,32 @@
 		<tbody class="block md:table-row-group">
 			<tr v-for="(item_tran) in item_trans" :key=item_tran.id
                 class="bg-white p-2 mb-2 border-2 border-gray-500 md:border-none block md:table-row">
-				<td class="text-left  block md:table-cell md:border-b md:border-gray-400 md:rounded-l-lg">
-                    <span class="inline-block w-1/3 md:hidden font-bold">ชื่อพัสดุ</span>
-                    {{item_tran.slug}}-{{item_tran.stockname}}
+				<td class="text-left text-sm  block md:table-cell md:border-b md:border-gray-400 md:rounded-l-lg">
+                    <span class="inline-block  w-1/3 md:hidden font-bold">ชื่อพัสดุ</span>
+                        {{item_tran.item_code}}-{{item_tran.item_name}}
+                    <span class="inline-flex px-2  text-lg font-semibold leading-5 text-green-800 bg-green-100 rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                        </svg>
+                         {{item_tran.stock_item.item_sum}}
+                    </span>
+                   
                 </td>
-				<td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">Cat.No</span>AHGH103</td>
-                <td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">Lot.No</span>234AB</td>
-                <td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">วันหมดอายุ</span>2022-01-31</td>
-                <td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">วันที่รับเข้า</span>2021-10-01</td>
-                <td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">วันที่เบิก</span>2021-10-19</td>
+				<td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">Cat.No</span>wait</td>
+                <td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">Lot.No</span>wait</td>
+                <td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">วันหมดอายุ</span>wait</td>
+                <td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">วันที่รับเข้า</span>wait</td>
+                <td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">วันที่เบิก</span>{{item_tran.date_action}}</td>
                 <td class="text-left  block md:text-center md:table-cell md:border-b md:border-gray-400 md:rounded-r-lg">
 					<span class="inline-block w-1/3  md:hidden font-bold">จำนวน</span>
                     <span
                         class="inline-flex px-2  text-lg font-semibold leading-5 text-red-800 bg-red-100 rounded-full"
                         >
-                        5
+                        {{item_tran.item_count}}
                     </span>
                  
 				</td>
-                 <td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">ผู้เบิก</span>นายทดสอบ การเบิก</td>
+                 <td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">ผู้เบิก</span> {{item_tran.user.name}}</td>
             </tr>
 			
 		</tbody>
@@ -171,7 +183,7 @@ export default {
                 {id:8,name:'สิงหาคม' },	
                 {id:9,name:'กันยายน' },	
                 {id:10,name:'ตุลาคม' },	
-                {id:11,name:'ฟฤศจิกายน' },	
+                {id:11,name:'พฤศจิกายน' },	
                 {id:12,name:'ธันวาคม' },		
 			],
         }

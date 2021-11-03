@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\ItemTransaction;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Stock;
+use App\Models\StockItem;
+use Illuminate\Support\Facades\Log;
+
 // use App\Models\StockItem;
 // use App\Models\Unit;
 // use Carbon\Carbon;
@@ -64,14 +68,24 @@ class AdminReportStockController extends Controller
      */
     public function show($stock_slug,$year,$month)
     {
-        \Log::info($stock_slug);
-        \Log::info($year);
-        \Log::info($month);
+        Log::info($stock_slug);
+        Log::info($year);
+        Log::info($month);
       //  return "test";
-        $stocks = Stock::where('slug',$stock_slug)->get();
+        $stocks = Stock::where('slug',$stock_slug)->first();
+       // Log::info($stocks);
+       // $stock_items = StockItem::whereId($stocks->id)->get();
+        $stock_item_checkouts = ItemTransaction::with('User:id,name')
+                                                ->with('stockItem:id,item_sum')
+                                                ->join('stock_items','stock_items.id','=','item_transactions.stock_item_id')
+                                                ->where('stock_items.stock_id','=',$stocks->id)
+                                                ->where(['year'=>$year,'month'=>$month])
+                                                ->orderBy('stock_item_id')
+                                                ->get();
 
-        return response()->json(["item_tran" => $stocks]);
-        return  $stocks;
+        Log::info($stock_item_checkouts);
+        return response()->json(["item_tran" => $stock_item_checkouts]);
+      //  return  $stocks;
 
 
        // $stock_items = StockItem::where('stock_id','1')->get();

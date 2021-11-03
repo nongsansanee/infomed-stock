@@ -27,7 +27,7 @@
  
     <div class="w-full mt-3 p-2  ">
   
-        <div v-for="(stock_item,key) in $page.props.stock_items" :key=stock_item.id
+        <div v-for="(stock_item,key) in stock_item_sum" :key=stock_item.id
                 class="w-full bg-purple-100  mt-3 border-2 border-purple-300 rounded-lg lg:max-w-full lg:flex">
             
             <div
@@ -88,7 +88,7 @@
                             <label for="">จำนวน:</label>
                             <input type="number" name="" id="" 
                                 v-model="unit_checkout[key]"
-                                v-on:change="showItemBalance(key,stock_item.item_sum)" 
+                                v-on:change="showItemBalance(key)" 
                             class="w-full px-12 py- border-transparent rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500">
                         </div>
                     
@@ -199,7 +199,7 @@ export default {
         stock_items:Array,
         unit:Array,
     },
-    data(props){
+    data(){
         return{
             unit_checkout:[],
             date_checkout:[],
@@ -209,7 +209,7 @@ export default {
             confirm_item_slug:'',
             confirm_item_date:'',
             confirm_item_count:'',
-            stock_item_sum:{...this.stock_items},
+            stock_item_sum:[...this.stock_items], //เอาตัวแปร จาก props มาใช้
         //    stocks:[
 		// 		{code:1,name:'aa' },
 		// 		{code:2,name:'bb' },	
@@ -218,14 +218,14 @@ export default {
         }
     },
     methods:{
-        showItemBalance(index,item_has){
-            // console.log(index);
+        showItemBalance(index){
+             console.log(index);
             // console.log(item_has);
             // console.log(this.unit_checkout[index]);
    
-          //  this.stock_item_sum[index].item_sum  = item_has - this.unit_checkout[index];
-          //   console.log(this.stock_item_sum[index]);
-          //   console.log(this.stock_items[index]);
+        //    this.stock_item_sum[index].item_sum  = this.stock_item_sum[index].item_sum - this.unit_checkout[index];
+        //     console.log(this.stock_item_sum[index]);
+      
         },
         confirmCheckout(index,stock_item){
              console.log('confirmCheckout');
