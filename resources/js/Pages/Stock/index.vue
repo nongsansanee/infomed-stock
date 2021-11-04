@@ -47,12 +47,12 @@
                         {{key+1}}.
                         SAP:{{stock_item.item_code}}
                         <label for="" class="text-blue-600">{{stock_item.item_name}}</label>
-                        (หน่วย: กล่อง{{stock_item.unit_count_id}})
+                        (หน่วย: {{stock_item.unit_count.countname}})
                         <Link :href="route('list-stock-item',stock_item)">
                         <span
                             class="inline-flex text-md font-semibold leading-5 text-green-800 bg-green-200 rounded-lg"
                         >
-                            ประวัติการเบิก
+                            ประวัติการรับเข้าและเบิกออก
                         </span>
                         </Link>
                     </div>
@@ -69,11 +69,11 @@
                             > -->
                         </div> 
                         <div class=" ml-2"> วันหมดอายุ : </div>
-                        <div class=" ml-2 text-blue-600">2022-01-31</div> 
+                        <div class=" ml-2 text-blue-600">{{stock_item.checkin_last.date_expire}}</div> 
                         <div class=" ml-2"> วันที่รับเข้า : </div>
-                        <div class=" ml-2 text-blue-600">2021-10-01</div> 
+                        <div class=" ml-2 text-blue-600">{{stock_item.checkin_last.date_action}}</div> 
                         <div class=" ml-2"> Cat.No/Lot.No : </div>
-                        <div class=" ml-2 text-blue-600">AHGH103 /234A</div> 
+                        <div class=" ml-2 text-blue-600">{{stock_item.checkin_last.profile['catalog_number']}} /{{stock_item.checkin_last.profile['lot_number']}}</div> 
                     </div>
                 
                 

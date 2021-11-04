@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\ItemTransaction;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Stock;
@@ -21,8 +22,17 @@ class StockController extends Controller
     {
        // \Log::info('testttttt');
         $stocks = Stock::where('unit_id',$division_id)->get();
-        $stock_items = StockItem::where('stock_id',$division_id)->get();
-       // $stock_items = StockItem::with('UnitCount:id')->where('stock_id',$division_id)->get();
+        $stock_items = StockItem::with('unitCount:id,countname')
+                                ->where('stock_id',$division_id)->get();
+      
+        foreach($stock_items as $key=>$stock_item){
+            $checkin_last = ItemTransaction::where('stock_item_id',$stock_item->id)
+                                            ->where('action','checkin')
+                                            ->where('status','active')
+                                            ->latest()
+                                            ->first();
+            $stock_items[$key]['checkin_last'] = $checkin_last;
+        }
         $unit = Unit::where('unitid',$division_id)->first();
         // \Log::info($stocks);
         // \Log::info('------------------------');

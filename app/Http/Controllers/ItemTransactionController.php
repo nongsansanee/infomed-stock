@@ -89,8 +89,17 @@ class ItemTransactionController extends Controller
     {
         Log::info('---------show transaction------------');
         Log::info($stock_item);
-        Log::info($stock_item->itemTransactions);
-        $item_check_outs = ItemTransaction::with('User:id,name')->where('stock_item_id',$stock_item->id)->get();
+      //  Log::info($stock_item->unitCount->countname);
+        $checkin_last = ItemTransaction::where('stock_item_id',$stock_item->id)
+                                ->where('action','checkin')
+                                ->where('status','active')
+                                ->latest()
+                                ->first();
+
+        $item_trans = ItemTransaction::with('User:id,name')
+                                            ->where('stock_item_id',$stock_item->id)
+                                            ->where('status','active')
+                                            ->get();
         //return "list checkout";
        // $stock_item = StockItem::where('id',$stock_item->id)->first();
         $stock = Stock::where('id',$stock_item->stock_id)->first();
@@ -108,7 +117,9 @@ class ItemTransactionController extends Controller
         return Inertia::render('Stock/ItemDetail',[
                                 'stock_item'=>$stock_item,
                                 'stock' => $stock,
-                                'item_check_outs' => $item_check_outs,
+                                'item_trans' => $item_trans,
+                                'checkin_last'=>$checkin_last,
+                                'count_name'=>$stock_item->unitCount->countname,
                                 ]);
     }
 

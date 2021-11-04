@@ -71,12 +71,13 @@
 			</tr>
 		</thead>
 		<tbody class="block md:table-row-group">
-			<tr v-for="(item_tran) in item_trans" :key=item_tran.id
+			<tr v-for="(item_tran,key) in item_trans" :key=item_tran.id
                 class="bg-white p-2 mb-2 border-2 border-gray-500 md:border-none block md:table-row">
 				<td class="text-left text-sm  block md:table-cell md:border-b md:border-gray-400 md:rounded-l-lg">
                     <span class="inline-block  w-1/3 md:hidden font-bold">ชื่อพัสดุ</span>
-                        {{item_tran.item_code}}-{{item_tran.item_name}}
-                    <span class="inline-flex px-2  text-lg font-semibold leading-5 text-green-800 bg-green-100 rounded-full">
+                      {{key+1}}.{{item_tran.item_code}}-{{item_tran.item_name}} 
+                    <span  
+                       class="inline-flex px-2  text-lg font-semibold leading-5 text-green-800 bg-green-100 rounded-full">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
                         </svg>

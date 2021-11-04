@@ -49,6 +49,12 @@ class StockItem extends Model
         return $this->hasMany(ItemTransaction::class);
     }
 
+    public function itemTransactionCheckinLatest()
+    {
+        return ItemTransaction::where('stock_item_id',$this->id)->where('status','active')->latest()->first();
+    }
+
+
     public static function loadData($fileName){
         
       
@@ -66,6 +72,23 @@ class StockItem extends Model
                                 'unit_count_id'=>$stock_item['unit_count_id'],
                                 'item_sum'=>$stock_item['item_receive'],
                                 'price'=>$stock_item['price'],
+                            ]);
+
+            $stock_item_id = StockItem::select('id')->where('item_code',$stock_item['item_code'])->first();
+
+            ItemTransaction::create([
+                                'stock_item_id'=>$stock_item_id->id,
+                                'user_id'=>1,
+                                'year'=> 2021,
+                                'month'=>10,
+                                'date_action'=>$stock_item['date_receive'],
+                                'action'=>'checkin',
+                                'date_expire'=>$stock_item['date_expire'],
+                                'item_count'=>$stock_item['item_receive'],
+                                'status'=>'active',
+                                'profile'=>['catalog_number'=>$stock_item['catalog_number'],
+                                            'lot_number'=>$stock_item['lot_number'],
+                                            ],
                             ]);
         }
     }

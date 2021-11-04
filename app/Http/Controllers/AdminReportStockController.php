@@ -79,7 +79,7 @@ class AdminReportStockController extends Controller
                                                 ->with('stockItem:id,item_sum')
                                                 ->join('stock_items','stock_items.id','=','item_transactions.stock_item_id')
                                                 ->where('stock_items.stock_id','=',$stocks->id)
-                                                ->where(['year'=>$year,'month'=>$month])
+                                                ->where(['year'=>$year,'month'=>$month,'action'=>'checkout'])
                                                 ->orderBy('stock_item_id')
                                                 ->get();
 
