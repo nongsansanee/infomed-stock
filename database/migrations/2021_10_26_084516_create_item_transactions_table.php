@@ -15,6 +15,7 @@ class CreateItemTransactionsTable extends Migration
     {
         Schema::create('item_transactions', function (Blueprint $table) {
             $table->id();
+            $table->unsignedSmallInteger('stock_id');
             $table->unsignedSmallInteger('stock_item_id');
             $table->unsignedSmallInteger('user_id')->default(1);
             $table->unsignedSmallInteger('order_item_id')->nullable();

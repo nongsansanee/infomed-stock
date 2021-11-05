@@ -65,7 +65,7 @@ class StockItem extends Model
         foreach($stock_items as $stock_item){
        //     \Log::info($aaa);
            StockItem::create([
-                                'stock_id'=>$stock_item['stocks_id'],
+                                'stock_id'=>$stock_item['stock_id'],
                                 'user_id'=>1,
                                 'item_code'=>$stock_item['item_code'],
                                 'item_name'=>$stock_item['item_name'],
@@ -77,6 +77,7 @@ class StockItem extends Model
             $stock_item_id = StockItem::select('id')->where('item_code',$stock_item['item_code'])->first();
 
             ItemTransaction::create([
+                                'stock_id' =>$stock_item['stock_id'],
                                 'stock_item_id'=>$stock_item_id->id,
                                 'user_id'=>1,
                                 'year'=> 2021,

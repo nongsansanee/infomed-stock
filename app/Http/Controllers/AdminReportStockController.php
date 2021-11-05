@@ -21,21 +21,17 @@ class AdminReportStockController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($division_id)
     {
-        $stocks = Stock::all();
-       // $stock_items = StockItem::where('stock_id','1')->get();
-        // $unit = Unit::where('unitid',$division_id)->first();
-        $report_lists = [
-                ['id'=>'1','updated_at'=>'2021-10-05','unit_name'=>'สาขาวิชาการบริบาลผู้ป่วยนอก','status'=>'ตรวจสอบแล้ว'],
-                ['id'=>'2','updated_at'=>'2021-10-06','unit_name'=>'สาขาวิชาความดันโลหิตสูง','status'=>'ตรวจสอบแล้ว'],
-                ['id'=>'3','updated_at'=>'2021-10-07','unit_name'=>'สาขาวิชาต่อมไร้ท่อ','status'=>'รอตรวจสอบ'],
-        ];
+        Log::info($division_id);
+        if($division_id != 27)
+            $stocks = Stock::whereId($division_id)->get();
+        else
+          $stocks = Stock::all();
+     
         return Inertia::render('Admin/ListReportStock',[
                         'stocks'=>$stocks,
-                        //'stock_items'=>$stock_items,
-                        // 'unit'=> $unit,
-                        'report_lists'=>$report_lists
+                      //  'division_id'=>$division_id,
                         ]);
     }
 
@@ -74,17 +70,31 @@ class AdminReportStockController extends Controller
       //  return "test";
         $stocks = Stock::where('slug',$stock_slug)->first();
        // Log::info($stocks);
-       // $stock_items = StockItem::whereId($stocks->id)->get();
+        $stock_items = StockItem::whereStockId($stocks->id)->get();
+
+        
+        foreach($stock_items as $key=>$stock_item){
+            $checkin_last = ItemTransaction::where('stock_item_id',$stock_item->id)
+                                            ->where('action','checkin')
+                                            ->where('status','active')
+                                            ->latest()
+                                            ->first();
+            $stock_items[$key]['checkin_last'] = $checkin_last;
+        }
+
         $stock_item_checkouts = ItemTransaction::with('User:id,name')
-                                                ->with('stockItem:id,item_sum')
-                                                ->join('stock_items','stock_items.id','=','item_transactions.stock_item_id')
-                                                ->where('stock_items.stock_id','=',$stocks->id)
+                                                ->where('stock_id','=',$stocks->id)
                                                 ->where(['year'=>$year,'month'=>$month,'action'=>'checkout'])
                                                 ->orderBy('stock_item_id')
+                                                ->orderBy('date_action')
                                                 ->get();
 
+        Log::info($stock_items);
         Log::info($stock_item_checkouts);
-        return response()->json(["item_tran" => $stock_item_checkouts]);
+        return response()->json([
+                                    'stock_items'=> $stock_items,
+                                    'item_tran' => $stock_item_checkouts
+                                ]);
       //  return  $stocks;
 
 

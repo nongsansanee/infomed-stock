@@ -50,7 +50,9 @@ class ItemTransactionController extends Controller
         $year_checkout= substr($request->date,0,4);
         $month_checkout= substr($request->date,5,2);
         try{
-                ItemTransaction::create(['stock_item_id'=>$stock_item->id ,
+                ItemTransaction::create([
+                                        'stock_id'=>$stock_item->stock_id ,
+                                        'stock_item_id'=>$stock_item->id ,
                                         'user_id'=>1,
                                         'year'=>$year_checkout,
                                         'month'=>$month_checkout,
@@ -99,6 +101,7 @@ class ItemTransactionController extends Controller
         $item_trans = ItemTransaction::with('User:id,name')
                                             ->where('stock_item_id',$stock_item->id)
                                             ->where('status','active')
+                                            ->orderBy('date_action')
                                             ->get();
         //return "list checkout";
        // $stock_item = StockItem::where('id',$stock_item->id)->first();
