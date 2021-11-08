@@ -127,7 +127,9 @@
                 class="bg-white p-2 mb-2 border-2 border-gray-500 md:border-none block md:table-row">
 				<td class="text-left text-sm  block md:table-cell md:border-b md:border-gray-400 md:rounded-l-lg">
                     <span class="inline-block  w-1/3 md:hidden font-bold">ชื่อพัสดุ</span>
-                      {{key+1}}.{{stock_item.item_code}}-{{stock_item.item_name}} 
+                    <Link :href="route('list-stock-item',stock_item.id)" :targer="_blank">
+                     {{key+1}}. <u>{{stock_item.item_code}}-{{stock_item.item_name}} </u>
+                      </Link>
                     <span  
                        class="inline-flex px-2  text-lg font-semibold leading-5 text-green-800 bg-green-100 rounded-full">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -151,7 +153,7 @@
                             <span class=" text-blue-600 ">{{item_tran.user.name}}</span>  
                             <span class=" ml-2">เบิกไป:</span> 
                             <span class="text-blue-600">{{item_tran.item_count}} </span> 
-                            <span class=" ml-2"> หน่วย</span> 
+                            <!-- <span class=" ml-2"> หน่วย</span>  -->
                         </li>
                            
                     </span>

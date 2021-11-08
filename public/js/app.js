@@ -36217,6 +36217,7 @@ __webpack_require__.r(__webpack_exports__);
     stocks: Array,
     stock_items: Array,
     unit: Array,
+    businesses: Array,
     sysdate_thai: String,
     sysdate: String
   },
@@ -36258,14 +36259,35 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         id: 12,
         name: 'ธันวาคม'
+      }],
+      // stock_item_order:[ 
+      //                  {item_order:0,price_order:0},
+      //                 ],
+      order_selected: [],
+      // order_item_units:[],
+      orders: [{
+        id: 0,
+        sap: 0,
+        order: 0,
+        price: 0,
+        business_id: 0
       }]
     };
   },
-  computed: {// a computed getter
-    // convertYearThai() {
-    // // `this` points to the vm instance
-    //     return this.order_lists['year']+543;
-    // }
+  methods: {
+    createOrder: function createOrder() {
+      var _this = this;
+
+      console.log('create order'); //   console.log(this.order_selected);
+      //    console.log(this.order_selected[0].id);
+      //   console.log(this.$refs['item-'+this.order_selected[0].id].value);
+      //    console.log(this.order_item_units[this.order_selected[0].id-1]);
+
+      this.order_selected.forEach(function (item) {
+        console.log(item.id);
+        console.log(_this.$refs['item-' + item.id].value);
+      }); //console.log(this.$refs['item-'+this.order_selected.id].value);
+    }
   } // setup() {
   //     return { };
   // },
@@ -38341,14 +38363,9 @@ var _hoisted_40 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 var _hoisted_41 = {
   "class": "text-blue-600"
 };
-
-var _hoisted_42 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "ml-2"
-}, " หน่วย", -1
-/* HOISTED */
-);
-
 function render(_ctx, _cache, $props, $setup, $data, $options) {
+  var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
+
   var _component_AppLayout = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("AppLayout");
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_AppLayout, null, {
@@ -38428,9 +38445,23 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
           key: stock_item.id,
           "class": "bg-white p-2 mb-2 border-2 border-gray-500 md:border-none block md:table-row"
-        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_21, [_hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(key + 1) + "." + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stock_item.item_code) + "-" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stock_item.item_name) + " ", 1
-        /* TEXT */
-        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_23, [_hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stock_item.item_sum), 1
+        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_21, [_hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+          href: _ctx.route('list-stock-item', stock_item.id),
+          targer: _ctx._blank
+        }, {
+          "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+            return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(key + 1) + ". ", 1
+            /* TEXT */
+            ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("u", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stock_item.item_code) + "-" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stock_item.item_name), 1
+            /* TEXT */
+            )];
+          }),
+          _: 2
+          /* DYNAMIC */
+
+        }, 1032
+        /* PROPS, DYNAMIC_SLOTS */
+        , ["href", "targer"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_23, [_hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stock_item.item_sum), 1
         /* TEXT */
         )])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_25, [_hoisted_26, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stock_item.checkin_last.profile['catalog_number']), 1
         /* TEXT */
@@ -38449,7 +38480,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           /* TEXT */
           ), _hoisted_40, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_41, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item_tran.item_count), 1
           /* TEXT */
-          ), _hoisted_42])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
+          ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <span class=\" ml-2\"> หน่วย</span>  ")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
         }), 128
         /* KEYED_FRAGMENT */
         ))])]);
@@ -39329,7 +39360,11 @@ var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
   "class": "bg-green-700 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg"
 }, "วันที่รับเข้า"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   "class": "bg-green-700 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg"
-}, "จำนวนคงเหลือ")])], -1
+}, "จำนวนคงเหลือ"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  "class": "bg-green-700 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg"
+}, "ราคาต่อหน่วย"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  "class": "bg-green-700 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg"
+}, "บริษัทผู้ขาย")])], -1
 /* HOISTED */
 );
 
@@ -39346,15 +39381,7 @@ var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-  type: "checkbox",
-  name: "",
-  id: "",
-  "class": "w-4 h-4 border-2 border-green-800 shadow-sm text-green-600 rounded-md focus:ring-green-500"
-}, null, -1
-/* HOISTED */
-);
-
+var _hoisted_11 = ["value"];
 var _hoisted_12 = {
   "class": "text-left block md:table-cell md:border md:border-gray-400"
 };
@@ -39408,22 +39435,34 @@ var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 var _hoisted_22 = {
   "class": "inline-flex px-2 text-lg font-semibold leading-5 text-green-800 bg-green-100 rounded-full"
 };
+var _hoisted_23 = {
+  "class": "text-left block md:text-center md:table-cell md:border-b md:border-gray-400 md:rounded-r-lg"
+};
 
-var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-  type: "number",
+var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  "class": "inline-block w-1/3 md:hidden font-bold"
+}, "ราคาต่อหน่วย", -1
+/* HOISTED */
+);
+
+var _hoisted_25 = ["onUpdate:modelValue"];
+var _hoisted_26 = {
+  "class": "text-left block md:text-center md:table-cell md:border-b md:border-gray-400 md:rounded-r-lg"
+};
+
+var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  "class": "inline-block w-1/3 md:hidden font-bold"
+}, "บริษัทผู้ขาย", -1
+/* HOISTED */
+);
+
+var _hoisted_28 = {
   name: "",
   id: "",
-  placeholder: "จำนวนที่จะสั่งซื้อ",
-  "class": "block w-full mt-1 border-gray-400 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
-}, null, -1
-/* HOISTED */
-);
+  "class": "block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+};
 
-var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-  "class": "m-3 w-full flex justify-center px-8 py-1 text-sm text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-none"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6 \" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\r\n                    <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z\" />\r\n                    </svg> "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" สร้างใบสั่งซื้อ ")])], -1
-/* HOISTED */
-);
+var _hoisted_29 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" สร้างใบสั่งซื้อ ");
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_AppLayout = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("AppLayout");
@@ -39441,28 +39480,71 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         );
       }), 128
       /* KEYED_FRAGMENT */
-      ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{$page.props.stock_items}} ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" show stock items "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"w-full mt-3 p-2 bg-blue-400 rounded-md\">\r\n            <div  v-for=\"(stock_item) in  $page.props.stock_items\" :key=stock_item.id\r\n            class=\" mt-2 bg-green-50 rounded-sm\">\r\n                    {{stock_item.item_code}} {{stock_item.item_name}}\r\n            </div>\r\n            \r\n        </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", _hoisted_5, "ข้อมูลจำนวนคงเหลือ ณ วันที่ปัจจุบัน " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$page.props.sysdate_thai), 1
+      ))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", _hoisted_5, "ข้อมูลจำนวนคงเหลือ ณ วันที่ปัจจุบัน " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$page.props.sysdate_thai), 1
       /* TEXT */
-      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" test "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", _hoisted_8, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.$page.props.stock_items, function (stock_item) {
+      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" test "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", _hoisted_8, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.$page.props.stock_items, function (stock_item, key) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
           key: stock_item.id,
           "class": "bg-white p-2 mb-2 border-2 border-gray-500 md:border-none block md:table-row"
-        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_9, [_hoisted_10, _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stock_item.item_code) + ":" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stock_item.item_name), 1
+        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_9, [_hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+          type: "checkbox",
+          "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
+            return $data.order_selected = $event;
+          }),
+          value: {
+            id: stock_item.id,
+            sap: stock_item.item_code
+          },
+          "class": "w-4 h-4 border-2 border-green-800 shadow-sm text-green-600 rounded-md focus:ring-green-500"
+        }, null, 8
+        /* PROPS */
+        , _hoisted_11), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.order_selected]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stock_item.item_code) + ":" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stock_item.item_name), 1
         /* TEXT */
-        )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_12, [_hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stock_item.catalog_number), 1
+        )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_12, [_hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stock_item.checkin_last.profile['catalog_number']), 1
         /* TEXT */
-        )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_14, [_hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stock_item.lot_number), 1
+        )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_14, [_hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stock_item.checkin_last.profile['lot_number']), 1
         /* TEXT */
-        )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_16, [_hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stock_item.date_expire), 1
+        )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_16, [_hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stock_item.checkin_last.date_expire), 1
         /* TEXT */
-        )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_18, [_hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stock_item.date_receive), 1
+        )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_18, [_hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stock_item.checkin_last.date_action), 1
         /* TEXT */
         )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_20, [_hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(stock_item.item_sum), 1
         /* TEXT */
-        ), _hoisted_23])]);
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+          type: "number",
+          placeholder: "จำนวนสั่งซื้อ",
+          ref: 'item-' + stock_item.id,
+          "class": "block w-full mt-1 border-gray-400 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
+        }, null, 512
+        /* NEED_PATCH */
+        )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_23, [_hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+          type: "number",
+          "onUpdate:modelValue": function onUpdateModelValue($event) {
+            return stock_item.price = $event;
+          },
+          "class": "block w-full mt-1 border-gray-400 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
+        }, null, 8
+        /* PROPS */
+        , _hoisted_25), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, stock_item.price]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_26, [_hoisted_27, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", _hoisted_28, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.$page.props.businesses, function (business) {
+          return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
+            key: business.id,
+            value: "{{business.id}}"
+          }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(business.business_name), 1
+          /* TEXT */
+          );
+        }), 128
+        /* KEYED_FRAGMENT */
+        ))])])]);
       }), 128
       /* KEYED_FRAGMENT */
-      ))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" END table "), _hoisted_24];
+      ))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" END table "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+        "class": "m-3 w-full flex justify-center px-8 py-1 text-sm text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-none",
+        onClick: _cache[1] || (_cache[1] = function ($event) {
+          return $options.createOrder();
+        })
+      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6 \" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\r\n                    <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z\" />\r\n                    </svg> "), _hoisted_29])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "order selected: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.order_selected), 1
+      /* TEXT */
+      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <span>order unit: {{ order_item_units }}</span> ")];
     }),
     _: 1
     /* STABLE */

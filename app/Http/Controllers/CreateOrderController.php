@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Business;
+use App\Models\ItemTransaction;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Stock;
@@ -28,6 +30,17 @@ class CreateOrderController extends Controller
         // \Log::info('------------------------');
         // \Log::info($stock_items);
 
+        foreach($stock_items as $key=>$stock_item){
+            $checkin_last = ItemTransaction::where('stock_item_id',$stock_item->id)
+                                            ->where('action','checkin')
+                                            ->where('status','active')
+                                            ->latest()
+                                            ->first();
+            $stock_items[$key]['checkin_last'] = $checkin_last;
+        }
+
+        $businesses = Business::all();
+
         $mutable = Carbon::now();
         //\Log::info($mutable);
         $tmp_date_now = explode(' ', $mutable);
@@ -42,7 +55,7 @@ class CreateOrderController extends Controller
                                 'unit'=> $unit,
                                 'sysdate'=>$tmp_date_now[0],
                                 'sysdate_thai'=>$date_now_show,
-                                
+                                'businesses'=>$businesses,
                                 ]);
     }
 
