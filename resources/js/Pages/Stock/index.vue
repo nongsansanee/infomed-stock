@@ -24,7 +24,14 @@
         <!-- EX3 Card -->
  <!-- <h4 class=" mt-3 text-red-600 text-2xl text-center">***click ที่รายการที่ต้องการเบิก***</h4> -->
  <!-- {{stock_item_sum}} -->
- 
+  <!-- {{$page.props.stock_items}} -->
+  <!-- <div v-if="$page.props.flash.status"> -->
+      <!-- {{ $page.props.flash.msg }} -->
+  <!-- </div> -->
+  <div v-if="$page.props.flash.status=='success'" class="w-full mx-auto shadow-md rounded-md p-2 mt-2 text-black bg-green-200 border-white">
+        <label for=""> {{ $page.props.flash.msg }}</label>
+  </div>
+  
     <div class="w-full mt-3 p-2  ">
   
         <div v-for="(stock_item,key) in stock_item_sum" :key=stock_item.id
@@ -198,6 +205,7 @@ export default {
         stocks:Array,
         stock_items:Array,
         unit:Array,
+        errors: Object,
     },
     data(){
         return{
@@ -250,6 +258,10 @@ export default {
                                  item_slug:this.confirm_item_slug,
                                  date:this.confirm_item_date,
                                  unit:this.confirm_item_count,
+                              },
+                              {
+                                  preserveState: false,
+                                //   preserveScroll: true
                               }
                              );
         }

@@ -9,7 +9,7 @@ use App\Models\StockItem;
 use App\Models\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\Redirect;
 
 class ItemTransactionController extends Controller
 {
@@ -72,13 +72,18 @@ class ItemTransactionController extends Controller
             StockItem::whereSlug($request->item_slug)->update(['item_sum'=>$balance]);
         }catch(\Illuminate\Database\QueryException $e){
              //rollback
-            return redirect()->back();
+            //return redirect()->back();
+            return Redirect::back()->withErrors(['status' => 'error', 'msg' => $e->getMessage()]);
         }
+
+        // $stock_items = StockItem::with('unitCount:id,countname')
+        //                             ->where('stock_id',$request->stock_id)->get();
       
-     
-        return redirect()->back();
+        return Redirect::back()->with(['status' => 'success', 'msg' => 'save success']);
+        //return redirect()->back()->with(['msg'=>'save success']);
        // return Inertia::location($url);
-        //return Redirect::route('users.index');
+        // return Redirect::route('stock',$request->stock_id);
+        // return back();
     }
 
     /**
