@@ -1,5 +1,17 @@
 <template>
     <AppLayout>
+
+        <div v-if="$page.props.flash.status=='success'" 
+                class="alert-banner  fixed  right-0 m-2 w-5/6 md:w-full max-w-sm ">
+                <input type="checkbox" class="hidden" id="banneralert">
+                
+                <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow rounded-md text-green-800 font-bold" title="close" for="banneralert">
+                 {{ $page.props.flash.msg }}
+                   <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
+                        <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                    </svg>
+                </label>
+        </div>
         <div class=" w-full  bg-blue-100 p-2 rounded-md ">
             <div class="bg-blue-800 text-white text-xl text-center ">
                 {{$page.props.unit.unitname}}
@@ -12,25 +24,10 @@
             </select>
            
         </div>
-        <!-- show stock items -->
-        <!-- <div class="w-full mt-3 p-2 bg-blue-400 rounded-md">
-            <div  v-for="(stock_item) in  $page.props.stock_items" :key=stock_item.id
-            class=" mt-2 bg-green-50 rounded-sm">
-                    {{stock_item.item_code}} {{stock_item.item_name}}
-            </div>
-            
-        </div> -->
-
-        <!-- EX3 Card -->
- <!-- <h4 class=" mt-3 text-red-600 text-2xl text-center">***click ที่รายการที่ต้องการเบิก***</h4> -->
- <!-- {{stock_item_sum}} -->
-  <!-- {{$page.props.stock_items}} -->
-  <!-- <div v-if="$page.props.flash.status"> -->
-      <!-- {{ $page.props.flash.msg }} -->
-  <!-- </div> -->
-  <div v-if="$page.props.flash.status=='success'" class="w-full mx-auto shadow-md rounded-md p-2 mt-2 text-black bg-green-200 border-white">
+     
+  <!-- <div v-if="$page.props.flash.status=='success'" class="w-full mx-auto shadow-md rounded-md p-2 mt-2 text-black bg-green-200 border-white">
         <label for=""> {{ $page.props.flash.msg }}</label>
-  </div>
+  </div> -->
   
     <div class="w-full mt-3 p-2  ">
   
@@ -274,3 +271,4 @@ export default {
 }
 
 </script>
+ 

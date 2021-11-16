@@ -6,12 +6,15 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "codedge/laravel-fpdf": "^1.8",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "inertiajs/inertia-laravel": "^0.4.3",
         "laravel/framework": "^8.54",
         "laravel/sanctum": "^2.6",
         "laravel/tinker": "^2.5",
+        "setasign/fpdf": "^1.8",
+        "setasign/fpdi-fpdf": "^2.3",
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {

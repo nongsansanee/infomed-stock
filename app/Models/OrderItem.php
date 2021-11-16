@@ -13,23 +13,23 @@ class OrderItem extends Model
 
     protected $fillable = [ 
         'id',
+        'create_no',
         'order_no',
         'unit_id',
-        'stock_item_id',
-        'price',
-        'catalog_number',
-        'lot_number',
         'user_id' ,
-        'stock_categorie_id',
         'year',
         'month',
         'date_order',
-        'unit',
         'status',
-        'profile',
+        'items',
     ];
 
     protected $casts = [
-        'profile' => 'array',
+        'items' => 'array',
     ];
+
+    public function User()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

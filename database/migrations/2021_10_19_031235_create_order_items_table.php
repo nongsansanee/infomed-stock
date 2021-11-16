@@ -15,20 +15,15 @@ class CreateOrderItemsTable extends Migration
     {
         Schema::create('order_items', function (Blueprint $table) {
             $table->id();
-            $table->smallInteger('order_no');
+            $table->smallInteger('create_no');
+            $table->smallInteger('order_no')->default(0);
             $table->unsignedSmallInteger('unit_id');
-            $table->unsignedSmallInteger('stock_item_id');
-            $table->float('price');
-            $table->string('catalog_number')->nullable();
-            $table->string('lot_number')->nullable();
             $table->unsignedSmallInteger('user_id')->default(1);
-            $table->smallInteger('stock_categorie_id')->nullable();
             $table->smallInteger('year');
             $table->smallInteger('month');
             $table->date('date_order');
-            $table->integer('unit');
             $table->string('status')->default('created');
-            $table->json('profile')->nullable();
+            $table->json('items')->nullable(); 
             $table->timestamps();
         });
     }

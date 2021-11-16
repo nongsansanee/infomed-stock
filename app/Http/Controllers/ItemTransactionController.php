@@ -79,7 +79,7 @@ class ItemTransactionController extends Controller
         // $stock_items = StockItem::with('unitCount:id,countname')
         //                             ->where('stock_id',$request->stock_id)->get();
       
-        return Redirect::back()->with(['status' => 'success', 'msg' => 'save success']);
+        return Redirect::back()->with(['status' => 'success', 'msg' => 'บันทึกการเบิกพัสดุสำเร็จ']);
         //return redirect()->back()->with(['msg'=>'save success']);
        // return Inertia::location($url);
         // return Redirect::route('stock',$request->stock_id);

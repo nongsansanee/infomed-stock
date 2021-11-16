@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Business;
 use App\Models\ItemTransaction;
+use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Stock;
 use App\Models\StockItem;
 use App\Models\Unit;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 
 class CreateOrderController extends Controller
 {
@@ -77,7 +80,49 @@ class CreateOrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //dd($request);
+        Log::info($request);
+        //Log::info($request->order_items[0]['stock_id']);
+        $mutable = Carbon::now();
+        //\Log::info($mutable);
+        $tmp_date_now = explode(' ', $mutable);
+        $split_date_now = explode('-', $tmp_date_now[0]);
+
+        $last_create_no = OrderItem::select('create_no')
+                            ->where('unit_id',$request->order_items[0]['stock_id'])
+                            ->where('year',$split_date_now[0])
+                            ->first();
+        if($last_create_no == null){
+            Log::info('this unit no order');
+            $last_create_number = 1;
+        }else{
+            Log::info('this unit has order');
+            Log::info($last_create_no);
+           $last_create_number = $last_create_no->create_no+1;
+           
+        }
+
+        // foreach( $request->order_items as $item ){
+            Log::info($request->order_items);
+            Log::info($last_create_number);
+            // Log::info($item['sap']);
+        try{
+            Log::info('create order');
+            OrderItem::create([
+                'create_no' => $last_create_number,
+                'unit_id' => $request->order_items[0]['stock_id'],
+                'user_id' => 2,
+                'year' => $split_date_now[0],
+                'month' => $split_date_now[1],
+                'date_order' => $tmp_date_now[0],
+                'items' => $request->order_items,
+            ]);
+        }catch(\Illuminate\Database\QueryException $e){
+            //rollback
+            return redirect()->back()->whit(['status' => 'error', 'msg' =>  $e->getMessage()]);
+        }
+       
+        return Redirect::back()->with(['status' => 'success', 'msg' => 'สร้างใบสั่งซื้อสำเร็จ']);
     }
 
     /**
@@ -93,13 +138,17 @@ class CreateOrderController extends Controller
         $unit = Unit::where('unitid',$division_id)->first();
 
         //get data order list (mock up test UI)
-        $order_lists = [
-                        ['id'=>'1','year'=>2021,'month'=>9,'day'=>28,'status'=>'สร้างใบสั่งซื้อ'],
-                        ['id'=>'2','year'=>2021,'month'=>9,'day'=>25,'status'=>'สร้างใบสั่งซื้อ'],
-                        ['id'=>'3','year'=>2021,'month'=>8,'day'=>24,'status'=>'รออนุมัติ'],
-                        ['id'=>'4','year'=>2021,'month'=>7,'day'=>28,'status'=>'ได้รับอนุมัติแล้ว'],
-                        ['id'=>'5','year'=>2021,'month'=>6,'day'=>27,'status'=>'ตรวจรับพัสดุแล้ว'],
-        ];
+        $order_lists = OrderItem::with('User:id,name')
+                                ->where('unit_id',$division_id)
+                                ->orderBy('date_order','desc')
+                                ->get();
+        // $order_lists = [
+        //                 ['id'=>'1','year'=>2021,'month'=>9,'day'=>28,'status'=>'สร้างใบสั่งซื้อ'],
+        //                 ['id'=>'2','year'=>2021,'month'=>9,'day'=>25,'status'=>'สร้างใบสั่งซื้อ'],
+        //                 ['id'=>'3','year'=>2021,'month'=>8,'day'=>24,'status'=>'รออนุมัติ'],
+        //                 ['id'=>'4','year'=>2021,'month'=>7,'day'=>28,'status'=>'ได้รับอนุมัติแล้ว'],
+        //                 ['id'=>'5','year'=>2021,'month'=>6,'day'=>27,'status'=>'ตรวจรับพัสดุแล้ว'],
+        // ];
         // \Log::info($stocks);
         // \Log::info('------------------------');
         // \Log::info($stock_items);

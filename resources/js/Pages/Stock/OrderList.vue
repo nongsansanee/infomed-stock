@@ -21,26 +21,28 @@
             </div>
             
         </div> -->
-
+{{$page.props.order_lists}}
      
         <!-- show order lists -->
          <h1 class="p-2 m-4 text-center" >ประวัติการสั่งซื้อพัสดุ</h1>
         <table class="min-w-full border-collapse block  md:table">
 		<thead class="block  md:table-header-group">
 			<tr class="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
-				<th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">ปี พ.ศ.</th>
-				<th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">เดือน</th>
-				<th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">วันที่</th>
+				<!-- <th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">ปี พ.ศ.</th>
+				<th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">เดือน</th> -->
+				<th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">วันที่สร้างเอกสาร</th>
+                                 <th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">ผู้สร้างเอกสาร</th>
                 <th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">สถานะ</th>
 			</tr>
 		</thead>
 		<tbody class="block md:table-row-group">
 			<tr v-for="(order_list) in $page.props.order_lists" :key=order_list.id
                 class="bg-white p-2 mb-2 border-2 border-gray-500 md:border-none block md:table-row">
-				<td class="text-left  block md:table-cell md:border-b md:border-gray-400 md:rounded-l-lg"><span class="inline-block w-1/3 md:hidden font-bold">ปี พ.ศ.</span>{{order_list.year+543}}</td>
-				<td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">เดือน</span>{{months[order_list.month].name}}</td>
-                <td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">วันที่</span>{{order_list.day}}</td>
-				<td class="text-left  block md:table-cell md:border-b md:border-gray-400 md:rounded-r-lg">
+				<!-- <td class="text-left  block md:table-cell md:border-b md:border-gray-400 md:rounded-l-lg"><span class="inline-block w-1/3 md:hidden font-bold">ปี พ.ศ.</span>{{order_list.year+543}}</td>
+				<td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">เดือน</span>{{months[order_list.month].name}}</td> -->
+                <td class="text-left  block md:table-cell md:border-b md:border-gray-400 md:rounded-l-lg"><span class="inline-block w-1/3 md:hidden font-bold">วันที่สร้างเอกสาร</span>{{order_list.date_order}}</td>
+				<td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">ผู้สร้างเอกสาร</span>{{order_list.user['name']}}</td>
+                <td class="text-left  block md:table-cell md:border-b md:border-gray-400 md:rounded-r-lg">
 					<span class="inline-block w-1/3 md:hidden font-bold">สถานะ</span>
                     {{order_list.status}}
                    
@@ -56,13 +58,13 @@
                         </svg>
                     </button>
 					
-                    <button v-if="order_list.status == 'สร้างใบสั่งซื้อ'"
+                    <button v-if="order_list.status == 'created'"
                         class=" ml-3 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                         </svg>
                     </button>
-                    <button v-if="order_list.status == 'สร้างใบสั่งซื้อ'"
+                    <button v-if="order_list.status == 'created'"
                         class=" ml-3 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 border border-green-500 rounded">
                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />

@@ -1,5 +1,20 @@
 <template>
     <AppLayout>
+
+          <!--Header Alert-->
+            <div v-if="$page.props.flash.status=='success'" 
+                class="alert-banner  fixed  right-0 m-2 w-5/6 md:w-full max-w-sm ">
+                <input type="checkbox" class="hidden" id="banneralert">
+                
+                <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow rounded-md text-green-800 font-bold" title="close" for="banneralert">
+                 {{ $page.props.flash.msg }}
+                   <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
+                        <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                    </svg>
+                </label>
+            </div>
+
+    
         <div class=" w-full  bg-blue-100 p-2 rounded-md ">
             <div class="bg-blue-800 text-white text-xl text-center ">
                 {{$page.props.unit.unitname}}
@@ -53,7 +68,7 @@
        
         <label v-for="(preview_order,index) in preview_orders" :key=preview_order.id
             class="close cursor-pointer flex items-start justify-between w-full p-1 bg-red-100  shadow-lg text-sm text-red-900" title="close" for="previeworder">
-            {{index+1}}.{{preview_order.item_name}} จำนวน {{preview_order.unit}} ชิ้น เป็นเงิน {{preview_order.total}} บาท
+            {{index+1}}.{{preview_order.item_name}} จำนวน {{preview_order.unit}} x {{preview_order.price}}  เป็นเงิน {{preview_order.total}} บาท
         
             <!-- <svg class="fill-current text-white" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
                 <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
@@ -76,7 +91,7 @@
      
     </div>
     <!-- test -->
-   
+   <!-- {{$page.props.stock_items}} -->
     <table class="min-w-full border-collapse block  md:table">
 		<thead class="block  md:table-header-group">
 			<tr class="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
@@ -97,14 +112,22 @@
                     <span class="inline-block w-1/3 md:hidden font-bold">ชื่อพัสดุ</span>
                      <input type="checkbox"   v-model="order_selected"  
                        v-bind:ref="'itemcheck-'+stock_item.id" 
-                        v-bind:value="{id:stock_item.id , sap:stock_item.item_code, item_name:stock_item.item_name}"
+                        v-bind:value="{stock_id:stock_item.stock_id ,id:stock_item.id , sap:stock_item.item_code, item_name:stock_item.item_name}"
                         v-on:change="checkedOrder(key)"
                        class="w-4 h-4 border-2 border-red-700 shadow-sm text-red-600 rounded-sm focus:ring-red-500"
                     >
-                    {{stock_item.item_code}}:{{stock_item.item_name}}
+                     {{stock_item.item_code}}:{{stock_item.item_name}}
                 </td>
-				<td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">Cat.No</span>{{stock_item.checkin_last.profile['catalog_number']}}</td>
-                <td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">Lot.No</span>{{stock_item.checkin_last.profile['lot_number']}}</td>
+				<td class="text-left  block md:table-cell md:border md:border-gray-400">
+                    <span class="inline-block w-1/3 md:hidden font-bold">Cat.No</span>
+                     <input type="text"  v-model="stock_item.checkin_last.profile['catalog_number']" v-bind:ref="'cat_no-'+stock_item.id"
+                            class="block w-full mt-1 border-gray-400 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500">
+                </td>
+                <td class="text-left  block md:table-cell md:border md:border-gray-400">
+                    <span class="inline-block w-1/3 md:hidden font-bold">Lot.No</span>
+                    <input type="text"  v-model="stock_item.checkin_last.profile['lot_number']" v-bind:ref="'lot_no-'+stock_item.id"
+                            class="block w-full mt-1 border-gray-400 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500">
+                </td>
                 <td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">วันหมดอายุ</span>{{stock_item.checkin_last.date_expire}}</td>
                 <td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">วันที่รับเข้า</span>{{stock_item.checkin_last.date_action}}</td>
 				<td class="text-left  block md:text-center md:table-cell md:border-b md:border-gray-400 md:rounded-r-lg">
@@ -158,10 +181,11 @@
      <!-- <div>
          <h2 class=" m-3 text-center">Preview Order</h2>
      </div>
+     -->
      <div>
          {{preview_orders}}
      </div>
-     -->
+     
       <!-- <span>order unit: {{ order_item_units }}</span> -->
 
       
@@ -174,6 +198,7 @@
 //import { usePage } from '@inertiajs/inertia-vue3'
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link } from '@inertiajs/inertia-vue3'
+import { Inertia } from '@inertiajs/inertia';
 
 export default {
     components: {
@@ -206,14 +231,22 @@ export default {
                 {id:11,name:'ฟฤศจิกายน' },	
                 {id:12,name:'ธันวาคม' },		
 			],
-            // stock_item_order:[ 
-            //                  {item_order:0,price_order:0},
-            //                 ],
-
-           // order_selected: [{id:0,sap:0,item_name:'',unit:0}],
+   
             order_selected:[],
 
-            preview_orders: [{id:0,sap:0,item_name:'',unit:0,price:0,business_id:0,business_name:'',total:0}],
+            preview_orders: [{
+                            stock_id:0,
+                            id:0,
+                            sap:0,
+                            item_name:'',
+                            unit:0,
+                            price:0,
+                            business_id:0,
+                            business_name:'',
+                            total:0,
+                            catalog_number:'',
+                            lot_number:'',
+                            }],
 
             business_selected:[],
 
@@ -223,12 +256,12 @@ export default {
     },
     methods: {
         checkedOrder(index){
-            console.log('checkedOrder');
+           // console.log('checkedOrder');
              this.preview_orders=[];
            
           
             this.order_selected.forEach(item => {
-                 console.log(item.id);
+                 //console.log(item.id);
                   // console.log(this.$refs['check-'+item.id].);
                 if(this.$refs['item-'+item.id].value=='')
                 {
@@ -237,10 +270,10 @@ export default {
                         return;
                 }
 
-                console.log(this.business_selected);
-                console.log(this.business_selected[item.id]);
+                // console.log(this.business_selected);
+                // console.log(this.business_selected[item.id]);
                 
-                console.log(Object.keys(this.business_selected));
+                // console.log(Object.keys(this.business_selected));
                 // if(!JSON.stringify(this.business_selected).includes(item.id))
                 // {
                 //         alert('กรุณาระบุบริษัทผู้ขาย');
@@ -250,6 +283,7 @@ export default {
                 let total_bath = this.$refs['item-'+item.id].value*this.$refs['price-'+item.id].value;
               
                this.preview_orders.push({
+                                        stock_id:item.stock_id,
                                         id:item.id,
                                         sap:item.sap,
                                         item_name:item.item_name,
@@ -257,25 +291,25 @@ export default {
                                         price:this.$refs['price-'+item.id].value,
                                         business_id:this.business_selected[item.id].business_id,
                                         business_name:this.business_selected[item.id].business_name,
-                                        total:total_bath
+                                        total:total_bath,
+                                        catalog_number:this.$refs['cat_no-'+item.id].value,
+                                        lot_number:this.$refs['lot_no-'+item.id].value,
                                     });
             })
            
         },
         createOrder(){
                console.log('create order');
-           
-              this.preview_orders.forEach(item => {
-                console.log(item.id)
-                console.log(item.unit);
-                console.log(item.price);
-                console.log(item.business_id);
-                  // this.preview_orders.push({unit:this.$refs['item-'+item.id].value});
-                
-            
-                   
-              })
-                    //console.log(this.$refs['item-'+this.order_selected.id].value);
+           // console.log(this.preview_orders);
+            Inertia.post(route('add-order'), 
+                            { 
+                                order_items:this.preview_orders,
+                            },
+                            {
+                                preserveState: false,
+                            //   preserveScroll: true
+                            }
+                        );
                
         },
         showPreorder(){
@@ -310,48 +344,4 @@ export default {
 }
 
 </script>
-  <style>
 
-	/*Banner open/load animation*/
-	.alert-banner {
-		-webkit-animation: slide-in-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-				animation: slide-in-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-	}
-
-	/*Banner close animation*/
-	.alert-banner input:checked ~ * {
-		-webkit-animation: slide-out-top 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
-				animation: slide-out-top 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;		
-	}
-
-	/*Footer open/load animation*/
-	.alert-footer {
-		-webkit-animation: slide-in-bottom 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-				animation: slide-in-bottom 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;	
-	}
-
-	/*Footer close animation*/
-	.alert-footer input:checked ~ * {
-		-webkit-animation: slide-out-bottom 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
-				animation: slide-out-bottom 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
-	}
-
-	/*Toast open/load animation*/
-	.alert-toast {
-		-webkit-animation: slide-in-right 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-				animation: slide-in-right 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-	}
-
-	/*Toast close animation*/
-	.alert-toast input:checked ~ * {
-		-webkit-animation: fade-out-right 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-				animation: fade-out-right 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-	}
-
-	/* -------------------------------------------------------------
-	 * Animations generated using Animista * w: http://animista.net, 
-	 * ---------------------------------------------------------- */
-
-	@-webkit-keyframes slide-in-top{0%{-webkit-transform:translateY(-1000px);transform:translateY(-1000px);opacity:0}100%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}}@keyframes slide-in-top{0%{-webkit-transform:translateY(-1000px);transform:translateY(-1000px);opacity:0}100%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}}@-webkit-keyframes slide-out-top{0%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}100%{-webkit-transform:translateY(-1000px);transform:translateY(-1000px);opacity:0}}@keyframes slide-out-top{0%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}100%{-webkit-transform:translateY(-1000px);transform:translateY(-1000px);opacity:0}}@-webkit-keyframes slide-in-bottom{0%{-webkit-transform:translateY(1000px);transform:translateY(1000px);opacity:0}100%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}}@keyframes slide-in-bottom{0%{-webkit-transform:translateY(1000px);transform:translateY(1000px);opacity:0}100%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}}@-webkit-keyframes slide-out-bottom{0%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}100%{-webkit-transform:translateY(1000px);transform:translateY(1000px);opacity:0}}@keyframes slide-out-bottom{0%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}100%{-webkit-transform:translateY(1000px);transform:translateY(1000px);opacity:0}}@-webkit-keyframes slide-in-right{0%{-webkit-transform:translateX(1000px);transform:translateX(1000px);opacity:0}100%{-webkit-transform:translateX(0);transform:translateX(0);opacity:1}}@keyframes slide-in-right{0%{-webkit-transform:translateX(1000px);transform:translateX(1000px);opacity:0}100%{-webkit-transform:translateX(0);transform:translateX(0);opacity:1}}@-webkit-keyframes fade-out-right{0%{-webkit-transform:translateX(0);transform:translateX(0);opacity:1}100%{-webkit-transform:translateX(50px);transform:translateX(50px);opacity:0}}@keyframes fade-out-right{0%{-webkit-transform:translateX(0);transform:translateX(0);opacity:1}100%{-webkit-transform:translateX(50px);transform:translateX(50px);opacity:0}}
-	
-  </style>

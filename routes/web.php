@@ -10,6 +10,7 @@ use App\Http\Controllers\CreateOrderController;
 use App\Http\Controllers\AdminReportStockController;
 use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\ItemTransactionController;
+use App\Http\Controllers\PrintFormController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -78,7 +79,10 @@ Route::get('/create-report-stock/{division_id}', [ReportStockController::class,'
 Route::get('/report-stock/{division_id}', [ReportStockController::class,'show'])->name('report-stock');
 //Route::get('/report-stock/show/{division_id}', [ReportStockController::class,'index'])->name('report-stock-show');
 
+//หน้าแรกสร้างใบสั่งซื้อ
 Route::get('/create-order/{division_id}', [CreateOrderController::class,'index'])->name('create-order');
+//สร้างใบสั่งซื้อ
+Route::post('/create-order/add', [CreateOrderController::class,'store'])->name('add-order');
 
 Route::get('/order-list/{division_id}', [CreateOrderController::class,'show'])->name('order-list');
 
@@ -86,3 +90,6 @@ Route::get('/admin/report-list/{division_id}', [AdminReportStockController::clas
 Route::get('/admin/report-stock/{stock_slug}/{year}/{month}', [AdminReportStockController::class,'show'])->name('admin-report-stock');
 
 Route::get('/admin/order-list/', [AdminOrderController::class,'index'])->name('check-order-list');
+
+//printForm
+Route::get('/testprint', [PrintFormController::class,'index']);
