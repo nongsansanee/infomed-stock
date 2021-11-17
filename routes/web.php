@@ -83,6 +83,8 @@ Route::get('/report-stock/{division_id}', [ReportStockController::class,'show'])
 Route::get('/create-order/{division_id}', [CreateOrderController::class,'index'])->name('create-order');
 //สร้างใบสั่งซื้อ
 Route::post('/create-order/add', [CreateOrderController::class,'store'])->name('add-order');
+//พิมพ์ใบสั่งซื้อ
+Route::get('/create-order/print/{order}', [PrintFormController::class,'show'])->name('print-order');
 
 Route::get('/order-list/{division_id}', [CreateOrderController::class,'show'])->name('order-list');
 
@@ -92,4 +94,4 @@ Route::get('/admin/report-stock/{stock_slug}/{year}/{month}', [AdminReportStockC
 Route::get('/admin/order-list/', [AdminOrderController::class,'index'])->name('check-order-list');
 
 //printForm
-Route::get('/testprint', [PrintFormController::class,'index']);
+Route::get('/testprint', [PrintFormController::class,'index'])->name('testprint');

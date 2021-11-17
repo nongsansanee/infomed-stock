@@ -140,7 +140,7 @@ class CreateOrderController extends Controller
         //get data order list (mock up test UI)
         $order_lists = OrderItem::with('User:id,name')
                                 ->where('unit_id',$division_id)
-                                ->orderBy('date_order','desc')
+                                ->orderBy('created_at','desc')
                                 ->get();
         // $order_lists = [
         //                 ['id'=>'1','year'=>2021,'month'=>9,'day'=>28,'status'=>'สร้างใบสั่งซื้อ'],
@@ -153,13 +153,19 @@ class CreateOrderController extends Controller
         // \Log::info('------------------------');
         // \Log::info($stock_items);
 
-        // $mutable = Carbon::now();
-        // //\Log::info($mutable);
-        // $tmp_date_now = explode(' ', $mutable);
-        // $split_date_now = explode('-', $tmp_date_now[0]);
-        // $year = (int) $split_date_now[0] + 543;
-        // $thaimonth = ['', 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
-        // $date_now_show = $split_date_now[2].'  '.$thaimonth[(int) $split_date_now[1]].' '.$year;
+        foreach ($order_lists as $key=>$order_list) {
+            $created_at_tmp =  explode(' ', $order_list['created_at']);
+            $split_date_now = explode('-', $created_at_tmp[0]);
+            $year = (int) $split_date_now[0] + 543;
+            $thaimonth = ['', 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+            $created_at_format = $split_date_now[2].'  '.$thaimonth[(int) $split_date_now[1]].' '.$year.' '.$created_at_tmp[1].' น.';
+            $order_lists[$key]['created_at_format'] = $created_at_format;
+        }
+
+
+   
+ 
+      
 
         return Inertia::render('Stock/OrderList',[
                                                 'stocks'=>$stocks,

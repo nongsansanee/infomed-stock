@@ -21,7 +21,7 @@
             </div>
             
         </div> -->
-{{$page.props.order_lists}}
+<!-- {{$page.props.order_lists}} -->
      
         <!-- show order lists -->
          <h1 class="p-2 m-4 text-center" >ประวัติการสั่งซื้อพัสดุ</h1>
@@ -40,7 +40,7 @@
                 class="bg-white p-2 mb-2 border-2 border-gray-500 md:border-none block md:table-row">
 				<!-- <td class="text-left  block md:table-cell md:border-b md:border-gray-400 md:rounded-l-lg"><span class="inline-block w-1/3 md:hidden font-bold">ปี พ.ศ.</span>{{order_list.year+543}}</td>
 				<td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">เดือน</span>{{months[order_list.month].name}}</td> -->
-                <td class="text-left  block md:table-cell md:border-b md:border-gray-400 md:rounded-l-lg"><span class="inline-block w-1/3 md:hidden font-bold">วันที่สร้างเอกสาร</span>{{order_list.date_order}}</td>
+                <td class="text-left  block md:table-cell md:border-b md:border-gray-400 md:rounded-l-lg"><span class="inline-block w-1/3 md:hidden font-bold">วันที่สร้างเอกสาร</span> {{order_list.created_at_format}}</td>
 				<td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">ผู้สร้างเอกสาร</span>{{order_list.user['name']}}</td>
                 <td class="text-left  block md:table-cell md:border-b md:border-gray-400 md:rounded-r-lg">
 					<span class="inline-block w-1/3 md:hidden font-bold">สถานะ</span>
@@ -52,11 +52,15 @@
                         </svg>
                     </button> -->
 
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd" />
-                        </svg>
-                    </button>
+                    <a :href="route('print-order',order_list.id)" target="blank">
+                        <span
+                            class="inline-flex text-md p-2 font-semibold leading-5 text-white bg-blue-500 rounded-md"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd" />
+                            </svg>
+                        </span>
+                    </a>
 					
                     <button v-if="order_list.status == 'created'"
                         class=" ml-3 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-500 rounded">
@@ -70,7 +74,10 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                         </svg>
                     </button>
-                  
+                    <div>
+                             <span class=" text-sm text-red-500">คำแนะนำ:เมื่อเซ็นเอกสารแล้ว กรุณากดปุ่มส่ง</span>
+                    </div>
+                   
 				</td>
 			</tr>
 			
@@ -116,13 +123,23 @@ export default {
                 {id:11,name:'ฟฤศจิกายน' },	
                 {id:12,name:'ธันวาคม' },		
 			],
+
+            date_order_format:'2021-11-16 10.30 น.',
+        }
+    },
+    methods:{
+        printOrder($order_id){
+                console.log($order_id);
+        },
+        dateOrderFormat($created_at) {
+             console.log($created_at);
+            return '2021-11-16 11.30 น.';
         }
     },
     computed: {
-            // a computed getter
-            // convertYearThai() {
+            // dateOrderFormat() {
             // // `this` points to the vm instance
-            //     return this.order_lists['year']+543;
+            //     return this.date_order_format;
             // }
     }
 
