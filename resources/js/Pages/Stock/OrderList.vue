@@ -31,16 +31,17 @@
 				<!-- <th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">ปี พ.ศ.</th>
 				<th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">เดือน</th> -->
 				<th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">วันที่สร้างเอกสาร</th>
-                                 <th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">ผู้สร้างเอกสาร</th>
+                <th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">เลขเอกสาร</th>
+                <th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">ผู้สร้างเอกสาร</th>
                 <th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">สถานะ</th>
 			</tr>
 		</thead>
 		<tbody class="block md:table-row-group">
 			<tr v-for="(order_list) in $page.props.order_lists" :key=order_list.id
                 class="bg-white p-2 mb-2 border-2 border-gray-500 md:border-none block md:table-row">
-				<!-- <td class="text-left  block md:table-cell md:border-b md:border-gray-400 md:rounded-l-lg"><span class="inline-block w-1/3 md:hidden font-bold">ปี พ.ศ.</span>{{order_list.year+543}}</td>
-				<td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">เดือน</span>{{months[order_list.month].name}}</td> -->
+				<!-- <td class="text-left  block md:table-cell md:border-b md:border-gray-400 md:rounded-l-lg"><span class="inline-block w-1/3 md:hidden font-bold">ปี พ.ศ.</span>{{order_list.year+543}}</td> -->
                 <td class="text-left  block md:table-cell md:border-b md:border-gray-400 md:rounded-l-lg"><span class="inline-block w-1/3 md:hidden font-bold">วันที่สร้างเอกสาร</span> {{order_list.created_at_format}}</td>
+                <td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">เลขเอกสาร</span>{{order_list.create_no}}/{{order_list.year}}</td> 
 				<td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">ผู้สร้างเอกสาร</span>{{order_list.user['name']}}</td>
                 <td class="text-left  block md:table-cell md:border-b md:border-gray-400 md:rounded-r-lg">
 					<span class="inline-block w-1/3 md:hidden font-bold">สถานะ</span>
@@ -54,7 +55,7 @@
 
                     <a :href="route('print-order',order_list.id)" target="blank">
                         <span
-                            class="inline-flex text-md p-2 font-semibold leading-5 text-white bg-blue-500 rounded-md"
+                            class="inline-flex text-md py-1 px-2 font-semibold leading-5 text-white bg-blue-500 rounded-md"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd" />
@@ -69,6 +70,7 @@
                         </svg>
                     </button>
                     <button v-if="order_list.status == 'created'"
+                        v-on:click="confirmSendOrder(order_list)"
                         class=" ml-3 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 border border-green-500 rounded">
                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
@@ -84,7 +86,48 @@
 		</tbody>
 	</table>
 
-      
+        <!-- Modal -->
+        <div v-if="confirm_send_order" 
+                class="min-w-screen h-screen animated fadeIn faster  fixed  left-0 top-0 flex justify-center items-center inset-0 z-50 outline-none focus:outline-none bg-no-repeat bg-center bg-cover"  
+                id="modal-id">
+            <div class="absolute bg-black opacity-80 inset-0 z-0"></div>
+            <div class="w-full  max-w-lg p-5 relative mx-auto my-auto rounded-xl shadow-lg  bg-white ">
+            <!--content-->
+                <div class="">
+                    <!--body-->
+                    <div class="text-center p-3 flex-auto justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 -m-1 flex items-center text-red-500 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                          
+                                    <!-- <h2 class="text-xl font-bold py-3 ">Are you sure?</h2> -->
+                                    <p class="text-md font-bold text-red-600 py-2 px-8">คุณต้องการส่งเอกสารการสั่งซื้อพัสดุนี้ใช่หรือไม่?</p> 
+                                    <!-- <p class="mt-2">{{confirm_items}}</p>    -->
+                                       <label v-for="(confirm_item,index) in confirm_items" :key=confirm_item.id
+                                         class="  flex  justify-start w-full bg-red-100 text-sm text-red-900">
+                                        {{index+1}}.{{confirm_item.item_name}} จำนวน {{confirm_item.unit}} x {{confirm_item.price}}  เป็นเงิน {{confirm_item.total}} บาท
+                                    
+                                    </label>
+                    </div>
+                    <!--footer-->
+                    <div class="p-3  mt-2 text-center space-x-4 md:block">
+                        <button 
+                            class="mb-2 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                            v-on:click="okConfirmSendOrder"
+                            >
+                            ตกลง
+                        </button>
+                        <button 
+                            class="mb-2 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
+                            v-on:click="cancelSendOrder"
+                        >
+                            ยกเลิก
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Modal -->
         
 
     </AppLayout>
@@ -124,17 +167,41 @@ export default {
                 {id:12,name:'ธันวาคม' },		
 			],
 
-            date_order_format:'2021-11-16 10.30 น.',
+            confirm_send_order:0,
+            confirm_items:Array,
+            confirm_order_id:0,
         }
     },
     methods:{
-        printOrder($order_id){
-                console.log($order_id);
+         confirmSendOrder(order){
+             console.log('confirmSendOrder');
+             console.log(order);
+             console.log(order.id);
+            // console.log(this.date_checkout[index]);
+            // console.log(this.unit_checkout[index]);
+            this.confirm_send_order = 1;
+            this.confirm_items = order.items;
+            this.confirm_order_id = order.id;
+           
         },
-        dateOrderFormat($created_at) {
-             console.log($created_at);
-            return '2021-11-16 11.30 น.';
+        cancelSendOrder(){
+            this.confirm_send_order = 0;
+        },
+        okConfirmSendOrder(){
+            this.confirm_send_order = 0;
+            console.log('OK Confirm SendOrder');
+            console.log(this.confirm_order_id);
+            // Inertia.post(route('send_order'), 
+            //                  { 
+            //                      order_id:this.confirm_order_id,
+            //                   },
+            //                   {
+            //                       preserveState: false,
+            //                     //   preserveScroll: true
+            //                   }
+            //                  );
         }
+        
     },
     computed: {
             // dateOrderFormat() {

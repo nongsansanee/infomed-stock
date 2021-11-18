@@ -24,6 +24,7 @@ class CreateOrderItemsTable extends Migration
             $table->date('date_order');
             $table->string('status')->default('created');
             $table->json('items')->nullable(); 
+            $table->json('timeline')->nullable(); 
             $table->timestamps();
         });
     }

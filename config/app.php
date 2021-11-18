@@ -231,4 +231,6 @@ return [
 
     ],
 
+    'APPROVE_NAME' => env('APPROVE_NAME'),
+
 ];

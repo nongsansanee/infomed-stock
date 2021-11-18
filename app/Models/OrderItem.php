@@ -22,10 +22,12 @@ class OrderItem extends Model
         'date_order',
         'status',
         'items',
+        'timeline',
     ];
 
     protected $casts = [
         'items' => 'array',
+        'timeline'=>'array'
     ];
 
     public function User()

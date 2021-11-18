@@ -58,34 +58,28 @@
 
       <!--Toast-->
     <div v-if="show_preorder" 
-        class="alert-banner z-40 bg-red-200 fixed top-64 ml-20 shadow-lg md:w-full max-w-md">
+        class="alert-banner z-20 fixed top-60 ml-20 shadow-lg md:w-full max-w-md">
         
-        <label for="" class=" flex items-start justify-between w-full p-1 bg-red-200  shadow-lg text-red-900 font-bold" title="close" >
+        <label for="" class=" flex items-start justify-between w-full p-1 bg-yellow-200  shadow-lg text-yellow-900 font-bold" title="close" >
             รายการพัสดุที่ต้องการสั่งซื้อ
         </label>
 
         <input type="checkbox" class="hidden" id="previeworder" v-on:click="closePreviewOrder">
        
         <label v-for="(preview_order,index) in preview_orders" :key=preview_order.id
-            class="close cursor-pointer flex items-start justify-between w-full p-1 bg-red-100  shadow-lg text-sm text-red-900" title="close" for="previeworder">
+            class="close cursor-pointer flex items-start justify-between w-full p-1 bg-yellow-100 shadow-lg text-sm text-yellow-900" title="close" for="previeworder">
             {{index+1}}.{{preview_order.item_name}} จำนวน {{preview_order.unit}} x {{preview_order.price}}  เป็นเงิน {{preview_order.total}} บาท
         
-            <!-- <svg class="fill-current text-white" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
-                <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
-            </svg> -->
-         
-                  
-               
         </label>
-        <label for="" class=" flex items-start justify-between w-full p-1 bg-red-800  shadow-lg text-white font-bold">
+        <label for="" class=" flex items-start justify-between w-full p-1 bg-yellow-100  shadow-lg text-yellow-800 font-bold">
              รวม  {{sumPay}} บาท</label>
          <button
-            class="  w-full flex justify-center py-2  text-sm  text-red-900 font-bold bg-red-300 hover:bg-red-200 focus:outline-none"
+            class="  w-full flex justify-center py-2  text-sm  text-yellow-900 font-bold bg-yellow-300 hover:bg-yellow-200 focus:outline-none"
             v-on:click="createOrder()"
             >
-                    <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg> -->
+                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+                    </svg>
                     สร้างใบสั่งซื้อ
         </button>
      

@@ -91,6 +91,7 @@ class CreateOrderController extends Controller
         $last_create_no = OrderItem::select('create_no')
                             ->where('unit_id',$request->order_items[0]['stock_id'])
                             ->where('year',$split_date_now[0])
+                            ->orderBy('create_no','desc')
                             ->first();
         if($last_create_no == null){
             Log::info('this unit no order');

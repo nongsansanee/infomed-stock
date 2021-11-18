@@ -33,6 +33,11 @@ use Illuminate\Support\Facades\Auth;
 //     ]);
 // });
 
+Route::get('/menu', function () {
+ return view('testmenuweb');
+//  return Redirect::route('/login');
+});
+
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
