@@ -193,9 +193,55 @@ class CreateOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        //dd($request);
+       // Log::info($request->order_id);
+       
+        $datetime_now = Carbon::now();
+        Log::info('datetime_now==>');
+      
+        Log::info($datetime_now);
+        $tmp_date_now = explode(' ', $datetime_now);
+        $split_date_now = explode('-', $tmp_date_now[0]);
+
+        $order = OrderItem::find($request->order_id);
+        //Log::info($order);
+        $last_order_no = OrderItem::select('order_no')
+                                ->where('unit_id',$order->unit_id)
+                                ->where('year',$split_date_now[0])
+                                ->orderBy('order_no','desc')
+                                ->first();
+        if($last_order_no->order_no == 0){
+            Log::info('this unit no order');
+            $last_order_number = 1;
+        }else{
+            Log::info('this unit has order');
+            Log::info($last_order_no);
+            $last_order_number = $last_order_no->order_no+1;
+
+        }
+
+        Log::info($last_order_number);
+
+        //update order_no
+        try{
+            Log::info('send order');
+            $datetime_send = $tmp_date_now[0].' '.$tmp_date_now[1];
+            $timeline = ['send_datetime'=>$datetime_send , 'send_user_id'=>'2'];
+            Log::info($timeline);
+            $order = OrderItem::find($request->order_id)->update([
+                                                                'order_no'=>$last_order_number,
+                                                                'status'=>'send',
+                                                                'timeline'=>$timeline
+                                                            ]);
+        }catch(\Illuminate\Database\QueryException $e){
+            //rollback
+            return redirect()->back()->whit(['status' => 'error', 'msg' =>  $e->getMessage()]);
+        }
+       
+        return Redirect::back()->with(['status' => 'success', 'msg' => 'ส่งใบสั่งซื้อไปสำนักงานภาควิชาฯ เรียบร้อยแล้ว']);
+
     }
 
     /**

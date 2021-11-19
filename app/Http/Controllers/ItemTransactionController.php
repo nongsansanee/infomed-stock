@@ -41,12 +41,12 @@ class ItemTransactionController extends Controller
      */
     public function store(Request $request)
     {
-        Log::info($request->all());
+        // Log::info($request->all());
         
         //return "store";
         $stock_item = StockItem::whereSlug($request->item_slug)->first();
-        Log::info($stock_item);
-        Log::info($stock_item->stock);
+        // Log::info($stock_item);
+        // Log::info($stock_item->stock);
         $year_checkout= substr($request->date,0,4);
         $month_checkout= substr($request->date,5,2);
         try{

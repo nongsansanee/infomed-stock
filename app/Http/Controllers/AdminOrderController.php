@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\OrderItem;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use Ramsey\Uuid\Codec\OrderedTimeCodec;
 
 class AdminOrderController extends Controller
 {
@@ -15,17 +20,38 @@ class AdminOrderController extends Controller
      */
     public function index()
     {
-        $order_lists = [
-            ['id'=>'1','updated_at'=>'2021-10-07','unit_name'=>'สาขาวิชาการบริบาลผู้ป่วยนอก','order_no'=>'2565-1-1','status'=>'รออนุมัติ'],
-            ['id'=>'2','updated_at'=>'2021-10-06','unit_name'=>'สาขาวิชาความดันโลหิตสูง','order_no'=>'2565-2-1','status'=>'อนุมัติแล้ว'],
-            ['id'=>'3','updated_at'=>'2021-10-05','unit_name'=>'สาขาวิชาต่อมไร้ท่อ','order_no'=>'2565-4-1','status'=>'ตรวจรับพัสดุแล้ว'],
-    ];
-    return Inertia::render('Admin/CheckOrder',[
-                    // 'stocks'=>$stocks,
-                    // 'stock_items'=>$stock_items,
-                    // 'unit'=> $unit,
-                    'order_lists'=>$order_lists
-                    ]);
+            
+        $datetime_now = Carbon::now();
+        // Log::info('datetime_now==>');
+      
+        // Log::info($datetime_now);
+        $tmp_date_now = explode(' ', $datetime_now);
+        $split_date_now = explode('-', $tmp_date_now[0]);
+   
+        $order_lists = OrderItem::with('User:id,name')
+                                ->with('Stock:unit_id,stockname')
+                                ->where('year',$split_date_now[0])
+                                ->where('month',$split_date_now[1])
+                                ->get();
+                               // ->where('status','send')
+
+        foreach ($order_lists as $key=>$order_list) {
+            if (isset($order_list->timeline['send_datetime'])) {
+                $send_datetime_tmp =  explode(' ', $order_list->timeline['send_datetime']);
+                $split_date_now = explode('-', $send_datetime_tmp[0]);
+                $year = (int) $split_date_now[0] + 543;
+                $thaimonth = ['', 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+                $send_datetime_format = $split_date_now[2].'  '.$thaimonth[(int) $split_date_now[1]].' '.$year.' '.$send_datetime_tmp[1].' น.';
+                $order_lists[$key]['send_date_format'] = $send_datetime_format;
+            }
+        }
+
+
+        Log::info($order_lists);
+ 
+        return Inertia::render('Admin/CheckOrder',[
+                                                    'order_lists'=>$order_lists
+                                ]);
     }
 
     /**
@@ -78,9 +104,36 @@ class AdminOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $datetime_now = Carbon::now();
+        Log::info('datetime_now==>');
+      
+        Log::info($datetime_now);
+        $tmp_date_now = explode(' ', $datetime_now);
+      
+        $order= OrderItem::find($request->order_id);
+        Log::info($order->timeline);
+
+        //update order_no
+        try{
+            Log::info('approve order');
+            $datetime_send = $tmp_date_now[0].' '.$tmp_date_now[1];
+            $old_timeline = $order->timeline;
+            $old_timeline['approve_datetime']=$datetime_send;
+            $old_timeline['approve_user_id']='1';
+         
+            Log::info($old_timeline);
+            OrderItem::find($request->order_id)->update([
+                                                        'status'=>'approve',
+                                                        'timeline'=>$old_timeline
+                                                            ]);
+        }catch(\Illuminate\Database\QueryException $e){
+            //rollback
+            return redirect()->back()->whit(['status' => 'error', 'msg' =>  $e->getMessage()]);
+        }
+       
+        return Redirect::back()->with(['status' => 'success', 'msg' => 'อนุมัติใบสั่งซื้อเรียบร้อยแล้ว']);
     }
 
     /**

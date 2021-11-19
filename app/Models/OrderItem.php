@@ -34,4 +34,9 @@ class OrderItem extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function Stock()
+    {
+        return $this->belongsTo(Stock::class,'id','unit_id');
+    }
 }

@@ -9,6 +9,7 @@ use App\Http\Controllers\ReportStockController;
 use App\Http\Controllers\CreateOrderController;
 use App\Http\Controllers\AdminReportStockController;
 use App\Http\Controllers\AdminOrderController;
+use App\Http\Controllers\CheckInOrderController;
 use App\Http\Controllers\ItemTransactionController;
 use App\Http\Controllers\PrintFormController;
 use Illuminate\Support\Facades\Auth;
@@ -90,13 +91,21 @@ Route::get('/create-order/{division_id}', [CreateOrderController::class,'index']
 Route::post('/create-order/add', [CreateOrderController::class,'store'])->name('add-order');
 //พิมพ์ใบสั่งซื้อ
 Route::get('/create-order/print/{order}', [PrintFormController::class,'show'])->name('print-order');
-
+//แสดงรายการสร้างเอกสารใบสั่งซื้อ
 Route::get('/order-list/{division_id}', [CreateOrderController::class,'show'])->name('order-list');
+//ส่งเอกสารใบสั่งซื้อ
+Route::post('/order-list/update', [CreateOrderController::class,'update'])->name('send-order');
+//บันทึกรับพัสดุใหม่ลงคลัง
+Route::post('/order-list/checkin/', [CheckInOrderController::class,'store'])->name('checkin-order');
+
 
 Route::get('/admin/report-list/{division_id}', [AdminReportStockController::class,'index'])->name('report-list');
 Route::get('/admin/report-stock/{stock_slug}/{year}/{month}', [AdminReportStockController::class,'show'])->name('admin-report-stock');
 
+//แสดงรายการใบสั่งซื้อ
 Route::get('/admin/order-list/', [AdminOrderController::class,'index'])->name('check-order-list');
+//อนุมัติใบสั่งซื้อ
+Route::post('/admin/order-list/update', [AdminOrderController::class,'update'])->name('approve-order');
 
 //printForm
 Route::get('/testprint', [PrintFormController::class,'index'])->name('testprint');
