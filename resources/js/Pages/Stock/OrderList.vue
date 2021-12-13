@@ -30,38 +30,53 @@
 <!-- {{$page.props.order_lists}} -->
      
         <!-- show order lists -->
-         <h1 class="p-2 m-4 text-center" >ประวัติการสั่งซื้อพัสดุ</h1>
-        <table class="min-w-full border-collapse block  md:table">
-		<thead class="block  md:table-header-group">
-			<tr class="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
-				<!-- <th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">ปี พ.ศ.</th>
-				<th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">เดือน</th> -->
-				<th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">วันที่สร้างเอกสาร</th>
-                <th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">เลขเอกสาร</th>
-                <th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">เลขใบสั่งซื้อ</th>
-                <th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">ผู้สร้างเอกสาร</th>
-                <th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">สถานะ</th>
-			</tr>
-		</thead>
-		<tbody class="block md:table-row-group">
-			<tr v-for="(order_list) in $page.props.order_lists" :key=order_list.id
-                class="bg-white p-2 mb-2 border-2 border-gray-500 md:border-none block md:table-row">
-				<!-- <td class="text-left  block md:table-cell md:border-b md:border-gray-400 md:rounded-l-lg"><span class="inline-block w-1/3 md:hidden font-bold">ปี พ.ศ.</span>{{order_list.year+543}}</td> -->
-                <td class="text-left  block md:table-cell md:border-b md:border-gray-400 md:rounded-l-lg"><span class="inline-block w-1/3 md:hidden font-bold">วันที่สร้างเอกสาร</span> {{order_list.created_at_format}}</td>
-                <td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">เลขเอกสาร</span> {{order_list.create_no}}/{{order_list.year}}</td> 
-				<td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">เลขใบสั่งซื้อ</span><span v-if="order_list.order_no">{{order_list.order_no}}/{{order_list.year}}</span></td> 
-                <td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">ผู้สร้างเอกสาร</span>{{order_list.user['name']}}</td>
-                <td class="text-left  block md:table-cell md:border-b md:border-gray-400 md:rounded-r-lg">
-					<span class="inline-block w-1/3 md:hidden font-bold">สถานะ</span>
-                    {{order_list.status}} 
-                   
-					<!-- <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-blue-500 rounded">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z" />
-                        </svg>
-                    </button> -->
+    <h1 class="p-2 m-4 text-center" >ประวัติการสั่งซื้อพัสดุ</h1>
 
-                    <a :href="route('print-order',order_list.id)" target="blank">
+    <div v-for="(order_list) in $page.props.order_lists" :key=order_list.id class="mt-5">
+        <div class="w-full max-w-sm mt-6 lg:max-w-full lg:flex">
+            <!-- <div
+            class="flex-none h-48 overflow-hidden text-center bg-cover rounded-t lg:h-auto lg:w-48 lg:rounded-t-none lg:rounded-l"
+            style="background-image: url('https://picsum.photos/id/0/192/213')"
+            title="Woman holding a mug"
+            ></div> -->
+            
+            <div
+                class="w-full flex flex-col justify-between p-4 leading-normal bg-white border border-gray-200 rounded-md shadow-lg   "
+                >
+                <p v-if="order_list.status == 'approve'" class="flex items-center text-sm text-green-600">
+                    <svg
+                        class="w-4 h-4 mr-2 text-gray-500 fill-current"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                    >
+                        <path
+                        d="M4 8V6a6 6 0 1 1 12 0v2h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-8c0-1.1.9-2 2-2h1zm5 6.73V17h2v-2.27a2 2 0 1 0-2 0zM7 6v2h6V6a3 3 0 0 0-6 0z"
+                        />
+                    </svg>
+                    เสร็จแล้ว
+                </p>
+                 <p v-else class="flex items-center text-sm text-red-600">
+                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M10 2a5 5 0 00-5 5v2a2 2 0 00-2 2v5a2 2 0 002 2h10a2 2 0 002-2v-5a2 2 0 00-2-2H7V7a3 3 0 015.905-.75 1 1 0 001.937-.5A5.002 5.002 0 0010 2z" />
+                    </svg>
+                    กำลังดำเนินการ
+                </p>
+                <div>
+                     <span class="inline-block w-1/3  font-bold">วันที่สร้างเอกสาร</span> {{order_list.created_at_format}} 
+                </div>
+                 <div class=" flex">   
+                     <span class="inline-block w-1/3  font-bold">เลขเอกสาร</span> <span class=" px-1" >{{order_list.create_no}}/{{order_list.year}}</span> 
+                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-400 " viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                            <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <div>
+                    <span class="inline-block w-1/3  font-bold">เลขใบสั่งซื้อ</span><span v-if="order_list.order_no" class=" px-1" >{{order_list.order_no}}/{{order_list.year}}</span>
+                </div>
+                <div>
+                    <span class="inline-block w-1/3  font-bold">สถานะ</span>{{order_list.status}} 
+                       <a :href="route('print-order',order_list.id)" target="blank">
                         <span
                             class="inline-flex text-md py-1 px-2 font-semibold leading-5 text-white bg-blue-500 rounded-md"
                         >
@@ -99,12 +114,23 @@
                                 (วันที่อนุมัติ:{{order_list.timeline['approve_datetime']}})
                             </span>
                     </div>
-                   
-				</td>
-			</tr>
-			
-		</tbody>
-	</table>
+                </div>
+              
+                <div class="flex items-center">
+                                <img
+                                class="w-10 h-10 mr-4 rounded-full"
+                                src="https://via.placeholder.com/50"
+                                alt="Avatar of Jonathan Reinink"
+                                />
+                                <div class="text-sm">
+                                <p class="leading-none text-gray-900">{{order_list.user['name']}}</p>
+                                <p class="text-gray-600">ผู้สร้างเอกสาร</p>
+                                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 
         <!-- Modal -->
         <div v-if="confirm_send_order" 
@@ -184,7 +210,7 @@ export default {
                 {id:8,name:'สิงหาคม' },	
                 {id:9,name:'กันยายน' },	
                 {id:10,name:'ตุลาคม' },	
-                {id:11,name:'ฟฤศจิกายน' },	
+                {id:11,name:'พฤศจิกายน' },	
                 {id:12,name:'ธันวาคม' },		
 			],
 

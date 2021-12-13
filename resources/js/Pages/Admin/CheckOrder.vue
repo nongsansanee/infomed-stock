@@ -179,7 +179,7 @@ export default {
                 {id:8,name:'สิงหาคม' },	
                 {id:9,name:'กันยายน' },	
                 {id:10,name:'ตุลาคม' },	
-                {id:11,name:'ฟฤศจิกายน' },	
+                {id:11,name:'พฤศจิกายน' },	
                 {id:12,name:'ธันวาคม' },		
 			],
             confirm_approve_order:0,
