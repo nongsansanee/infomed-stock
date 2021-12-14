@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\ItemTransaction;
 use App\Models\OrderItem;
+use App\Models\StockItem;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
 
 class CheckInOrderController extends Controller
 {
@@ -40,54 +44,85 @@ class CheckInOrderController extends Controller
     {
          Log::info($request->all());
          Log::info($request->order_id);
-        
+       
+
+         $order = OrderItem::find($request->order_id);
+         Log::info($order->year);
+         Log::info($order->month);
         //return "store";
-        $order = OrderItem::find($request->order_id);
+      
           //  Log::info($order->items);
+          $datetime_now = Carbon::now();
+          // Log::info('datetime_now==>');
+        
+         
+          $tmp_date_now = explode(' ', $datetime_now);
+           Log::info($tmp_date_now);
+         // $split_date_now = explode('-', $tmp_date_now[0]);
 
         foreach($order->items as $item ){
             Log::info($item);
-            // 'stock_id' => 1,
-            // 'id' => 4,
-            // 'sap' => '40017208',
-            // 'item_name' => 'LIAISON Direct Renin_100 Test',
-            // 'unit' => '3',
-            // 'price' => '50000',
-            // 'business_id' => 6,
-            // 'business_name' => 'บจ.บ้านพุทธรักษา 2015 จำกัด',
-            // 'total' => 150000,
-            // 'catalog_number' => 'ACTH102',
-            // 'lot_number' => '396A',
+          
+            try{
+                    $profile = [
+                                "catalog_number"=>$item['catalog_number'],
+                                "lot_number"=>$item['lot_number'],
+                                 ];
+                    ItemTransaction::create([
+                                            'stock_id'=>$item['stock_id'] ,
+                                            'stock_item_id'=>$item['id'] ,
+                                            'user_id'=>$order->user_id,
+                                            'order_item_id'=>$request->order_id,
+                                            'year'=>$order->year,
+                                            'month'=>$order->month,
+                                            'date_action'=>$tmp_date_now[0],
+                                            'action'=>'checkin',
+                                            'item_count'=>$item['unit'],
+                                            'profile'=>$profile
+                                        ]);
+                    //********update item_sum
+                    try{
+                        $item_stock = StockItem::select('item_sum')->whereId($item['id'])->first();
+                        Log::info($item_stock->item_sum);
+                        $balance = $item_stock->item_sum + $item['unit'];
+                        Log::info('-->'.$balance);
+
+                        StockItem::whereId($item['id'])->update(['item_sum'=>$balance]);
+                       
+                        //StockItem::whereId($item->id)->update(['item_sum'=>$balance]);
+                    }catch(\Illuminate\Database\QueryException $e){
+                        //rollback
+                        //return redirect()->back();
+                        return Redirect::back()->withErrors(['status' => 'error', 'msg' => $e->getMessage()]);
+                    }
+                    //*******************update status order to checkin
+                   // $order= OrderItem::find($request->order_id);
+                    Log::info($order->timeline);
+            
+                
+                    try{
+                        Log::info('checkin order');
+                        $datetime_send = $tmp_date_now[0].' '.$tmp_date_now[1];
+                        $old_timeline = $order->timeline;
+                        $old_timeline['checkin_datetime']=$datetime_send;
+                        $old_timeline['checkin_user_id']=$order->user_id;
+                     
+                        Log::info($old_timeline);
+                        OrderItem::find($request->order_id)->update([
+                                                                    'status'=>'checkin',
+                                                                    'timeline'=>$old_timeline
+                                                                        ]);
+                    }catch(\Illuminate\Database\QueryException $e){
+                        //rollback
+                        return redirect()->back()->whit(['status' => 'error', 'msg' =>  $e->getMessage()]);
+                    }
+
+            }catch(\Illuminate\Database\QueryException $e){
+                //rollback
+                return redirect()->back();
+            }
         }
-        // try{
-        //         ItemTransaction::create([
-        //                                 'stock_id'=>$stock_item->stock_id ,
-        //                                 'stock_item_id'=>$stock_item->id ,
-        //                                 'user_id'=>1,
-        //                                 'year'=>$year_checkout,
-        //                                 'month'=>$month_checkout,
-        //                                 'date_action'=>$request->date,
-        //                                 'action'=>'checkout',
-        //                                 'item_count'=>$request->unit,
-        //                             ]);
-
-        // }catch(\Illuminate\Database\QueryException $e){
-        //     //rollback
-        //     return redirect()->back();
-        // }
-
-        // $balance = $stock_item->item_sum - $request->unit;
-        // Log::info($balance);
-        // try{
-        //     StockItem::whereSlug($request->item_slug)->update(['item_sum'=>$balance]);
-        // }catch(\Illuminate\Database\QueryException $e){
-        //      //rollback
-        //     //return redirect()->back();
-        //     return Redirect::back()->withErrors(['status' => 'error', 'msg' => $e->getMessage()]);
-        // }
-
-        // $stock_items = StockItem::with('unitCount:id,countname')
-        //                             ->where('stock_id',$request->stock_id)->get();
+       
       
         return Redirect::back()->with(['status' => 'success', 'msg' => 'บันทึกรับพัสดุใหม่ลงคลังสำเร็จ']);
     }
@@ -98,9 +133,27 @@ class CheckInOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($order_id)
     {
-        //
+        Log::info('show checkin order');
+       // Log::info($request->all());
+        Log::info($order_id);
+        // return Inertia::render('Admin/CheckOrder',[
+        //     'order_lists'=>$order_lists
+        // ]);
+        $item_checkin = ItemTransaction::select('stock_item_id')
+                                        ->with('stockItem:id,item_code,item_name,item_sum')
+                                        ->where('order_item_id',$order_id)
+                                        ->where('action','checkin')
+                                        ->where('status','active')
+                                        ->get();
+        Log::info($item_checkin);
+        $test=["aaa"=>"1","bbb"=>"2",];
+
+        return Inertia::render('Admin/CheckOrder',[
+                 'view_checkin'=>$item_checkin
+             ]);
+        return 'view checkin order';
     }
 
     /**

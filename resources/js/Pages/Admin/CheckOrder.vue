@@ -52,6 +52,9 @@
         <!-- show order lists -->
          <h1 class="p-2 mt-3 text-center" >รายการใบสั่งซื้อพัสดุจากสาขา/หน่วย</h1>
          <h1 class=" text-center" >(ณ เดือนปีปัจจุบัน)</h1>
+
+
+          
         <table class="min-w-full border-collapse block  md:table">
 		<thead class="block  md:table-header-group">
 			<tr class="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
@@ -64,8 +67,11 @@
 		<tbody class="block md:table-row-group">
 			<tr v-for="(order_list) in $page.props.order_lists" :key=order_list.id
                 class="bg-white p-2 mb-2 border-2 border-gray-500 md:border-none block md:table-row">
-				<td class="text-left block md:w-1/5 md:table-cell md:border-b md:border-gray-400 md:rounded-l-lg"><span class="inline-block w-1/3 md:hidden font-bold">วันที่ ที่สาขา/หน่วยส่งใบสั่งซื้อ</span>{{order_list.send_date_format}}</td>
-                <td class="text-left block md:w-2/5 md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">ชื่อคลังพัสดุ</span>{{order_list.stock['stockname']}}</td>
+				<td class="text-left block md:w-1/5 md:table-cell md:border-b md:border-gray-400 md:rounded-l-lg"><span class="inline-block w-1/3 md:hidden font-bold">วันที่ ที่สาขา/หน่วยส่งใบสั่งซื้อ</span>
+                    <span v-if="order_list.status=='created'">no</span>
+                    <span v-else>{{order_list.send_date_format}}</span>
+                </td>
+                <td class="text-left block md:w-2/5 md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">ชื่อคลังพัสดุ</span><span class=" text-sm">{{order_list.stock['stockname']}}</span></td>
 				<td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">เลขที่ใบสั่งซื้อ</span>
                        <span v-if="order_list.order_no!=0">
                         {{order_list.order_no}}/{{order_list.year}}
@@ -73,9 +79,10 @@
                 </td>
                 <td class="text-left  block md:table-cell md:border-b md:border-gray-400 md:rounded-r-lg">
 					<span class="inline-block w-1/3 md:hidden font-bold">สถานะ</span>
-                    {{order_list.status}}
-                   
-                    <a  v-if="order_list.status !='created'" 
+                
+                    <span v-if="order_list.status=='created'">ใบสั่งซื้อนี้ยังไม่ถูกส่งมาที่ภาคฯ</span>
+                    <span v-if="order_list.status=='checkin'">ใบสั่งซื้อนี้ ตรวจรับพัสดุแล้ว</span>
+                    <a  v-if="order_list.status !='created' && order_list.status !='checkin' " 
                         :href="route('print-order',order_list.id)" target="blank">
                         <span
                             class="inline-flex text-md py-1 px-2 font-semibold leading-5 text-white bg-blue-500 rounded-md"
@@ -85,6 +92,16 @@
                             </svg>
                         </span>
                     </a>
+
+                    
+                     <button v-if="order_list.status == 'checkin'"
+                        v-on:click="viewCheckinOrder(order_list.id)"
+                        class="  bg-green-500 hover:bg-green-700 text-white text-sm py-1 px-2 border border-green-500 rounded">
+                            <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                            </svg> -->
+                            ดูจำนวนคงเหลือ
+                    </button>
 
                     <button v-if="order_list.status == 'send'"
                         v-on:click="confirmApproveOrder(order_list)"
@@ -145,7 +162,16 @@
             </div>
         </div>
         <!-- End Modal -->
-        
+
+        <!-- Modal show checkin order -->
+        {{show_view_checkin}}
+        <div >
+            <div v-for="(item) in view_checkin" :key=item.stock_item_id>
+                    {{item}}
+            </div>
+             
+        </div>
+      
 
     </AppLayout>
 </template>
@@ -164,6 +190,7 @@ export default {
         // stocks:Array,
         // unit:Array,
         order_lists:Array,
+        view_checkin:Array,
     },
     data(){
         return{
@@ -186,6 +213,7 @@ export default {
             confirm_stockname_order:'',
             confirm_order_id:0,
             confirm_order_year:0,
+            show_view_checkin:0,
         }
     },
     methods:{
@@ -217,6 +245,19 @@ export default {
                                 //   preserveScroll: true
                               }
                              );
+        },
+        viewCheckinOrder(order_id){
+            console.log(order_id);
+            this.show_view_checkin=1;
+              console.log(this.show_view_checkin);
+            Inertia.get(route('view-checkin-order',order_id), 
+                              {
+                                  preserveState: false,
+                                //   preserveScroll: true
+                              },
+                              { only: ['view_checkin'] }
+                             );
+
         }
     }
 

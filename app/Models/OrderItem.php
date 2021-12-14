@@ -37,6 +37,10 @@ class OrderItem extends Model
 
     public function Stock()
     {
-        return $this->belongsTo(Stock::class,'id','unit_id');
+        return $this->belongsTo(Stock::class,'unit_id','id');
+    }
+    public function ItemTransaction()
+    {
+        return $this->hasMany(ItemTransaction::class,'order_item_id','id');
     }
 }

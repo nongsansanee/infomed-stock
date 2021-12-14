@@ -38,4 +38,9 @@ class ItemTransaction extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function OrderItem()
+    {
+        return $this->belongsTo(OrderItem::class);
+    }
+
 }

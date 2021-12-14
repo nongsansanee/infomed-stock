@@ -97,7 +97,8 @@ Route::get('/order-list/{division_id}', [CreateOrderController::class,'show'])->
 Route::post('/order-list/update', [CreateOrderController::class,'update'])->name('send-order');
 //บันทึกรับพัสดุใหม่ลงคลัง
 Route::post('/order-list/checkin/', [CheckInOrderController::class,'store'])->name('checkin-order');
-
+//ดูจำนวนคงเหลือหลังตรวจรับ
+Route::get('/order-list/show/{order_id}', [CheckInOrderController::class,'show'])->name('view-checkin-order');
 
 Route::get('/admin/report-list/{division_id}', [AdminReportStockController::class,'index'])->name('report-list');
 Route::get('/admin/report-stock/{stock_slug}/{year}/{month}', [AdminReportStockController::class,'show'])->name('admin-report-stock');

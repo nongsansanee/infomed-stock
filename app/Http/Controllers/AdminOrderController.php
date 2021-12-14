@@ -28,11 +28,11 @@ class AdminOrderController extends Controller
         $tmp_date_now = explode(' ', $datetime_now);
         $split_date_now = explode('-', $tmp_date_now[0]);
    
-        $order_lists = OrderItem::with('User:id,name')
-                                ->with('Stock:unit_id,stockname')
-                                ->where('year',$split_date_now[0])
-                                ->where('month',$split_date_now[1])
+        $order_lists = OrderItem::where('year',$split_date_now[0]) 
+                                ->with('User:id,name')
+                                ->with('Stock:id,stockname')
                                 ->get();
+                                //->where('month',$split_date_now[1])
                                // ->where('status','send')
 
         foreach ($order_lists as $key=>$order_list) {
@@ -44,10 +44,11 @@ class AdminOrderController extends Controller
                 $send_datetime_format = $split_date_now[2].'  '.$thaimonth[(int) $split_date_now[1]].' '.$year.' '.$send_datetime_tmp[1].' น.';
                 $order_lists[$key]['send_date_format'] = $send_datetime_format;
             }
+            Log::info($order_list->items);
         }
 
 
-        Log::info($order_lists);
+       // Log::info($order_lists);
  
         return Inertia::render('Admin/CheckOrder',[
                                                     'order_lists'=>$order_lists
