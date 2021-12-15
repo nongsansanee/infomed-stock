@@ -85,23 +85,34 @@
                     <a  v-if="order_list.status !='created' && order_list.status !='checkin' " 
                         :href="route('print-order',order_list.id)" target="blank">
                         <span
-                            class="inline-flex text-md py-1 px-2 font-semibold leading-5 text-white bg-blue-500 rounded-md"
+                            class="inline-flex text-sm py-1 px-2  leading-5 text-white bg-blue-500 rounded-md"
                         >
                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z" />
                             </svg>
+                             ดูเอกสารสั่งซื้อ
+                        </span>
+                    </a>
+
+                     <a  v-if="order_list.status =='checkin' " 
+                        :href="route('print-checkin',order_list.id)" target="blank">
+                        <span
+                            class="inline-flex text-sm py-1 px-2 leading-5 text-white bg-blue-500 rounded-md"
+                        >
+                           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z" />
+                            </svg>
+                            ดูเอกสารตรวจรับ
                         </span>
                     </a>
 
                     
-                     <button v-if="order_list.status == 'checkin'"
+                     <!-- <button v-if="order_list.status == 'checkin'"
                         v-on:click="viewCheckinOrder(order_list.id)"
                         class="  bg-green-500 hover:bg-green-700 text-white text-sm py-1 px-2 border border-green-500 rounded">
-                            <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                            </svg> -->
+                           
                             ดูจำนวนคงเหลือ
-                    </button>
+                    </button> -->
 
                     <button v-if="order_list.status == 'send'"
                         v-on:click="confirmApproveOrder(order_list)"
@@ -112,6 +123,7 @@
                     </button>
 					<div>
                             <span v-if="order_list.status == 'send'" class=" text-sm text-red-500">คำแนะนำ:เมื่อหัวหน้าภาควิชาฯ เซ็นอนุมัติแล้ว ให้กดปุ่มอนุมัติ</span>
+                            <span v-if="order_list.status == 'approve'" class=" text-sm text-red-500">คำแนะนำ:รอสาขา/หน่วยงาน ตรวจรับพัสดุ</span>
                     </div>
                   
 				</td>
