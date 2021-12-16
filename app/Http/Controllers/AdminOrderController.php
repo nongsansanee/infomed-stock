@@ -20,7 +20,7 @@ class AdminOrderController extends Controller
      */
     public function index()
     {
-            
+        $thaimonth = ['', 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
         $datetime_now = Carbon::now();
         // Log::info('datetime_now==>');
       
@@ -31,20 +31,30 @@ class AdminOrderController extends Controller
         $order_lists = OrderItem::where('year',$split_date_now[0]) 
                                 ->with('User:id,name')
                                 ->with('Stock:id,stockname')
+                                ->orderBy('order_no')
                                 ->get();
                                 //->where('month',$split_date_now[1])
                                // ->where('status','send')
 
         foreach ($order_lists as $key=>$order_list) {
+            $created_at_tmp =  explode(' ', $order_list->created_at);
+            $split_date_now = explode('-', $created_at_tmp[0]);
+            $year = (int) $split_date_now[0] + 543;
+            $created_at_format = $split_date_now[2].'  '.$thaimonth[(int) $split_date_now[1]].' '.$year.' '.$created_at_tmp[1].' น.';
+            $order_lists[$key]['created_at_format'] = $created_at_format;
+
             if (isset($order_list->timeline['send_datetime'])) {
                 $send_datetime_tmp =  explode(' ', $order_list->timeline['send_datetime']);
                 $split_date_now = explode('-', $send_datetime_tmp[0]);
                 $year = (int) $split_date_now[0] + 543;
-                $thaimonth = ['', 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
                 $send_datetime_format = $split_date_now[2].'  '.$thaimonth[(int) $split_date_now[1]].' '.$year.' '.$send_datetime_tmp[1].' น.';
                 $order_lists[$key]['send_date_format'] = $send_datetime_format;
+
             }
             Log::info($order_list->items);
+
+            //order status checkin get item_sum
+
         }
 
 

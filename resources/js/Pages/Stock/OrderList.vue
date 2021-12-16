@@ -344,8 +344,8 @@ export default {
         },
         confirmCheckinOrder(order){
             
-            console.log(order.id);
-            console.log(order);
+            // console.log(order.id);
+            // console.log(order);
                  Inertia.post(route('checkin-order'), 
                              { 
                                  order_id:order.id,
@@ -357,8 +357,8 @@ export default {
                  )
         },
         viewDetailItem(index,items){
-            console.log(index);
-            console.log(items);
+            // console.log(index);
+            // console.log(items);
             this.view_items=items;
             this.view_order=index;
         }

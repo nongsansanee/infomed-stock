@@ -50,87 +50,214 @@
         <!-- {{$page.props.order_lists}} -->
      
         <!-- show order lists -->
-         <h1 class="p-2 mt-3 text-center" >รายการใบสั่งซื้อพัสดุจากสาขา/หน่วย</h1>
-         <h1 class=" text-center" >(ณ เดือนปีปัจจุบัน)</h1>
-
-
-          
-        <table class="min-w-full border-collapse block  md:table">
-		<thead class="block  md:table-header-group">
-			<tr class="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
-				<th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">วันที่ ที่สาขา/หน่วยส่งใบสั่งซื้อ</th>
-                <th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-300 text-left  md:table-cell md:rounded-lg">ชื่อคลังพัสดุ</th>
-                <th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">เลขที่ใบสั่งซื้อ</th>
-				<th class="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">สถานะ</th>
-			</tr>
-		</thead>
-		<tbody class="block md:table-row-group">
-			<tr v-for="(order_list) in $page.props.order_lists" :key=order_list.id
-                class="bg-white p-2 mb-2 border-2 border-gray-500 md:border-none block md:table-row">
-				<td class="text-left block md:w-1/5 md:table-cell md:border-b md:border-gray-400 md:rounded-l-lg"><span class="inline-block w-1/3 md:hidden font-bold">วันที่ ที่สาขา/หน่วยส่งใบสั่งซื้อ</span>
-                    <span v-if="order_list.status=='created'">no</span>
-                    <span v-else>{{order_list.send_date_format}}</span>
-                </td>
-                <td class="text-left block md:w-2/5 md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">ชื่อคลังพัสดุ</span><span class=" text-sm">{{order_list.stock['stockname']}}</span></td>
-				<td class="text-left  block md:table-cell md:border md:border-gray-400"><span class="inline-block w-1/3 md:hidden font-bold">เลขที่ใบสั่งซื้อ</span>
-                       <span v-if="order_list.order_no!=0">
-                        {{order_list.order_no}}/{{order_list.year}}
-                       </span>
-                </td>
-                <td class="text-left  block md:table-cell md:border-b md:border-gray-400 md:rounded-r-lg">
-					<span class="inline-block w-1/3 md:hidden font-bold">สถานะ</span>
-                
-                    <span v-if="order_list.status=='created'">ใบสั่งซื้อนี้ยังไม่ถูกส่งมาที่ภาคฯ</span>
-                    <span v-if="order_list.status=='checkin'">ใบสั่งซื้อนี้ ตรวจรับพัสดุแล้ว</span>
-                    <a  v-if="order_list.status !='created' && order_list.status !='checkin' " 
-                        :href="route('print-order',order_list.id)" target="blank">
-                        <span
-                            class="inline-flex text-sm py-1 px-2  leading-5 text-white bg-blue-500 rounded-md"
-                        >
-                           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z" />
-                            </svg>
-                             ดูเอกสารสั่งซื้อ
-                        </span>
-                    </a>
-
-                     <a  v-if="order_list.status =='checkin' " 
-                        :href="route('print-checkin',order_list.id)" target="blank">
-                        <span
-                            class="inline-flex text-sm py-1 px-2 leading-5 text-white bg-blue-500 rounded-md"
-                        >
-                           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z" />
-                            </svg>
-                            ดูเอกสารตรวจรับ
-                        </span>
-                    </a>
-
-                    
-                     <!-- <button v-if="order_list.status == 'checkin'"
-                        v-on:click="viewCheckinOrder(order_list.id)"
-                        class="  bg-green-500 hover:bg-green-700 text-white text-sm py-1 px-2 border border-green-500 rounded">
-                           
-                            ดูจำนวนคงเหลือ
-                    </button> -->
-
-                    <button v-if="order_list.status == 'send'"
-                        v-on:click="confirmApproveOrder(order_list)"
-                        class=" ml-3 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 border border-green-500 rounded">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                            </svg>
-                    </button>
-					<div>
-                            <span v-if="order_list.status == 'send'" class=" text-sm text-red-500">คำแนะนำ:เมื่อหัวหน้าภาควิชาฯ เซ็นอนุมัติแล้ว ให้กดปุ่มอนุมัติ</span>
-                            <span v-if="order_list.status == 'approve'" class=" text-sm text-red-500">คำแนะนำ:รอสาขา/หน่วยงาน ตรวจรับพัสดุ</span>
+         <!-- <h1 class="p-2 mt-3 text-center" >รายการใบสั่งซื้อพัสดุจากสาขา/หน่วย</h1>
+         <h1 class=" text-center" >(ณ เดือนปีปัจจุบัน)</h1> -->
+        <div class=" flex justify-between my-2 ">
+            <div class=" font-bold" >รายการใบสั่งซื้อพัสดุ จากสาขา/หน่วย</div>
+            <div >
+                <select name="" id=""
+                    class=" w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow  focus:outline-none focus:shadow-outline"
+                >
+                    <option value="">รายการทั้งหมด</option>
+                    <option value="">รายการที่ยังไม่ส่งมาภาคฯ</option>
+                    <option value="">รายการที่ังไม่ได้อนุมัติ</option>
+                    <option value="">รายการที่อนุมัติแล้ว</option>
+                    <option value="">รายการที่ถูกตรวจรับพัสดุแล้ว</option>
+                </select>
+            </div>
+        </div>
+        <!-- show card -->
+        <div v-for="(order_list,key) in $page.props.order_lists" :key=order_list.id class="mt-5">
+            <div class="w-full mt-4 lg:max-w-full lg:flex">   
+                <div
+                    class="w-full flex flex-col justify-between p-4 leading-normal bg-blue-50 border border-blue-300 rounded-md shadow-lg   "
+                    >
+                    <div class=" text-sm font-bold ">
+                            {{order_list.stock['stockname']}}
                     </div>
-                  
-				</td>
-			</tr>
-			
-		</tbody>
-	</table>
+                    <div class=" flex justify-between border-b-2 border-blue-400  py-1 mb-2">
+                    
+                
+                        <p  class="flex items-center font-bold  ">
+                            {{key+1}}. เลขเอกสาร:{{order_list.create_no}}/{{order_list.year}}
+                            <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M10 2a5 5 0 00-5 5v2a2 2 0 00-2 2v5a2 2 0 002 2h10a2 2 0 002-2v-5a2 2 0 00-2-2H7V7a3 3 0 015.905-.75 1 1 0 001.937-.5A5.002 5.002 0 0010 2z" />
+                            </svg> -->
+                            
+                        </p>
+                        <p v-if="order_list.status != 'created'" class=" font-bold  ">
+                            เลขที่ใบสั่งซื้อ:{{order_list.order_no}}/{{order_list.year}}
+                        </p>
+                        <Link >
+                                <span>
+                                    <span v-if="order_list.status=='created'" class="inline-flex text-sm px-2 font-semibold leading-5 text-blue-800 bg-blue-200 rounded-md">ยังไม่ส่งมาภาคฯ</span>
+                                    <span v-if="order_list.status=='send'" class="inline-flex text-sm px-2 font-semibold leading-5 text-blue-800 bg-blue-200 rounded-md">รอภาคฯอนุมัติ</span>
+                                    <span v-if="order_list.status=='approve'" class="inline-flex text-sm px-2 font-semibold leading-5 text-blue-800 bg-blue-200 rounded-md">ภาคฯอนุมัติแล้ว</span>
+                                    <span v-if="order_list.status=='checkin'"  class="inline-flex text-sm px-2 font-semibold leading-5 text-green-800 bg-green-200 rounded-md">ตรวจรับพัสดุแล้ว</span>
+                                </span>
+                        </Link>
+                    </div>
+                    <div class=" flex flex-row ">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span class="inline-block w-1/3  font-bold">วันที่สร้างเอกสาร</span> {{order_list.created_at_format}} 
+                    </div>
+                    <div v-if="order_list.status != 'created'  " >
+                        <!-- arrow1 -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 17l-4 4m0 0l-4-4m4 4V3" />
+                        </svg>
+                    </div>
+                    <div v-if="order_list.status != 'created'  " class=" flex flex-row ">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    
+                        <span class="inline-block w-1/3  font-bold">วันที่ส่งใบสั่งซื้อ</span>
+                        <span v-if="order_list.order_no"  >
+                            <span class=" ">{{order_list.send_date_format}}</span>
+                        </span>
+                    </div>
+                    <div v-if="order_list.status == 'approve' || order_list.status == 'checkin'">
+                        <!-- arrow2 -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 17l-4 4m0 0l-4-4m4 4V3" />
+                        </svg>
+                    </div>
+                    <div v-if="order_list.status == 'approve' || order_list.status == 'checkin'" class=" flex flex-row ">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span class="inline-block w-1/3  font-bold">วันที่อนุมัติ</span> {{order_list.timeline['approve_datetime']}}
+                    </div>
+                    <div v-if=" order_list.status == 'checkin'">
+                        <!-- arrow3 -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 17l-4 4m0 0l-4-4m4 4V3" />
+                        </svg>
+                    </div>
+                    <div v-if=" order_list.status == 'checkin'" class=" flex flex-row ">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span class="inline-block w-1/3  font-bold">วันที่ตรวจรับพัสดุ</span> {{order_list.timeline['checkin_datetime']}}
+                    </div>
+                    
+                    <div>
+                        <div>
+                                <span v-if="order_list.status == 'created'" class=" text-sm text-red-500">คำแนะนำ:รอสาขา/หน่วยกดปุ่มส่งเอกสารสั่งซื้อ และส่งเอกสารตัวจริงมาที่ภาควิชาฯ </span>
+                                <span v-if="order_list.status == 'send'" class=" text-sm text-red-500">คำแนะนำ:เมื่อหัวหน้าภาควิชาฯ เซ็นอนุมัติแล้ว ให้กดปุ่มอนุมัติ</span>
+                                <span v-if="order_list.status == 'approve'" class=" text-sm text-red-500">
+                                    คำแนะนำ:รอสาขา/หน่วย ตรวจรับพัสดุ ภายใน 7 วันทำการ นับจากวันที่ได้รับอนุมัติ    
+                                </span>
+                                <!-- <span v-if="order_list.status == 'checkin'" class=" text-sm text-red-500">
+                                    คำแนะนำ:กดปุ่มพิมพ์เอกสารรับพัสดุและเซ็นเอกสาร แล้วส่งเอกสารตัวจริงไปที่ภาควิชาฯ
+                                </span> -->
+                        </div>
+                        <div class="flex flex-col ">
+                            <div class="flex flex-row">
+                                <span class="  font-bold">รายละเอียด</span>
+                                <button
+                                    class=" flex justify-center px-2  text-white rounded-md hover:bg-blue-200 focus:outline-none"
+                                    v-on:click="viewDetailItem(key,order_list.items)"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div v-if="key==view_order">
+                            <div v-for="(item) in view_items" :key=item.id>
+                                    <span   class=" px-1" >
+                                        {{item.sap}}:{{item.item_name}} จำนวน {{item.unit}} ชิ้น ราคาชิ้นละ {{item.price}} บาท -->stock_item_id({{item.id}})
+                                    </span>
+                            </div>
+                        </div>
+                        <div class=" flex justify-center">
+                            <!-- <a :href="route('print-order',order_list.id)" v-if="order_list.status == 'created'" target="blank">
+                                <span
+                                    class="inline-flex text-sm py-1 px-2  leading-5 text-white bg-blue-500 rounded-md"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd" />
+                                    </svg>
+                                        เอกสารใบสั่งซื้อ
+                                </span>
+                            </a> -->
+                            <a :href="route('print-checkin',order_list.id)" v-if="order_list.status == 'checkin'" target="blank">
+                                <span
+                                    class="flex flex-row text-sm py-1 px-2 leading-5 text-white bg-yellow-500 rounded-md"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd" />
+                                    </svg>
+                                    เอกสารตรวจรับพัสดุ
+                                </span>
+                            </a>
+                             <a :href="route('print-checkin',order_list.id)" v-if="order_list.status == 'checkin'" target="blank">
+                                <span
+                                    class="flex flex-row text-sm ml-2 py-1 px-2 leading-5 text-white bg-green-600 rounded-md"
+                                >
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-7a2 2 0 012-2h2m3-4H9a2 2 0 00-2 2v7a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-1m-1 4l-3 3m0 0l-3-3m3 3V3" />
+                                </svg>
+                                    บันทึกข้อมูลลงระบบ SAP แล้ว
+                                </span>
+                            </a>
+                            
+                            <button v-if="order_list.status == 'send'"
+                                v-on:click="confirmApproveOrder(order_list)"
+                                class=" inline-flex text-sm ml-3 bg-green-500 hover:bg-green-700 text-white py-1 px-4 border border-green-500 rounded">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                                </svg>
+                                อนุมัติ
+                            </button>
+                            <!-- <button v-if="order_list.status == 'created'"
+                                v-on:click="confirmSendOrder(order_list)"
+                                class=" inline-flex text-sm ml-3 bg-green-500 hover:bg-green-700 text-white  py-1 px-2 border border-green-500 rounded">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                                </svg>
+                                ส่งเอกสารสั่งซื้อ
+                            </button> -->
+                            <!-- <button v-if="order_list.status == 'approve'"
+                                v-on:click="confirmCheckinOrder(order_list)"
+                                class="flex flex-row text-sm py-1 px-2 ml-3 bg-green-500 hover:bg-green-700 text-white  text-center border border-green-500 rounded">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2m-4-1v8m0 0l3-3m-3 3L9 8m-5 5h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293h3.172a1 1 0 00.707-.293l2.414-2.414a1 1 0 01.707-.293H20" />
+                                </svg>
+                                ตรวจรับพัสดุ
+                            </button> -->
+                            <!-- <button v-if="order_list.status == 'created'"
+                                class=" ml-3 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-12 border border-red-500 rounded">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                            </button> -->
+                    
+                        </div>
+                        
+                    </div>
+                
+                    <div class="flex items-center">
+                                    <img
+                                    class="w-10 h-10 mr-4 rounded-full"
+                                    src="https://via.placeholder.com/50"
+                                    alt="Avatar of Jonathan Reinink"
+                                    />
+                                    <div class="text-sm">
+                                    <p class="leading-none text-gray-900">{{order_list.user['name']}}</p>
+                                    <p class="text-gray-600">ผู้สร้างเอกสาร</p>
+                                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>      
+        <!-- end show card -->  
 
           <!-- Modal -->
         <div v-if="confirm_approve_order" 
@@ -226,6 +353,8 @@ export default {
             confirm_order_id:0,
             confirm_order_year:0,
             show_view_checkin:0,
+            view_items:Array,
+            view_order:0,
         }
     },
     methods:{
@@ -270,6 +399,12 @@ export default {
                               { only: ['view_checkin'] }
                              );
 
+        },
+        viewDetailItem(index,items){
+            // console.log(index);
+            // console.log(items);
+            this.view_items=items;
+            this.view_order=index;
         }
     }
 

@@ -34607,7 +34607,9 @@ __webpack_require__.r(__webpack_exports__);
       confirm_stockname_order: '',
       confirm_order_id: 0,
       confirm_order_year: 0,
-      show_view_checkin: 0
+      show_view_checkin: 0,
+      view_items: Array,
+      view_order: 0
     };
   },
   methods: {
@@ -34645,6 +34647,12 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         only: ['view_checkin']
       });
+    },
+    viewDetailItem: function viewDetailItem(index, items) {
+      // console.log(index);
+      // console.log(items);
+      this.view_items = items;
+      this.view_order = index;
     }
   } // setup() {
   //     return { };
@@ -35646,8 +35654,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     confirmCheckinOrder: function confirmCheckinOrder(order) {
-      console.log(order.id);
-      console.log(order);
+      // console.log(order.id);
+      // console.log(order);
       _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia.post(route('checkin-order'), {
         order_id: order.id
       }, {
@@ -35655,8 +35663,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     viewDetailItem: function viewDetailItem(index, items) {
-      console.log(index);
-      console.log(items);
+      // console.log(index);
+      // console.log(items);
       this.view_items = items;
       this.view_order = index;
     }
@@ -37172,103 +37180,308 @@ var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", {
-  "class": "p-2 mt-3 text-center"
-}, "รายการใบสั่งซื้อพัสดุจากสาขา/หน่วย", -1
+var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "flex justify-between my-2"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "font-bold"
+}, "รายการใบสั่งซื้อพัสดุ จากสาขา/หน่วย"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+  name: "",
+  id: "",
+  "class": "w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow focus:outline-none focus:shadow-outline"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
+  value: ""
+}, "รายการทั้งหมด"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
+  value: ""
+}, "รายการที่ยังไม่ส่งมาภาคฯ"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
+  value: ""
+}, "รายการที่ังไม่ได้อนุมัติ"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
+  value: ""
+}, "รายการที่อนุมัติแล้ว"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
+  value: ""
+}, "รายการที่ถูกตรวจรับพัสดุแล้ว")])])], -1
 /* HOISTED */
 );
 
-var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", {
-  "class": "text-center"
-}, "(ณ เดือนปีปัจจุบัน)", -1
-/* HOISTED */
-);
-
-var _hoisted_16 = {
-  "class": "min-w-full border-collapse block md:table"
+var _hoisted_15 = {
+  "class": "w-full mt-4 lg:max-w-full lg:flex"
 };
-
-var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", {
-  "class": "block md:table-header-group"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", {
-  "class": "border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto md:relative"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
-  "class": "bg-gray-600 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg"
-}, "วันที่ ที่สาขา/หน่วยส่งใบสั่งซื้อ"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
-  "class": "bg-gray-600 p-2 text-white font-bold md:border md:border-grey-300 text-left md:table-cell md:rounded-lg"
-}, "ชื่อคลังพัสดุ"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
-  "class": "bg-gray-600 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg"
-}, "เลขที่ใบสั่งซื้อ"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
-  "class": "bg-gray-600 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg"
-}, "สถานะ")])], -1
-/* HOISTED */
-);
-
+var _hoisted_16 = {
+  "class": "w-full flex flex-col justify-between p-4 leading-normal bg-blue-50 border border-blue-300 rounded-md shadow-lg"
+};
+var _hoisted_17 = {
+  "class": "text-sm font-bold"
+};
 var _hoisted_18 = {
-  "class": "block md:table-row-group"
+  "class": "flex justify-between border-b-2 border-blue-400 py-1 mb-2"
 };
 var _hoisted_19 = {
-  "class": "text-left block md:w-1/5 md:table-cell md:border-b md:border-gray-400 md:rounded-l-lg"
+  "class": "flex items-center font-bold"
 };
-
-var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "inline-block w-1/3 md:hidden font-bold"
-}, "วันที่ ที่สาขา/หน่วยส่งใบสั่งซื้อ", -1
-/* HOISTED */
-);
-
+var _hoisted_20 = {
+  key: 0,
+  "class": "font-bold"
+};
 var _hoisted_21 = {
-  key: 0
+  key: 0,
+  "class": "inline-flex text-sm px-2 font-semibold leading-5 text-blue-800 bg-blue-200 rounded-md"
 };
 var _hoisted_22 = {
-  key: 1
+  key: 1,
+  "class": "inline-flex text-sm px-2 font-semibold leading-5 text-blue-800 bg-blue-200 rounded-md"
 };
 var _hoisted_23 = {
-  "class": "text-left block md:w-2/5 md:table-cell md:border md:border-gray-400"
+  key: 2,
+  "class": "inline-flex text-sm px-2 font-semibold leading-5 text-blue-800 bg-blue-200 rounded-md"
+};
+var _hoisted_24 = {
+  key: 3,
+  "class": "inline-flex text-sm px-2 font-semibold leading-5 text-green-800 bg-green-200 rounded-md"
+};
+var _hoisted_25 = {
+  "class": "flex flex-row"
 };
 
-var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "inline-block w-1/3 md:hidden font-bold"
-}, "ชื่อคลังพัสดุ", -1
+var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+  xmlns: "http://www.w3.org/2000/svg",
+  "class": "h-5 w-5 text-green-500",
+  fill: "none",
+  viewBox: "0 0 24 24",
+  stroke: "currentColor"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+  "stroke-linecap": "round",
+  "stroke-linejoin": "round",
+  "stroke-width": "2",
+  d: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+})], -1
 /* HOISTED */
 );
 
-var _hoisted_25 = {
-  "class": "text-sm"
-};
-var _hoisted_26 = {
-  "class": "text-left block md:table-cell md:border md:border-gray-400"
-};
-
 var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "inline-block w-1/3 md:hidden font-bold"
-}, "เลขที่ใบสั่งซื้อ", -1
+  "class": "inline-block w-1/3 font-bold"
+}, "วันที่สร้างเอกสาร", -1
 /* HOISTED */
 );
 
 var _hoisted_28 = {
   key: 0
 };
-var _hoisted_29 = {
-  "class": "text-left block md:table-cell md:border-b md:border-gray-400 md:rounded-r-lg"
-};
 
-var _hoisted_30 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "inline-block w-1/3 md:hidden font-bold"
-}, "สถานะ", -1
+var _hoisted_29 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+  xmlns: "http://www.w3.org/2000/svg",
+  "class": "h-4 w-5 text-green-400",
+  fill: "none",
+  viewBox: "0 0 24 24",
+  stroke: "currentColor"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+  "stroke-linecap": "round",
+  "stroke-linejoin": "round",
+  "stroke-width": "2",
+  d: "M16 17l-4 4m0 0l-4-4m4 4V3"
+})], -1
 /* HOISTED */
 );
 
-var _hoisted_31 = {
+var _hoisted_30 = {
+  key: 1,
+  "class": "flex flex-row"
+};
+
+var _hoisted_31 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+  xmlns: "http://www.w3.org/2000/svg",
+  "class": "h-5 w-5 text-green-500",
+  fill: "none",
+  viewBox: "0 0 24 24",
+  stroke: "currentColor"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+  "stroke-linecap": "round",
+  "stroke-linejoin": "round",
+  "stroke-width": "2",
+  d: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+})], -1
+/* HOISTED */
+);
+
+var _hoisted_32 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  "class": "inline-block w-1/3 font-bold"
+}, "วันที่ส่งใบสั่งซื้อ", -1
+/* HOISTED */
+);
+
+var _hoisted_33 = {
   key: 0
 };
-var _hoisted_32 = {
-  key: 1
+var _hoisted_34 = {
+  "class": ""
 };
-var _hoisted_33 = ["href"];
+var _hoisted_35 = {
+  key: 2
+};
 
-var _hoisted_34 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "inline-flex text-sm py-1 px-2 leading-5 text-white bg-blue-500 rounded-md"
+var _hoisted_36 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+  xmlns: "http://www.w3.org/2000/svg",
+  "class": "h-4 w-5 text-green-400",
+  fill: "none",
+  viewBox: "0 0 24 24",
+  stroke: "currentColor"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+  "stroke-linecap": "round",
+  "stroke-linejoin": "round",
+  "stroke-width": "2",
+  d: "M16 17l-4 4m0 0l-4-4m4 4V3"
+})], -1
+/* HOISTED */
+);
+
+var _hoisted_37 = {
+  key: 3,
+  "class": "flex flex-row"
+};
+
+var _hoisted_38 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+  xmlns: "http://www.w3.org/2000/svg",
+  "class": "h-5 w-5 text-green-500",
+  fill: "none",
+  viewBox: "0 0 24 24",
+  stroke: "currentColor"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+  "stroke-linecap": "round",
+  "stroke-linejoin": "round",
+  "stroke-width": "2",
+  d: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+})], -1
+/* HOISTED */
+);
+
+var _hoisted_39 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  "class": "inline-block w-1/3 font-bold"
+}, "วันที่อนุมัติ", -1
+/* HOISTED */
+);
+
+var _hoisted_40 = {
+  key: 4
+};
+
+var _hoisted_41 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+  xmlns: "http://www.w3.org/2000/svg",
+  "class": "h-4 w-5 text-green-400",
+  fill: "none",
+  viewBox: "0 0 24 24",
+  stroke: "currentColor"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+  "stroke-linecap": "round",
+  "stroke-linejoin": "round",
+  "stroke-width": "2",
+  d: "M16 17l-4 4m0 0l-4-4m4 4V3"
+})], -1
+/* HOISTED */
+);
+
+var _hoisted_42 = {
+  key: 5,
+  "class": "flex flex-row"
+};
+
+var _hoisted_43 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+  xmlns: "http://www.w3.org/2000/svg",
+  "class": "h-5 w-5 text-green-500",
+  fill: "none",
+  viewBox: "0 0 24 24",
+  stroke: "currentColor"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+  "stroke-linecap": "round",
+  "stroke-linejoin": "round",
+  "stroke-width": "2",
+  d: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+})], -1
+/* HOISTED */
+);
+
+var _hoisted_44 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  "class": "inline-block w-1/3 font-bold"
+}, "วันที่ตรวจรับพัสดุ", -1
+/* HOISTED */
+);
+
+var _hoisted_45 = {
+  key: 0,
+  "class": "text-sm text-red-500"
+};
+var _hoisted_46 = {
+  key: 1,
+  "class": "text-sm text-red-500"
+};
+var _hoisted_47 = {
+  key: 2,
+  "class": "text-sm text-red-500"
+};
+var _hoisted_48 = {
+  "class": "flex flex-col"
+};
+var _hoisted_49 = {
+  "class": "flex flex-row"
+};
+
+var _hoisted_50 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  "class": "font-bold"
+}, "รายละเอียด", -1
+/* HOISTED */
+);
+
+var _hoisted_51 = ["onClick"];
+
+var _hoisted_52 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+  xmlns: "http://www.w3.org/2000/svg",
+  "class": "h-6 w-6 text-blue-500",
+  fill: "none",
+  viewBox: "0 0 24 24",
+  stroke: "currentColor"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+  "stroke-linecap": "round",
+  "stroke-linejoin": "round",
+  "stroke-width": "2",
+  d: "M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+}), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+  "stroke-linecap": "round",
+  "stroke-linejoin": "round",
+  "stroke-width": "2",
+  d: "M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+})], -1
+/* HOISTED */
+);
+
+var _hoisted_53 = [_hoisted_52];
+var _hoisted_54 = {
+  key: 0
+};
+var _hoisted_55 = {
+  "class": "px-1"
+};
+var _hoisted_56 = {
+  "class": "flex justify-center"
+};
+var _hoisted_57 = ["href"];
+
+var _hoisted_58 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  "class": "flex flex-row text-sm py-1 px-2 leading-5 text-white bg-yellow-500 rounded-md"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+  xmlns: "http://www.w3.org/2000/svg",
+  "class": "h-6 w-6",
+  viewBox: "0 0 20 20",
+  fill: "currentColor"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+  "fill-rule": "evenodd",
+  d: "M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z",
+  "clip-rule": "evenodd"
+})]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" เอกสารตรวจรับพัสดุ ")], -1
+/* HOISTED */
+);
+
+var _hoisted_59 = [_hoisted_58];
+var _hoisted_60 = ["href"];
+
+var _hoisted_61 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  "class": "flex flex-row text-sm ml-2 py-1 px-2 leading-5 text-white bg-green-600 rounded-md"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
   "class": "h-6 w-6",
@@ -37279,35 +37492,15 @@ var _hoisted_34 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
   "stroke-linecap": "round",
   "stroke-linejoin": "round",
   "stroke-width": "2",
-  d: "M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"
-})]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ดูเอกสารสั่งซื้อ ")], -1
+  d: "M17 16v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-7a2 2 0 012-2h2m3-4H9a2 2 0 00-2 2v7a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-1m-1 4l-3 3m0 0l-3-3m3 3V3"
+})]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" บันทึกข้อมูลลงระบบ SAP แล้ว ")], -1
 /* HOISTED */
 );
 
-var _hoisted_35 = [_hoisted_34];
-var _hoisted_36 = ["href"];
+var _hoisted_62 = [_hoisted_61];
+var _hoisted_63 = ["onClick"];
 
-var _hoisted_37 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "inline-flex text-sm py-1 px-2 leading-5 text-white bg-blue-500 rounded-md"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
-  xmlns: "http://www.w3.org/2000/svg",
-  "class": "h-6 w-6",
-  fill: "none",
-  viewBox: "0 0 24 24",
-  stroke: "currentColor"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
-  "stroke-linecap": "round",
-  "stroke-linejoin": "round",
-  "stroke-width": "2",
-  d: "M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"
-})]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ดูเอกสารตรวจรับ ")], -1
-/* HOISTED */
-);
-
-var _hoisted_38 = [_hoisted_37];
-var _hoisted_39 = ["onClick"];
-
-var _hoisted_40 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+var _hoisted_64 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
   "class": "h-6 w-6",
   fill: "none",
@@ -37322,38 +37515,57 @@ var _hoisted_40 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_41 = [_hoisted_40];
-var _hoisted_42 = {
-  key: 0,
-  "class": "text-sm text-red-500"
+var _hoisted_65 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" อนุมัติ ");
+
+var _hoisted_66 = [_hoisted_64, _hoisted_65];
+var _hoisted_67 = {
+  "class": "flex items-center"
 };
-var _hoisted_43 = {
-  key: 1,
-  "class": "text-sm text-red-500"
+
+var _hoisted_68 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+  "class": "w-10 h-10 mr-4 rounded-full",
+  src: "https://via.placeholder.com/50",
+  alt: "Avatar of Jonathan Reinink"
+}, null, -1
+/* HOISTED */
+);
+
+var _hoisted_69 = {
+  "class": "text-sm"
 };
-var _hoisted_44 = {
+var _hoisted_70 = {
+  "class": "leading-none text-gray-900"
+};
+
+var _hoisted_71 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+  "class": "text-gray-600"
+}, "ผู้สร้างเอกสาร", -1
+/* HOISTED */
+);
+
+var _hoisted_72 = {
   key: 1,
   "class": "min-w-screen h-screen animated fadeIn faster fixed left-0 top-0 flex justify-center items-center inset-0 z-50 outline-none focus:outline-none bg-no-repeat bg-center bg-cover",
   id: "modal-id"
 };
 
-var _hoisted_45 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_73 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "absolute bg-black opacity-80 inset-0 z-0"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_46 = {
+var _hoisted_74 = {
   "class": "w-full max-w-lg p-5 relative mx-auto my-auto rounded-xl shadow-lg bg-white"
 };
-var _hoisted_47 = {
+var _hoisted_75 = {
   "class": ""
 };
-var _hoisted_48 = {
+var _hoisted_76 = {
   "class": "text-center p-3 flex-auto justify-center"
 };
 
-var _hoisted_49 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+var _hoisted_77 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
   "class": "w-5 h-5 -m-1 flex items-center text-red-500 mx-auto",
   fill: "none",
@@ -37368,19 +37580,21 @@ var _hoisted_49 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_50 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+var _hoisted_78 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
   "class": "text-md font-bold text-red-600 py-2 px-8"
 }, "คุณต้องการอนุมัติเอกสารการสั่งซื้อพัสดุนี้ใช่หรือไม่?", -1
 /* HOISTED */
 );
 
-var _hoisted_51 = {
+var _hoisted_79 = {
   "class": "flex justify-start w-full text-sm text-red-900"
 };
-var _hoisted_52 = {
+var _hoisted_80 = {
   "class": "p-3 mt-2 text-center space-x-4 md:block"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
+  var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
+
   var _component_AppLayout = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("AppLayout");
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_AppLayout, null, {
@@ -37423,42 +37637,76 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       /* KEYED_FRAGMENT */
       ))], 512
       /* NEED_PATCH */
-      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, _ctx.month_selected]])])]), _hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{$page.props.order_lists}} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" show order lists "), _hoisted_14, _hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_16, [_hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", _hoisted_18, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.$page.props.order_lists, function (order_list) {
-        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, _ctx.month_selected]])])]), _hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{$page.props.order_lists}} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" show order lists "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <h1 class=\"p-2 mt-3 text-center\" >รายการใบสั่งซื้อพัสดุจากสาขา/หน่วย</h1>\r\n         <h1 class=\" text-center\" >(ณ เดือนปีปัจจุบัน)</h1> "), _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" show card "), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.$page.props.order_lists, function (order_list, key) {
+        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
           key: order_list.id,
-          "class": "bg-white p-2 mb-2 border-2 border-gray-500 md:border-none block md:table-row"
-        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_19, [_hoisted_20, order_list.status == 'created' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_21, "no")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(order_list.send_date_format), 1
+          "class": "mt-5"
+        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(order_list.stock['stockname']), 1
         /* TEXT */
-        ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_23, [_hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_25, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(order_list.stock['stockname']), 1
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(key + 1) + ". เลขเอกสาร:" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(order_list.create_no) + "/" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(order_list.year), 1
         /* TEXT */
-        )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_26, [_hoisted_27, order_list.order_no != 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_28, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(order_list.order_no) + "/" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(order_list.year), 1
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-4 w-4 mr-2 text-gray-500\" viewBox=\"0 0 20 20\" fill=\"currentColor\">\r\n                            <path d=\"M10 2a5 5 0 00-5 5v2a2 2 0 00-2 2v5a2 2 0 002 2h10a2 2 0 002-2v-5a2 2 0 00-2-2H7V7a3 3 0 015.905-.75 1 1 0 001.937-.5A5.002 5.002 0 0010 2z\" />\r\n                            </svg> ")]), order_list.status != 'created' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_20, " เลขที่ใบสั่งซื้อ:" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(order_list.order_no) + "/" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(order_list.year), 1
         /* TEXT */
-        )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_29, [_hoisted_30, order_list.status == 'created' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_31, "ใบสั่งซื้อนี้ยังไม่ถูกส่งมาที่ภาคฯ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), order_list.status == 'checkin' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_32, "ใบสั่งซื้อนี้ ตรวจรับพัสดุแล้ว")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), order_list.status != 'created' && order_list.status != 'checkin' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("a", {
-          key: 2,
-          href: _ctx.route('print-order', order_list.id),
-          target: "blank"
-        }, _hoisted_35, 8
+        )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, null, {
+          "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+            return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, [order_list.status == 'created' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_21, "ยังไม่ส่งมาภาคฯ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), order_list.status == 'send' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_22, "รอภาคฯอนุมัติ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), order_list.status == 'approve' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_23, "ภาคฯอนุมัติแล้ว")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), order_list.status == 'checkin' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_24, "ตรวจรับพัสดุแล้ว")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])];
+          }),
+          _: 2
+          /* DYNAMIC */
+
+        }, 1024
+        /* DYNAMIC_SLOTS */
+        )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_25, [_hoisted_26, _hoisted_27, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(order_list.created_at_format), 1
+        /* TEXT */
+        )]), order_list.status != 'created' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_28, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" arrow1 "), _hoisted_29])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), order_list.status != 'created' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_30, [_hoisted_31, _hoisted_32, order_list.order_no ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_34, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(order_list.send_date_format), 1
+        /* TEXT */
+        )])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), order_list.status == 'approve' || order_list.status == 'checkin' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" arrow2 "), _hoisted_36])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), order_list.status == 'approve' || order_list.status == 'checkin' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_37, [_hoisted_38, _hoisted_39, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(order_list.timeline['approve_datetime']), 1
+        /* TEXT */
+        )])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), order_list.status == 'checkin' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_40, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" arrow3 "), _hoisted_41])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), order_list.status == 'checkin' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_42, [_hoisted_43, _hoisted_44, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(order_list.timeline['checkin_datetime']), 1
+        /* TEXT */
+        )])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [order_list.status == 'created' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_45, "คำแนะนำ:รอสาขา/หน่วยกดปุ่มส่งเอกสารสั่งซื้อ และส่งเอกสารตัวจริงมาที่ภาควิชาฯ ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), order_list.status == 'send' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_46, "คำแนะนำ:เมื่อหัวหน้าภาควิชาฯ เซ็นอนุมัติแล้ว ให้กดปุ่มอนุมัติ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), order_list.status == 'approve' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_47, " คำแนะนำ:รอสาขา/หน่วย ตรวจรับพัสดุ ภายใน 7 วันทำการ นับจากวันที่ได้รับอนุมัติ ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <span v-if=\"order_list.status == 'checkin'\" class=\" text-sm text-red-500\">\r\n                                    คำแนะนำ:กดปุ่มพิมพ์เอกสารรับพัสดุและเซ็นเอกสาร แล้วส่งเอกสารตัวจริงไปที่ภาควิชาฯ\r\n                                </span> ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_48, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_49, [_hoisted_50, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+          "class": "flex justify-center px-2 text-white rounded-md hover:bg-blue-200 focus:outline-none",
+          onClick: function onClick($event) {
+            return $options.viewDetailItem(key, order_list.items);
+          }
+        }, _hoisted_53, 8
         /* PROPS */
-        , _hoisted_33)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), order_list.status == 'checkin' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("a", {
-          key: 3,
+        , _hoisted_51)])]), key == $data.view_order ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_54, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.view_items, function (item) {
+          return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
+            key: item.id
+          }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_55, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.sap) + ":" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.item_name) + " จำนวน " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.unit) + " ชิ้น ราคาชิ้นละ " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.price) + " บาท -->stock_item_id(" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.id) + ") ", 1
+          /* TEXT */
+          )]);
+        }), 128
+        /* KEYED_FRAGMENT */
+        ))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_56, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <a :href=\"route('print-order',order_list.id)\" v-if=\"order_list.status == 'created'\" target=\"blank\">\r\n                                <span\r\n                                    class=\"inline-flex text-sm py-1 px-2  leading-5 text-white bg-blue-500 rounded-md\"\r\n                                >\r\n                                    <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6\" viewBox=\"0 0 20 20\" fill=\"currentColor\">\r\n                                    <path fill-rule=\"evenodd\" d=\"M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z\" clip-rule=\"evenodd\" />\r\n                                    </svg>\r\n                                        เอกสารใบสั่งซื้อ\r\n                                </span>\r\n                            </a> "), order_list.status == 'checkin' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("a", {
+          key: 0,
           href: _ctx.route('print-checkin', order_list.id),
           target: "blank"
-        }, _hoisted_38, 8
+        }, _hoisted_59, 8
         /* PROPS */
-        , _hoisted_36)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button v-if=\"order_list.status == 'checkin'\"\r\n                        v-on:click=\"viewCheckinOrder(order_list.id)\"\r\n                        class=\"  bg-green-500 hover:bg-green-700 text-white text-sm py-1 px-2 border border-green-500 rounded\">\r\n                           \r\n                            ดูจำนวนคงเหลือ\r\n                    </button> "), order_list.status == 'send' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
-          key: 4,
+        , _hoisted_57)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), order_list.status == 'checkin' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("a", {
+          key: 1,
+          href: _ctx.route('print-checkin', order_list.id),
+          target: "blank"
+        }, _hoisted_62, 8
+        /* PROPS */
+        , _hoisted_60)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), order_list.status == 'send' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+          key: 2,
           onClick: function onClick($event) {
             return $options.confirmApproveOrder(order_list);
           },
-          "class": "ml-3 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 border border-green-500 rounded"
-        }, _hoisted_41, 8
+          "class": "inline-flex text-sm ml-3 bg-green-500 hover:bg-green-700 text-white py-1 px-4 border border-green-500 rounded"
+        }, _hoisted_66, 8
         /* PROPS */
-        , _hoisted_39)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [order_list.status == 'send' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_42, "คำแนะนำ:เมื่อหัวหน้าภาควิชาฯ เซ็นอนุมัติแล้ว ให้กดปุ่มอนุมัติ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), order_list.status == 'approve' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_43, "คำแนะนำ:รอสาขา/หน่วยงาน ตรวจรับพัสดุ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])]);
+        , _hoisted_63)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button v-if=\"order_list.status == 'created'\"\r\n                                v-on:click=\"confirmSendOrder(order_list)\"\r\n                                class=\" inline-flex text-sm ml-3 bg-green-500 hover:bg-green-700 text-white  py-1 px-2 border border-green-500 rounded\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\r\n                                <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 19l9 2-9-18-9 18 9-2zm0 0v-8\" />\r\n                                </svg>\r\n                                ส่งเอกสารสั่งซื้อ\r\n                            </button> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button v-if=\"order_list.status == 'approve'\"\r\n                                v-on:click=\"confirmCheckinOrder(order_list)\"\r\n                                class=\"flex flex-row text-sm py-1 px-2 ml-3 bg-green-500 hover:bg-green-700 text-white  text-center border border-green-500 rounded\">\r\n                                <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\r\n                                <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2m-4-1v8m0 0l3-3m-3 3L9 8m-5 5h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293h3.172a1 1 0 00.707-.293l2.414-2.414a1 1 0 01.707-.293H20\" />\r\n                                </svg>\r\n                                ตรวจรับพัสดุ\r\n                            </button> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button v-if=\"order_list.status == 'created'\"\r\n                                class=\" ml-3 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-12 border border-red-500 rounded\">\r\n                                <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\r\n                                <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16\" />\r\n                                </svg>\r\n                            </button> ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_67, [_hoisted_68, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_69, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_70, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(order_list.user['name']), 1
+        /* TEXT */
+        ), _hoisted_71])])])])]);
       }), 128
       /* KEYED_FRAGMENT */
-      ))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Modal "), $data.confirm_approve_order ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_44, [_hoisted_45, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_46, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("content"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_47, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("body"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_48, [_hoisted_49, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <h2 class=\"text-xl font-bold py-3 \">Are you sure?</h2> "), _hoisted_50, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <p class=\"mt-2\">{{confirm_items}}</p>    "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_51, " ใบสั่งซื้อเลขที่:" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.confirm_order_id) + "/" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.confirm_order_year) + " ของ " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.confirm_stockname_order), 1
+      )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" end show card "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Modal "), $data.confirm_approve_order ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_72, [_hoisted_73, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_74, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("content"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_75, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("body"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_76, [_hoisted_77, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <h2 class=\"text-xl font-bold py-3 \">Are you sure?</h2> "), _hoisted_78, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <p class=\"mt-2\">{{confirm_items}}</p>    "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_79, " ใบสั่งซื้อเลขที่:" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.confirm_order_id) + "/" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.confirm_order_year) + " ของ " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.confirm_stockname_order), 1
       /* TEXT */
-      )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("footer"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_52, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+      )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("footer"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_80, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
         "class": "mb-2 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400",
         onClick: _cache[2] || (_cache[2] = function () {
           return $options.okConfirmApproveOrder && $options.okConfirmApproveOrder.apply($options, arguments);
