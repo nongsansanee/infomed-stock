@@ -1,6 +1,9 @@
 <template>
    <AppLayout>
-       <div>
+       <div class=" flex w-full h-52 justify-center bg-blue-100 rounded-md ">
+           <p class=" my-2 ">ข่าวประชาสัมพันธ์</p> 
+       </div>
+       <!-- <div>
         <Card>
             <template #title>
                 Advanced Card
@@ -14,7 +17,7 @@
                 <Button icon="pi pi-times" label="Cancel" class="p-button-secondary" style="margin-left: .5em" />
             </template>
         </Card>
-      </div>
+      </div> -->
    </AppLayout>
 </template>
 

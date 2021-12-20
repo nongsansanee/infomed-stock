@@ -20,7 +20,8 @@ class StockController extends Controller
      */
     public function index($division_id)
     {
-       // \Log::info('testttttt');
+      
+      //  Log::info('StockController index');
         $stocks = Stock::where('unit_id',$division_id)->get();
         $stock_items = StockItem::with('unitCount:id,countname')
                                 ->where('stock_id',$division_id)->get();
@@ -38,7 +39,7 @@ class StockController extends Controller
         // \Log::info('------------------------');
         
       //   Log::info($stock_items);
-       // \Log::info('aaaaaaaaaa');
+     //  Log::info('aaaaaaaaaa');
         return Inertia::render('Stock/index',[
                                 'stocks'=>$stocks,
                                 'stock_items'=>$stock_items,

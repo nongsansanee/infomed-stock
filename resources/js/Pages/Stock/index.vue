@@ -1,6 +1,6 @@
 <template>
     <AppLayout>
-
+  
         <div v-if="$page.props.flash.status=='success'" 
                 class="alert-banner  fixed  right-0 m-2 w-5/6 md:w-full max-w-sm ">
                 <input type="checkbox" class="hidden" id="banneralert">
@@ -28,7 +28,7 @@
   <!-- <div v-if="$page.props.flash.status=='success'" class="w-full mx-auto shadow-md rounded-md p-2 mt-2 text-black bg-green-200 border-white">
         <label for=""> {{ $page.props.flash.msg }}</label>
   </div> -->
-  
+  <!-- {{stock_item_sum}} -->
     <div class="w-full mt-3 p-2  ">
   
         <div v-for="(stock_item,key) in stock_item_sum" :key=stock_item.id
@@ -201,7 +201,7 @@ export default {
     props:{
         stocks:Array,
         stock_items:Array,
-        unit:Array,
+        unit:Object,
         errors: Object,
     },
     data(){

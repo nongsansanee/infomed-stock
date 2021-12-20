@@ -51,11 +51,11 @@
 
               </div>
             
-              <!-- <div class=" bg-gray-500 rounded-md">
+              <div class=" bg-red-700 rounded-md text-white shadow-md p-2">
                 <form @submit.prevent="submit">
                   <button type="submit">LOGOUT</button>
                 </form>
-              </div> -->
+              </div>
 
             </div>
 
