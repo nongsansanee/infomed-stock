@@ -35128,8 +35128,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   props: {
     stocks: Array,
-    unit: Array,
-    order_lists: Array
+    unit: Object,
+    order_lists: Object
   },
   data: function data() {
     return {

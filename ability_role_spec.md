@@ -1,0 +1,38 @@
+##Abilities
+*create_order
+*view_order
+*send_order
+*approve_order
+*delete_order
+*view_item
+*view_report_item
+*checkin_item
+*checkout_item
+*manage_master_data
+*view_master_data
+*set_role_user
+
+##Roles
+*officer
+    -view_order
+    -checkout_item
+    -view_report_item
+*admin-division-stock
+    -create_order
+    -view_order
+    -send_order
+    -delete_order
+*admin-med-stock
+    -view_order
+    -approve_order
+    -manage_master_data
+    -view_master_data
+    -set_role_user
+*admin-it
+    -view_order
+    -view_master_data
+    -view_report_item
+*super_officer
+    -view_order
+    -view_master_data
+    -view_report_item

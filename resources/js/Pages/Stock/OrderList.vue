@@ -289,8 +289,8 @@ export default {
     },
     props:{
         stocks:Array,
-        unit:Array,
-        order_lists:Array,
+        unit:Object,
+        order_lists:Object,
     },
     data(){
         return{

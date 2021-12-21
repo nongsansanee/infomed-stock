@@ -41,7 +41,8 @@ Route::get('/hi', function () {
 // Route::get('/annouce', function () {
 //   return Inertia::render('Annouce');
 // })->middleware('auth');
-Route::get('/annouce', [LoginController::class,'index'])->middleware('auth');
+Route::get('/annouce', [LoginController::class,'index']);
+//->middleware('auth');
 
 Route::get('/menu', function () {
   return view('testmenuweb');
@@ -54,23 +55,10 @@ Route::get('/menu', function () {
  
 
  
- Route::get('/login-as/{division_id}', [StockController::class,'index'])->middleware('auth','can:checkout_item');
+ Route::get('/login-as/{division_id}', [StockController::class,'index']);
+ //->middleware('auth','can:checkout_item');
  
-//  Route::post('/login', function () {
-//     // return "wait";
-//    //return Redirect::route('login-as','1');
-//    return Inertia::render('Login');
-//  });
- 
-//  Route::post('/logout', function () {
-//      Auth::logout();
-//     // return "wait";
-//     return Redirect::route('/login');
-//  })->name('logout');
- 
-//  Route::get('/', function () {
-//      return Inertia::render('Stock/index');
-//  })->name('index')->middleware('auth');
+
  
  Route::get('/calendar', function () {
      return Inertia::render('Calendar');

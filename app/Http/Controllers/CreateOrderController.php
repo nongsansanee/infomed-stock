@@ -151,8 +151,8 @@ class CreateOrderController extends Controller
         //                 ['id'=>'5','year'=>2021,'month'=>6,'day'=>27,'status'=>'ตรวจรับพัสดุแล้ว'],
         // ];
         // \Log::info($stocks);
-        // \Log::info('------------------------');
-        // \Log::info($stock_items);
+         Log::info('------------------------');
+        
 
         foreach ($order_lists as $key=>$order_list) {
             $created_at_tmp =  explode(' ', $order_list['created_at']);
@@ -162,12 +162,8 @@ class CreateOrderController extends Controller
             $created_at_format = $split_date_now[2].'  '.$thaimonth[(int) $split_date_now[1]].' '.$year.' '.$created_at_tmp[1].' น.';
             $order_lists[$key]['created_at_format'] = $created_at_format;
         }
-
-
-   
- 
-      
-
+    
+        Log::info($order_lists);
         return Inertia::render('Stock/OrderList',[
                                                 'stocks'=>$stocks,
                                                 'unit'=> $unit,
