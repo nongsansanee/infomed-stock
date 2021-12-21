@@ -34333,6 +34333,12 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     AppLayout: _Layouts_AppLayout_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
+  props: {
+    cans: {
+      type: Object,
+      required: true
+    }
+  },
   setup: function setup() {}
 });
 

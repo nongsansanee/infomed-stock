@@ -11,6 +11,7 @@ use App\Http\Controllers\AdminReportStockController;
 use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\CheckInOrderController;
 use App\Http\Controllers\ItemTransactionController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PrintFormController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -37,9 +38,10 @@ Route::get('/hi', function () {
   return view('welcome');
 });
 
-Route::get('/annouce', function () {
-  return Inertia::render('Annouce');
-})->middleware('auth');
+// Route::get('/annouce', function () {
+//   return Inertia::render('Annouce');
+// })->middleware('auth');
+Route::get('/annouce', [LoginController::class,'index'])->middleware('auth');
 
 Route::get('/menu', function () {
   return view('testmenuweb');

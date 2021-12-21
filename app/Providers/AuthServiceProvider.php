@@ -28,10 +28,16 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
         Log::info('AuthServiceProvider boot');
     
-        Gate::define('checkout_item',function(User $user){
-            Log::info('in gate checkout_item');
-            Log::info($user->email);
+        Gate::before(function ($user) {
             return $user->email=='officer1@med.si';
+        });
+
+        Gate::define('checkout_item',function(User $user){
+            return $user->email=='officer1@med.si';
+        });
+
+        Gate::define('manage_master_data',function(User $user){
+            return $user->email=='admin_stock@med.si';
         });
     }
 }

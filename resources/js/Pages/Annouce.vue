@@ -28,6 +28,9 @@ export default {
     components: {
         AppLayout
     },
+    props: {
+        cans: { type: Object, required: true },
+    },
     setup() {
 
     },
