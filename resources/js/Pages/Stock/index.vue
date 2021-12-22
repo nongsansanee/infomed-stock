@@ -1,6 +1,6 @@
 <template>
     <AppLayout>
-  
+    {{ $page.props.flash.mainMenuLinks }}
         <div v-if="$page.props.flash.status=='success'" 
                 class="alert-banner  fixed  right-0 m-2 w-5/6 md:w-full max-w-sm ">
                 <input type="checkbox" class="hidden" id="banneralert">
@@ -29,6 +29,8 @@
         <label for=""> {{ $page.props.flash.msg }}</label>
   </div> -->
   <!-- {{stock_item_sum}} -->
+  <!-- {{$page.props.can_abilities}} -->
+  {{$page.props.can}}
     <div class="w-full mt-3 p-2  ">
   
         <div v-for="(stock_item,key) in stock_item_sum" :key=stock_item.id
@@ -81,7 +83,7 @@
                     </div>
                 
                 
-                    <div class="flex flex-col lg:flex-row mb-2 text-md font-bold text-gray-900">
+                    <div v-if="can.checkout_item" class="flex flex-col lg:flex-row mb-2 text-md font-bold text-gray-900">
                         <div class=" m-2">
                             <label for="">วันที่เบิก:</label>
                             <input type="date" name="" id=""
@@ -99,12 +101,8 @@
                         
                     </div>
 
-                    <div class="flex flex-col lg:flex-row px-2 py-2  ">
-                        <!-- <button
-                            class="px-3 py-1  text-sm text-gray-700 bg-gray-400 rounded-md hover:bg-gray-300 focus:outline-none"
-                        >
-                            Cancel
-                        </button> -->
+                    <div v-if="can.checkout_item" class="flex flex-col lg:flex-row px-2 py-2  ">
+                      
                         <button
                             class=" flex justify-center px-8 py-1   text-sm  text-white bg-green-600 rounded-md hover:bg-green-400 focus:outline-none"
                             v-on:click="confirmCheckout(key,stock_item)"
@@ -203,6 +201,8 @@ export default {
         stock_items:Array,
         unit:Object,
         errors: Object,
+        can_abilities: { type: Object, required: true },
+        can: { type: Object, required: true },
     },
     data(){
         return{

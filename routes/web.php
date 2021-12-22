@@ -38,11 +38,6 @@ Route::get('/hi', function () {
   return view('welcome');
 });
 
-// Route::get('/annouce', function () {
-//   return Inertia::render('Annouce');
-// })->middleware('auth');
-Route::get('/annouce', [LoginController::class,'index']);
-//->middleware('auth');
 
 Route::get('/menu', function () {
   return view('testmenuweb');
@@ -53,26 +48,17 @@ Route::get('/menu', function () {
      return Inertia::render('Dashboard');
  })->name('dashboard');
  
-
  
- Route::get('/login-as/{division_id}', [StockController::class,'index']);
- //->middleware('auth','can:checkout_item');
- 
+ Route::get('/login-as/{division_id}', [StockController::class,'index'])->middleware('auth');
 
  
  Route::get('/calendar', function () {
      return Inertia::render('Calendar');
  })->name('calendar');
  
- // Route::get('/stock', function () {
- //     return Inertia::render('Stock/index');
- // })->name('stock');
- 
- Route::get('/stock/{division_id}', [StockController::class,'index'])->name('stock')->middleware('auth','can:checkout_item');;
- 
- // Route::get('/stock-item/{id}', function () {
- //     return Inertia::render('Stock/ItemDetail');
- // })->name('stock-item');
+ Route::get('/annouce', [LoginController::class,'index'])->middleware('auth');
+  
+ Route::get('/stock/{division_id}', [StockController::class,'index'])->name('stock')->middleware('auth','can:view_item');
  
  Route::get('/stock-item/{stock_item}', [ItemTransactionController::class,'show'])->name('list-stock-item');
  //เบิกพัสดุ

@@ -19,13 +19,24 @@ class LoginController extends Controller
     {
         Log::info('LoginController index');
         
-        return Inertia::render('Annouce');
-        // $user = Auth::user();
+        // return Inertia::render('Annouce');
+        $user = Auth::user();
+        //$user->abilities;
+        Log::info($user->abilities);
+        // return Inertia::render('Annouce');
         // $can_abilities= [
-        //         'checkout_item' => $user->can('manage_master_data'),
+        //         'can' => $user->can('manage_master_data'),
         // ];
         // Log::info($can_abilities);
-        // return Inertia::render('Annouce',['cans'=>$can_abilities]);
+        $main_menu_links = [
+               'is_admin_division_stock'=> $user->can('view_master_data'),
+              // 'user_abilities'=>$user->abilities,
+        ];
+     
+        request()->session()->flash('mainMenuLinks', $main_menu_links);
+        return Inertia::render('Annouce',[
+                                        'user_name'=>$user->name,
+                                ]);
     }
 
     /**

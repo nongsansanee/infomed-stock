@@ -9,6 +9,7 @@ use Inertia\Inertia;
 use App\Models\Stock;
 use App\Models\StockItem;
 use App\Models\Unit;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class StockController extends Controller
@@ -40,10 +41,21 @@ class StockController extends Controller
         
       //   Log::info($stock_items);
      //  Log::info('aaaaaaaaaa');
+        $user = Auth::user();
+        $main_menu_links = [
+            'is_admin_division_stock'=> $user->can('view_master_data'),
+           // 'user_abilities'=>$user->abilities,
+          ];
+  
+        request()->session()->flash('mainMenuLinks', $main_menu_links);
         return Inertia::render('Stock/index',[
                                 'stocks'=>$stocks,
                                 'stock_items'=>$stock_items,
                                 'unit'=> $unit,
+                                'can_abilities'=>$user->abilities,
+                                'can'=>[
+                                        'checkout_item'=>$user->can('checkout_item')
+                                        ],
                                 ]);
     }
 

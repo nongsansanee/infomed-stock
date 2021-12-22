@@ -53,9 +53,11 @@ class AbilityRoleTableSeeder extends Seeder
 //     -view_report_item
 // *admin-division-stock
 //     -view_item
+//     -checkout_item
 //     -create_order
 //     -view_order
 //     -send_order
+//     -receive_order
 //     -delete_order
 // *admin-med-stock
 //     -view_item
@@ -88,10 +90,12 @@ class AbilityRoleTableSeeder extends Seeder
        
         $admin_division_stock = Role::whereName('admin_division_stock')->first();
         $admin_division_stock->allowTo('view_item');
+        $admin_division_stock->allowTo('checkout_item');
         $admin_division_stock->allowTo('create_order');
         $admin_division_stock->allowTo('view_order');
         $admin_division_stock->allowTo('send_order');
         $admin_division_stock->allowTo('delete_order');
+        $admin_division_stock->allowTo('receive_order');
 
         $admin_med_stock = Role::whereName('admin_med_stock')->first();
         $admin_med_stock->allowTo('view_item');

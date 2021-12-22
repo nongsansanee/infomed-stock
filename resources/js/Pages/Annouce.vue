@@ -3,6 +3,7 @@
        <div class=" flex w-full h-52 justify-center bg-blue-100 rounded-md ">
            <p class=" my-2 ">ข่าวประชาสัมพันธ์</p> 
        </div>
+  
        <!-- <div>
         <Card>
             <template #title>
@@ -29,7 +30,9 @@ export default {
         AppLayout
     },
     props: {
-        cans: { type: Object, required: true },
+        user_name: { type: String, required: true },
+        can_abilities: { type: Object, required: true },
+       // mainMenuLinks:{type: Object, required: true},
     },
     setup() {
 

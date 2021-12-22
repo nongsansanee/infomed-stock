@@ -36,22 +36,26 @@
                     <p class="font-semibold mt-4 text-2xl text-blue-400 ">
                     ระบบพัสดุ
                   </p>
+                 
                 </div>
                 
                 
-                  <div class="">
+                <div class=" flex flex-row  mt-4 text-md ">
                       <!-- <img src="https://a7sas.net/wp-content/uploads/2019/07/4060.jpeg" class="w-12 h-12 rounded-full shadow-lg" @click="dropDownOpen = !dropDownOpen"> -->
                   
                     <div class="text-pink-400  ">
-                      <img src="https://a7sas.net/wp-content/uploads/2019/07/4060.jpeg" class="w-12 h-12 rounded-full shadow-lg" @click="dropDownOpen = !dropDownOpen">
-                      สวัสดี, คุณเจ้าหน้าที่
-                      
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                      </svg>
                     </div>
-                  </div>
+                    <div>
+                         คุณ{{ $page.props.auth.user['name'] }}
+                    </div>
+                </div>
 
               </div>
             
-              <div class=" bg-red-700 rounded-md text-white shadow-md p-2">
+              <div class=" bg-red-700 rounded-md text-white shadow-md p-2 ml-4">
                 <form @submit.prevent="submit">
                   <button type="submit">LOGOUT</button>
                 </form>

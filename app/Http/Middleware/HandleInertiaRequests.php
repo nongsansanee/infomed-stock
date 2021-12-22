@@ -40,7 +40,7 @@ class HandleInertiaRequests extends Middleware
             'flash' => [
                 'status' => fn () => $request->session()->pull('status'),
                 'msg' => fn () => $request->session()->pull('msg'),
-                // 'mainMenuLinks' => fn () => $request->session()->pull('main-menu-links', []),
+                'mainMenuLinks' => fn () => $request->session()->pull('mainMenuLinks',[]),
                 // 'actionMenu' => fn () => $request->session()->pull('action-menu', []),
             ],
         ]);

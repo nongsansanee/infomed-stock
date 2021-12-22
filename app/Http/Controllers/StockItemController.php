@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\StockItem;
 use App\Models\Stock;
+use Illuminate\Support\Facades\Auth;
 
 class StockItemController extends Controller
 {
@@ -19,13 +20,7 @@ class StockItemController extends Controller
        
         $stock_item = StockItem::where('id',$item_id)->first();
         $stock = Stock::where('id',$stock_item->stock_id)->first();
-        //get data order list (mock up test UI)
-        // $item_check_outs = [
-        //     ['id'=>'1','stock_item_id'=>1,'year'=>2021,'month'=>10,'date_check_out'=>'2021-10-25','unit'=>1,'user_id'=>1,'status'=>''],
-        //     ['id'=>'2','stock_item_id'=>1,'year'=>2021,'month'=>10,'date_check_out'=>'2021-10-24','unit'=>1,'user_id'=>1,'status'=>'canceled'],
-        //     ['id'=>'3','stock_item_id'=>1,'year'=>2021,'month'=>10,'date_check_out'=>'2021-10-23','unit'=>1,'user_id'=>1,'status'=>''],
-        //     ['id'=>'4','stock_item_id'=>1,'year'=>2021,'month'=>10,'date_check_out'=>'2021-10-22','unit'=>1,'user_id'=>1,'status'=>''],
-        // ];
+      
       
         // \Log::info($stock_item);
         // \Log::info('------------------------');
@@ -33,7 +28,6 @@ class StockItemController extends Controller
         return Inertia::render('Stock/ItemDetail',[
                                 'stock_item'=>$stock_item,
                                 'stock' => $stock,
-                                // 'item_check_outs' => $item_check_outs,
                                 ]);
     }
 
