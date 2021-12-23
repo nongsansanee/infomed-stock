@@ -91,7 +91,7 @@
                         <Link >
                                 <span>
                                     <span v-if="order_list.status=='created'" class="inline-flex text-sm px-2 font-semibold leading-5 text-blue-800 bg-blue-200 rounded-md">ยังไม่ส่งมาภาคฯ</span>
-                                    <span v-if="order_list.status=='send'" class="inline-flex text-sm px-2 font-semibold leading-5 text-blue-800 bg-blue-200 rounded-md">รอภาคฯอนุมัติ</span>
+                                    <span v-if="order_list.status=='send'" class="inline-flex text-sm px-2 font-semibold leading-5 text-red-800 bg-red-200 rounded-md">รอภาคฯอนุมัติ</span>
                                     <span v-if="order_list.status=='approve'" class="inline-flex text-sm px-2 font-semibold leading-5 text-blue-800 bg-blue-200 rounded-md">ภาคฯอนุมัติแล้ว</span>
                                     <span v-if="order_list.status=='checkin'"  class="inline-flex text-sm px-2 font-semibold leading-5 text-green-800 bg-green-200 rounded-md">ตรวจรับพัสดุแล้ว</span>
                                 </span>
@@ -244,11 +244,11 @@
                     </div>
                 
                     <div class="flex items-center">
-                                    <img
-                                    class="w-10 h-10 mr-4 rounded-full"
-                                    src="https://via.placeholder.com/50"
-                                    alt="Avatar of Jonathan Reinink"
-                                    />
+                                
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                      </svg>
+                 
                                     <div class="text-sm">
                                     <p class="leading-none text-gray-900">{{order_list.user['name']}}</p>
                                     <p class="text-gray-600">ผู้สร้างเอกสาร</p>

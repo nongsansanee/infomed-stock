@@ -8,6 +8,7 @@ use App\Models\ItemTransaction;
 use App\Models\StockItem;
 use App\Models\Stock;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 
@@ -111,16 +112,13 @@ class ItemTransactionController extends Controller
         //return "list checkout";
        // $stock_item = StockItem::where('id',$stock_item->id)->first();
         $stock = Stock::where('id',$stock_item->stock_id)->first();
-        // $item_check_outs = [
-        //     ['id'=>'1','stock_item_id'=>1,'year'=>2021,'month'=>10,'date_check_out'=>'2021-10-25','unit'=>1,'user_id'=>1,'status'=>''],
-        //     ['id'=>'2','stock_item_id'=>1,'year'=>2021,'month'=>10,'date_check_out'=>'2021-10-24','unit'=>1,'user_id'=>1,'status'=>'canceled'],
-        //     ['id'=>'3','stock_item_id'=>1,'year'=>2021,'month'=>10,'date_check_out'=>'2021-10-23','unit'=>1,'user_id'=>1,'status'=>''],
-        //     ['id'=>'4','stock_item_id'=>1,'year'=>2021,'month'=>10,'date_check_out'=>'2021-10-22','unit'=>1,'user_id'=>1,'status'=>''],
-        // ];
-      
-        // \Log::info($stock_item);
-        // \Log::info('------------------------');
-        // \Log::info($stock_items);
+        $user = Auth::user();
+        $main_menu_links = [
+            'is_admin_division_stock'=> $user->can('view_master_data'),
+           // 'user_abilities'=>$user->abilities,
+          ];
+  
+        request()->session()->flash('mainMenuLinks', $main_menu_links);
        
         return Inertia::render('Stock/ItemDetail',[
                                 'stock_item'=>$stock_item,

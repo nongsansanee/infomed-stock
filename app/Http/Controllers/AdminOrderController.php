@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\OrderItem;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
@@ -31,7 +32,7 @@ class AdminOrderController extends Controller
         $order_lists = OrderItem::where('year',$split_date_now[0]) 
                                 ->with('User:id,name')
                                 ->with('Stock:id,stockname')
-                                ->orderBy('order_no')
+                                ->orderBy('order_no','desc')
                                 ->get();
                                 //->where('month',$split_date_now[1])
                                // ->where('status','send')
@@ -59,7 +60,13 @@ class AdminOrderController extends Controller
 
 
        // Log::info($order_lists);
+       $user = Auth::user();
+       $main_menu_links = [
+               'is_admin_division_stock'=> $user->can('view_master_data'),
+           // 'user_abilities'=>$user->abilities,
+       ];
  
+       request()->session()->flash('mainMenuLinks', $main_menu_links);
         return Inertia::render('Admin/CheckOrder',[
                                                     'order_lists'=>$order_lists
                                 ]);

@@ -15,7 +15,7 @@
         </p> -->
       </div>
   <!-- {{$page.props.flash.mainMenuLinks}} -->
-      <div class="mb-4 px-4 text-sm">
+      <div v-if="!$page.props.flash.mainMenuLinks.is_admin_division_stock" class="mb-4 px-4 text-sm">
         <p class="pl-4  font-semibold mb-1">เมนูหลักของสาขา</p>
         <Link :href="route('stock',1)">
         <!-- <Link :href="route('helloworld')" @click="setLinkActive('helloworld')"> -->
@@ -68,8 +68,8 @@
         </Link>
       </div>
 <!-- v-if="$page.props.flash.mainMenuLinks.is_admin_division_stock" -->
-      <div  class="mb-4 px-4 text-sm">
-        <p class="pl-4  font-semibold mb-1">ผู้ดูแลระบบ</p>
+      <div v-if="$page.props.flash.mainMenuLinks.is_admin_division_stock" class="mb-4 px-4 text-sm">
+        <p class="pl-4  font-semibold mb-1">เมนูหลักของหน่วยพัสดุภาคฯ</p>
 
         <div class="w-full flex items-center justify-between text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer" @click="managementMenuOpen = !managementMenuOpen">
           <div class="flex flex-row">

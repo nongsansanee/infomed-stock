@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Stock;
 use App\Models\StockItem;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 // use App\Models\StockItem;
@@ -28,7 +29,14 @@ class AdminReportStockController extends Controller
             $stocks = Stock::whereId($division_id)->get();
         else
           $stocks = Stock::all();
-     
+        
+        $user = Auth::user();
+        $main_menu_links = [
+                'is_admin_division_stock'=> $user->can('view_master_data'),
+            // 'user_abilities'=>$user->abilities,
+        ];
+  
+        request()->session()->flash('mainMenuLinks', $main_menu_links);
         return Inertia::render('Admin/ListReportStock',[
                         'stocks'=>$stocks,
                       //  'division_id'=>$division_id,

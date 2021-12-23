@@ -1,6 +1,6 @@
 <template>
     <AppLayout>
-    {{ $page.props.flash.mainMenuLinks }}
+    <!-- {{ $page.props.flash.mainMenuLinks }} -->
         <div v-if="$page.props.flash.status=='success'" 
                 class="alert-banner  fixed  right-0 m-2 w-5/6 md:w-full max-w-sm ">
                 <input type="checkbox" class="hidden" id="banneralert">
@@ -30,7 +30,7 @@
   </div> -->
   <!-- {{stock_item_sum}} -->
   <!-- {{$page.props.can_abilities}} -->
-  {{$page.props.can}}
+  <!-- {{$page.props.can}} -->
     <div class="w-full mt-3 p-2  ">
   
         <div v-for="(stock_item,key) in stock_item_sum" :key=stock_item.id
@@ -83,7 +83,7 @@
                     </div>
                 
                 
-                    <div v-if="can.checkout_item" class="flex flex-col lg:flex-row mb-2 text-md font-bold text-gray-900">
+                    <div v-if="can.checkout_item && stock_item.item_sum!=0" class="flex flex-col lg:flex-row mb-2 text-md font-bold text-gray-900">
                         <div class=" m-2">
                             <label for="">วันที่เบิก:</label>
                             <input type="date" name="" id=""
@@ -101,16 +101,19 @@
                         
                     </div>
 
-                    <div v-if="can.checkout_item" class="flex flex-col lg:flex-row px-2 py-2  ">
+                    <div v-if="can.checkout_item && stock_item.item_sum!=0" class="flex flex-col lg:flex-row px-2 py-2  ">
                       
                         <button
-                            class=" flex justify-center px-8 py-1   text-sm  text-white bg-green-600 rounded-md hover:bg-green-400 focus:outline-none"
+                            class=" flex justify-center px-4 py-1   text-sm  text-white bg-green-600 rounded-md hover:bg-green-400 focus:outline-none"
                             v-on:click="confirmCheckout(key,stock_item)"
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg> -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
                             </svg>
-                        
+                            บันทึกการเบิก
                         </button>
                     </div>
                 </div>

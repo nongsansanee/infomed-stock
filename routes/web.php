@@ -57,9 +57,9 @@ Route::get('/menu', function () {
  })->name('calendar');
  
  Route::get('/annouce', [LoginController::class,'index'])->middleware('auth');
-  
+//แสดงหน้าเบิกพัสดุ
  Route::get('/stock/{division_id}', [StockController::class,'index'])->name('stock')->middleware('auth','can:view_item');
- 
+ //แสดงรายละเอียดการเบิก/ตรวจรับ พัสดุ
  Route::get('/stock-item/{stock_item}', [ItemTransactionController::class,'show'])->name('list-stock-item');
  //เบิกพัสดุ
  Route::post('/checkout-stock-item', [ItemTransactionController::class,'store'])->name('checkout-stock-item');
