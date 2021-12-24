@@ -34,7 +34,7 @@
     <div class="w-full mt-3 p-2  ">
   
         <div v-for="(stock_item,key) in stock_item_sum" :key=stock_item.id
-                class="w-full bg-purple-100  mt-3 border-2 border-purple-300 rounded-lg lg:max-w-full lg:flex">
+                class="w-full bg-pink-100 mt-3 border-2 border-pink-200 rounded-lg lg:max-w-full lg:flex">
             
             <div
             class="flex-none h-32 overflow-hidden text-center  bg-cover rounded-t lg:h-auto lg:w-36 lg:rounded-t-none lg:rounded-l"
@@ -64,22 +64,28 @@
                     </div>
                 
                 
-                    <div class="flex flex-col lg:flex-row mb-2 text-md font-bold text-gray-900">
-                        <div class=" ml-2"> จำนวนที่มี : </div>
-                        <div class=" ml-2 text-red-600" >
+                    <div class="flex flex-col lg:flex-col mb-2 text-md font-bold text-gray-900">
+                        <div class=" flex ml-2"> จำนวนที่มี : 
+                            <p class=" ml-2 text-red-600" >
+                             <span  
+                                class="inline-flex px-2  text-lg font-semibold leading-5 text-green-800 bg-green-100 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                            </svg>
                             {{stock_item.item_sum}}
-                        <!-- <input type="number" name="" id="" 
-                                v-model="stock_item_sum[key].item_sum"
-                            class="w-full px-12 py- border-transparent rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
-                            readonly
-                            > -->
-                        </div> 
-                        <div class=" ml-2"> วันหมดอายุ : </div>
-                        <div class=" ml-2 text-blue-600">{{stock_item.checkin_last.date_expire}}</div> 
-                        <div class=" ml-2"> วันที่รับเข้า : </div>
-                        <div class=" ml-2 text-blue-600">{{stock_item.checkin_last.date_action}}</div> 
-                        <div class=" ml-2"> Cat.No/Lot.No : </div>
-                        <div class=" ml-2 text-blue-600">{{stock_item.checkin_last.profile['catalog_number']}} /{{stock_item.checkin_last.profile['lot_number']}}</div> 
+                            </span>
+                            </p> 
+                        </div>
+                        <div class="flex ml-2"> วันหมดอายุ : 
+                            <p class=" ml-2 text-blue-600">{{stock_item.checkin_last.date_expire}}</p> 
+                        </div>
+                        <div class="flex ml-2"> วันที่รับเข้า : 
+                            <p class=" ml-2 text-blue-600">{{stock_item.checkin_last.date_action}}</p> 
+                        </div>
+                        <div class="flex ml-2"> Cat.No/Lot.No : 
+                            <p class=" ml-2 text-blue-600">{{stock_item.checkin_last.profile['catalog_number']}} /{{stock_item.checkin_last.profile['lot_number']}}</p> 
+                        </div>
+                      
                     </div>
                 
                 

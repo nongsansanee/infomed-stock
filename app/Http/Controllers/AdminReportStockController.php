@@ -70,11 +70,11 @@ class AdminReportStockController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($stock_slug,$year,$month)
+    public function show($stock_slug)
     {
         Log::info($stock_slug);
-        Log::info($year);
-        Log::info($month);
+        // Log::info($year);
+        // Log::info($month);
       //  return "test";
         $stocks = Stock::where('slug',$stock_slug)->first();
        // Log::info($stocks);
@@ -92,13 +92,13 @@ class AdminReportStockController extends Controller
 
         $stock_item_checkouts = ItemTransaction::with('User:id,name')
                                                 ->where('stock_id','=',$stocks->id)
-                                                ->where(['year'=>$year,'month'=>$month,'action'=>'checkout'])
                                                 ->orderBy('stock_item_id')
                                                 ->orderBy('date_action')
                                                 ->get();
+                                              //  ->where(['year'=>$year,'month'=>$month,'action'=>'checkout'])
 
-        Log::info($stock_items);
-        Log::info($stock_item_checkouts);
+        // Log::info($stock_items);
+        // Log::info($stock_item_checkouts);
         return response()->json([
                                     'stock_items'=> $stock_items,
                                     'item_tran' => $stock_item_checkouts

@@ -84,6 +84,7 @@ class CheckInOrderController extends Controller
                     try{
                         $item_stock = StockItem::select('item_sum')->whereId($item['id'])->first();
                         Log::info($item_stock->item_sum);
+                        $item_sum_old[] =$item_stock->item_sum;
                         $balance = $item_stock->item_sum + $item['unit'];
                         Log::info('-->'.$balance);
 
@@ -106,6 +107,9 @@ class CheckInOrderController extends Controller
                         $old_timeline = $order->timeline;
                         $old_timeline['checkin_datetime']=$datetime_send;
                         $old_timeline['checkin_user_id']=$order->user_id;
+                        //item_sum_old
+                       // Log::info('-->'.$item_sum_old);
+                        $old_timeline['item_sum_old']=$item_sum_old;
                      
                         Log::info($old_timeline);
                         OrderItem::find($request->order_id)->update([

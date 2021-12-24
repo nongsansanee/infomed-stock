@@ -106,6 +106,7 @@ class PrintFormController extends Controller
           Log::info($order->timeline['checkin_datetime']);
           foreach($order->items as $index=>$item){
               //Log::info('stock_item_id->'.$item['id']);
+              $i = $index;
               $index = $index+1;
               $item_print = $index.'. '.$item['sap'].'    '.$item['item_name'];
               $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item_print),'B');
@@ -125,11 +126,12 @@ class PrintFormController extends Controller
               $pdf->SetXY(243, $y);
               $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item['unit']));
 
-              $item_sum = StockItem::select('item_sum')->whereId($item['id'])->first();
-             // Log::info('item_sum->'.$item_sum->item_sum);
-          
+              //จำนวนคงเหลือ
+              //$item_sum = StockItem::select('item_sum')->whereId($item['id'])->first();
+              Log::info('item_sum->'.$order->timeline['item_sum_old'][$i]);
+              $item_sum = $item['unit']+$order->timeline['item_sum_old'][$i];
               $pdf->SetXY(268, $y);
-              $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item_sum->item_sum));
+              $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item_sum));
 
           
             //   $pdf->SetXY(250, $y);

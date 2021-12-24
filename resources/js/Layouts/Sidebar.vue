@@ -28,14 +28,14 @@
         </div>
         </Link>
         
-        <Link :href="route('report-list',1)">
+        <!-- <Link :href="route('report-list',1)">
         <div class="w-full flex items-center text-blue-600 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
           <span class="text-gray-700 ml-2">รายงานการเบิกใช้พัสดุ</span>
         </div>
-        </Link>
+        </Link> -->
 
          <!-- <Link :href="route('report-stock',1)">
           <div class="w-full flex items-center text-yellow-500 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
@@ -103,12 +103,14 @@
           <!-- </Link> -->
         </div>
 
-         <Link :href="route('report-list','27')">
+      
+
+        <Link :href="route('report-list','27')">
         <div class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
-          <span class="text-gray-700 ml-2">ดูรายงานการเบิกพัสดุ</span>
+          <span class="text-gray-700 ml-2">ดูข้อมูลคลังพัสดุ</span>
         </div>
         </Link>
 

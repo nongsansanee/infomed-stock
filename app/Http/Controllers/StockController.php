@@ -23,6 +23,7 @@ class StockController extends Controller
     {
       
       //  Log::info('StockController index');
+        $user = Auth::user();
         $stocks = Stock::where('unit_id',$division_id)->get();
         $stock_items = StockItem::with('unitCount:id,countname')
                                 ->where('stock_id',$division_id)->get();
@@ -36,12 +37,7 @@ class StockController extends Controller
             $stock_items[$key]['checkin_last'] = $checkin_last;
         }
         $unit = Unit::where('unitid',$division_id)->first();
-        // \Log::info($stocks);
-        // \Log::info('------------------------');
-        
-      //   Log::info($stock_items);
-     //  Log::info('aaaaaaaaaa');
-        $user = Auth::user();
+      
         $main_menu_links = [
             'is_admin_division_stock'=> $user->can('view_master_data'),
            // 'user_abilities'=>$user->abilities,

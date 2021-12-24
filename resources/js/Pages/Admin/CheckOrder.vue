@@ -60,7 +60,7 @@
                 >
                     <option value="">รายการทั้งหมด</option>
                     <option value="">รายการที่ยังไม่ส่งมาภาคฯ</option>
-                    <option value="">รายการที่ังไม่ได้อนุมัติ</option>
+                    <option value="">รายการที่ยังไม่ได้อนุมัติ</option>
                     <option value="">รายการที่อนุมัติแล้ว</option>
                     <option value="">รายการที่ถูกตรวจรับพัสดุแล้ว</option>
                 </select>

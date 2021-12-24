@@ -87,7 +87,7 @@ Route::get('/menu', function () {
  Route::get('/order-list/show/{order_id}', [CheckInOrderController::class,'show'])->name('view-checkin-order');
  
  Route::get('/admin/report-list/{division_id}', [AdminReportStockController::class,'index'])->name('report-list');
- Route::get('/admin/report-stock/{stock_slug}/{year}/{month}', [AdminReportStockController::class,'show'])->name('admin-report-stock');
+ Route::get('/admin/report-stock/{stock_slug}', [AdminReportStockController::class,'show'])->name('admin-report-stock');
  
  //แสดงรายการใบสั่งซื้อ
  Route::get('/admin/order-list/', [AdminOrderController::class,'index'])->name('check-order-list');

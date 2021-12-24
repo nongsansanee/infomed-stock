@@ -58,8 +58,8 @@
 		</thead>
 		<tbody class="block md:table-row-group">
 			<tr v-for="(item_tran) in $page.props.item_trans" :key=item_tran.id
-                class="bg-white p-2 mb-2 border-2 rounded-md border-gray-500 block md:border-none  md:table-row ">
-				<td class="text-left  block md:table-cell md:border-none md:bg-blue-100 md:rounded-md"><span class="inline-block w-1/3 md:hidden font-bold">วันที่</span>
+                class="bg-white my-2 p-2 mb-2 border-2 rounded-md border-gray-500 block md:border-none   md:table-row ">
+				<td class="text-left  block md:table-cell  md:bg-blue-100 md:rounded-md"><span class="inline-block w-1/3 md:hidden font-bold">วันที่</span>
                     <span  
                        class="inline-flex px-2  text-lg font-semibold leading-5  ">
                         <svg  v-if="item_tran.action == 'checkin'"
@@ -75,7 +75,10 @@
                     </span>
                       {{item_tran.date_action}}
                 </td>
-                <td class="text-left  block md:table-cell md:border-none md:bg-blue-100 md:rounded-md"><span class="inline-block w-1/3 md:hidden font-bold">จำนวน</span>{{item_tran.item_count}}</td>
+                <td class="text-left  block md:table-cell md:border-none md:bg-blue-100 md:rounded-md">
+                    <span class="inline-block w-1/3 md:hidden font-bold">จำนวน</span>
+                    {{item_tran.item_count}}
+                </td>
                 <td class="text-left  block md:table-cell md:border-none md:bg-blue-100 md:rounded-md"><span class="inline-block w-1/3 md:hidden font-bold">ผู้ปฎิบัติ</span>{{item_tran.user.name}}</td>
                 <td 
                     class="text-left  block md:table-cell md:border-none md:bg-blue-100 md:rounded-md">
