@@ -81,6 +81,8 @@ Route::get('/menu', function () {
  Route::post('/order-list/update', [CreateOrderController::class,'update'])->name('send-order');
  //บันทึกรับพัสดุใหม่ลงคลัง
  Route::post('/order-list/checkin/', [CheckInOrderController::class,'store'])->name('checkin-order');
+//แสดงหน้าตรวจรับพัสดุ
+  Route::get('/receive-order/{order}', [CheckInOrderController::class,'update'])->name('receive-order');
  //พิมพ์ใบตรวจรับ
  Route::get('/create-order/print-checkin/{order}', [PrintFormController::class,'create'])->name('print-checkin');
  //ดูจำนวนคงเหลือหลังตรวจรับ

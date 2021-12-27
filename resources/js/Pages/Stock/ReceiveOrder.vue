@@ -1,0 +1,101 @@
+<template>
+    <AppLayout>
+        
+        <div class=" w-full flex justify-center font-bold  ">บันทึกการตรวจรับพัสดุ</div>
+        <div class=" w-full flex justify-center font-bold">{{stockname}} </div>
+            <!-- {{order}}       -->
+        
+        <div class="w-full flex justify-between p-2 my-2  border-b-2 border-gray-600 " >
+            <div>เลขที่ใบสั่งซื้อ:{{order.order_no}}/{{order.year}}</div>
+            <div>วันที่อนุมัติ:{{order.timeline['approve_datetime']}}</div>
+        </div>
+       
+        <div v-for="(item,key) in order.items" :key="key"
+            class=" w-full flex flex-col p-2 my-4 space-y-3 bg-cyan-50 border-2 border-gray-500 rounded "
+            >
+             <div class=" flex   ">
+                <span class=" font-bold">  {{key+1}}. {{item.sap}}-{{item.item_name}}</span>
+                <span class=" font-bold mx-2 "> จำนวนสั่งซื้อ: </span>
+                <span class=" font-bold text-green-600 mx-4 "> {{item.unit}}</span>
+                <span class=" font-bold ">ชิ้น</span>
+             </div>
+            <div class=" flex flex-row   ">
+                <span class=" font-bold "> จำนวนก่อนสั่งซื้อ: </span>
+                <span class=" font-bold text-red-500 mx-4 "> {{old_items_sum[key]}} </span>
+                <span class=" font-bold ">ชิ้น</span>
+             </div>
+            <div class=" flex flex-row   ">
+                <span class=" font-bold "> จำนวนปัจจุบัน: </span>
+                <span class=" font-bold text-blue-600 mx-4 "> {{parseInt(item.unit)+parseInt(old_items_sum[key])}} </span>
+                <span class=" font-bold ">ชิ้น</span>
+             </div>
+             <div>
+                  <span class="inline-block  font-bold"> บริษัทผู้ขาย:</span>  {{item.business_name}}
+             
+             </div>
+              <div>
+                  <span class="inline-block   font-bold"> Cat.No/Lot.No:</span> {{item.catalog_number}}/{{item.lot_number}}
+             </div>
+
+            <div  class="flex flex-col lg:flex-row mb-2 text-md font-bold text-gray-900">
+                <div class=" m-2">
+                    <label for="">วันที่รับเข้า:</label>
+                    <input type="date" name="" id=""
+                        v-model="date_receive[key]"
+                        class="w-full px-12 py-2 border-2 rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500">
+                </div>
+                <div class=" m-2">
+                    <label for="">วันที่หมดอายุ:</label>
+                    <input type="date" name="" id="" 
+                        v-model="date_expire[key]"
+                    class="w-full px-12 py- border-2 rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500">
+                </div>  
+            </div>
+        </div>
+        <div class=" w-full flex justify-center">
+            <button 
+                        v-on:click="confirmCheckinOrder(order)"
+                        class="flex flex-row text-sm py-1 px-2 ml-3 bg-green-500 hover:bg-green-700 text-white  text-center border border-green-500 rounded">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2m-4-1v8m0 0l3-3m-3 3L9 8m-5 5h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293h3.172a1 1 0 00.707-.293l2.414-2.414a1 1 0 01.707-.293H20" />
+                        </svg>
+                        ตรวจรับพัสดุ
+            </button>
+        </div>
+        
+    </AppLayout>
+</template>
+
+<script setup>
+import AppLayout from '@/Layouts/AppLayout.vue';
+const { ref, computed }=require("@vue/reactivity");
+
+defineProps({
+      order :{type:Object , required:true},
+      old_items_sum : {type:Object , required:true},
+      stockname: { type: String, required: true }
+});
+
+let date_receive=ref([]);
+let date_expire=ref([]);
+
+const confirmCheckinOrder=(order)=>{
+    console.log('CF order');
+    console.log(order);
+    console.log(date_receive);
+    console.log(date_expire);
+        // Inertia.post(route('checkin-order'), 
+        //                      { 
+        //                          order_id:order.id,
+        //                       },
+        //                       {
+        //                           preserveState: false,
+                              
+        //                       }
+        //          )
+}
+//let aaa = ref();
+</script>
+
+
+

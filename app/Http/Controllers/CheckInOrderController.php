@@ -21,7 +21,7 @@ class CheckInOrderController extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
     /**
@@ -157,7 +157,7 @@ class CheckInOrderController extends Controller
         return Inertia::render('Admin/CheckOrder',[
                  'view_checkin'=>$item_checkin
              ]);
-        return 'view checkin order';
+     
     }
 
     /**
@@ -166,9 +166,9 @@ class CheckInOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit()
     {
-        //
+       
     }
 
     /**
@@ -178,9 +178,27 @@ class CheckInOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(OrderItem $order)
     {
-        //
+        Log::info('CheckInOrderController index');
+        
+        Log::info($order->Stock['stockname']);
+
+        foreach($order->items as $key=>$item ){
+            $old_item_sum = StockItem::select('item_sum')->whereId($item['id'])->first();
+           // Log::info($old_item_sum);
+            $old_items_sum[]=$old_item_sum['item_sum'];
+           
+        }
+
+        Log::info($old_items_sum);
+        return Inertia::render('Stock/ReceiveOrder',
+                                [
+                                    'order' => $order,
+                                    'old_items_sum' => $old_items_sum,
+                                    'stockname'=>$order->Stock['stockname']
+                                ]
+                            );
     }
 
     /**

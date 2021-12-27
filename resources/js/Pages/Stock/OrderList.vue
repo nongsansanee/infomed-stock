@@ -175,7 +175,7 @@
                                 เอกสารใบสั่งซื้อ
                         </span>
                     </a>
-                     <a :href="route('print-checkin',order_list.id)" v-if="order_list.status == 'checkin'" target="blank">
+                     <a :href="route('print-checkin',order_list.id)" v-if="order_list.status == 'checkin'" target="self">
                         <span
                             class="flex flex-row text-sm py-1 px-2 leading-5 text-white bg-yellow-500 rounded-md"
                         >
@@ -195,19 +195,30 @@
                         </svg>
                          ส่งเอกสารสั่งซื้อ
                     </button>
-                      <button v-if="order_list.status == 'approve'"
+                    <!-- <button v-if="order_list.status == 'approve'"
                         v-on:click="confirmCheckinOrder(order_list)"
                         class="flex flex-row text-sm py-1 px-2 ml-3 bg-green-500 hover:bg-green-700 text-white  text-center border border-green-500 rounded">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2m-4-1v8m0 0l3-3m-3 3L9 8m-5 5h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293h3.172a1 1 0 00.707-.293l2.414-2.414a1 1 0 01.707-.293H20" />
                         </svg>
+                        xตรวจรับพัสดุ
+                    </button> -->
+                    <a :href="route('receive-order',order_list)" v-if="order_list.status == 'approve'" >
+                        <span
+                            class="flex flex-row text-sm py-1 px-2  leading-5 text-white bg-green-500 hover:bg-green-700 rounded"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2m-4-1v8m0 0l3-3m-3 3L9 8m-5 5h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293h3.172a1 1 0 00.707-.293l2.414-2.414a1 1 0 01.707-.293H20" />
+                        </svg>
                         ตรวจรับพัสดุ
-                    </button>
-                     <button v-if="order_list.status == 'created'"
-                        class=" ml-3 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-12 border border-red-500 rounded">
+                        </span>
+                    </a>
+                    <button v-if="order_list.status == 'created'"
+                        class="flex ml-3 bg-red-500 hover:bg-red-700 text-white d py-1 px-8 text-sm border border-red-500 rounded">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                         </svg>
+                        ลบ
                     </button>
                  
                     </div>
