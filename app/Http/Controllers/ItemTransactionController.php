@@ -126,6 +126,10 @@ class ItemTransactionController extends Controller
                                 'item_trans' => $item_trans,
                                 'checkin_last'=>$checkin_last,
                                 'count_name'=>$stock_item->unitCount->countname,
+                                'can_abilities'=>$user->abilities,
+                                'can'=>[
+                                        'checkout_item'=>$user->can('checkout_item')
+                                        ],
                                 ]);
     }
 

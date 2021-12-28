@@ -34,27 +34,28 @@ require __DIR__.'/auth.php';
 
 //***********route me create
 
-Route::get('/hi', function () {
-  return view('welcome');
+Route::get('/', function () {
+ // return view('welcome');
+ return Inertia('Auth/Login');
 });
 
 
-Route::get('/menu', function () {
-  return view('testmenuweb');
- //  return Redirect::route('/login');
- });
+// Route::get('/menu', function () {
+//   return view('testmenuweb');
+//  //  return Redirect::route('/login');
+//  });
  
- Route::get('/dashboardtest', function () {
-     return Inertia::render('Dashboard');
- })->name('dashboard');
+//  Route::get('/dashboardtest', function () {
+//      return Inertia::render('Dashboard');
+//  })->name('dashboard');
  
  
- Route::get('/login-as/{division_id}', [StockController::class,'index'])->middleware('auth');
+//  Route::get('/login-as/{division_id}', [StockController::class,'index'])->middleware('auth');
 
  
- Route::get('/calendar', function () {
-     return Inertia::render('Calendar');
- })->name('calendar');
+//  Route::get('/calendar', function () {
+//      return Inertia::render('Calendar');
+//  })->name('calendar');
  
  Route::get('/annouce', [LoginController::class,'index'])->middleware('auth');
 //แสดงหน้าเบิกพัสดุ

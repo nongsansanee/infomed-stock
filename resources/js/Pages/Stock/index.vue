@@ -33,15 +33,19 @@
   <!-- {{$page.props.can}} -->
     <div class="w-full mt-3 p-2  ">
   
-        <div v-for="(stock_item,key) in stock_item_sum" :key=stock_item.id
+        <div v-for="(stock_item,key) in form.stock_item_sum" :key=stock_item.id
                 class="w-full bg-pink-100 mt-3 border-2 border-pink-200 rounded-lg lg:max-w-full lg:flex">
             
             <div
-            class="flex-none h-32 overflow-hidden text-center  bg-cover rounded-t lg:h-auto lg:w-36 lg:rounded-t-none lg:rounded-l"
+             class="flex flex-col bg-pink-200 items-center overflow-hidden text-center  bg-cover rounded-t lg:h-auto lg:w-36 lg:rounded-t-none lg:rounded-l"
             >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-2o" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
+                <!-- icon zoom -->
+                <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                </svg> -->
             </div>
             
             <div
@@ -93,15 +97,14 @@
                         <div class=" m-2">
                             <label for="">วันที่เบิก:</label>
                             <input type="date" name="" id=""
-                                v-model="date_checkout[key]"
-                                class="w-full px-12 py-2 border-transparent rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500">
+                                v-model="form.date_checkout[key]"
+                                class="w-full px-12 py-2 border-2 rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500">
                         </div>
                         <div class=" m-2">
                             <label for="">จำนวน:</label>
                             <input type="number" name="" id="" 
-                                v-model="unit_checkout[key]"
-                                v-on:change="showItemBalance(key)" 
-                            class="w-full px-12 py- border-transparent rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500">
+                                v-model="form.unit_checkout[key]"
+                            class="w-full px-12 py- border-2 rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500">
                         </div>
                     
                         
@@ -136,7 +139,7 @@
         </div>
 
         <!-- Modal -->
-        <div v-if="confirm_checkout" 
+        <div v-if="form.confirm_checkout" 
                 class="min-w-screen h-screen animated fadeIn faster  fixed  left-0 top-0 flex justify-center items-center inset-0 z-50 outline-none focus:outline-none bg-no-repeat bg-center bg-cover"  
                 id="modal-id">
             <div class="absolute bg-black opacity-80 inset-0 z-0"></div>
@@ -153,7 +156,7 @@
                                 </svg>
                                     <!-- <h2 class="text-xl font-bold py-3 ">Are you sure?</h2> -->
                                     <p class="text-md font-bold text-red-600 py-3 px-8">คุณต้องการบันทึกการเบิกพัสดุรายการนี้ใช่หรือไม่?</p> 
-                                    <p class="mt-2">{{confirm_item_name}} วันที่ {{ confirm_item_date}} จำนวน {{confirm_item_count}}</p>   
+                                    <p class="mt-2">{{form.confirm_item_name}} วันที่ {{ form.confirm_item_date}} จำนวน {{form.confirm_item_count}} ชิ้น</p>   
                     </div>
                     <!--footer-->
                     <div class="p-3  mt-2 text-center space-x-4 md:block">
@@ -192,92 +195,114 @@
 
     </AppLayout>
 </template>
-<script>
+<script setup>
 //import { ref } from 'vue';
 //import { usePage } from '@inertiajs/inertia-vue3'
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { Link } from '@inertiajs/inertia-vue3'
+import { Link, useForm, usePage } from '@inertiajs/inertia-vue3'
 import { Inertia } from '@inertiajs/inertia';
 import ModalConfirm from '@/Components/ModalConfirm.vue'
-export default {
-    components: {
-        AppLayout,
-        Link,
-        ModalConfirm,
-    },
-    props:{
-        stocks:Array,
-        stock_items:Array,
-        unit:Object,
-        errors: Object,
-        can_abilities: { type: Object, required: true },
-        can: { type: Object, required: true },
-    },
-    data(){
-        return{
-            unit_checkout:[],
-            date_checkout:[],
-            item_balance:0,
-            confirm_checkout:0,
-            confirm_item_name:'',
-            confirm_item_slug:'',
-            confirm_item_date:'',
-            confirm_item_count:'',
-            stock_item_sum:[...this.stock_items], //เอาตัวแปร จาก props มาใช้
-        //    stocks:[
-		// 		{code:1,name:'aa' },
-		// 		{code:2,name:'bb' },	
-		// 		{code:3,name:'cc' },		
-		// 	],
-        }
-    },
-    methods:{
-        showItemBalance(index){
-             console.log(index);
-            // console.log(item_has);
-            // console.log(this.unit_checkout[index]);
-   
-        //    this.stock_item_sum[index].item_sum  = this.stock_item_sum[index].item_sum - this.unit_checkout[index];
-        //     console.log(this.stock_item_sum[index]);
-      
-        },
-        confirmCheckout(index,stock_item){
-             console.log('confirmCheckout');
-            // console.log(stock_item);
-            //  console.log(this.date_checkout);
-            // console.log(this.date_checkout[index]);
-            // console.log(this.unit_checkout[index]);
-            this.confirm_checkout = 1;
-            this.confirm_item_slug = stock_item.slug;
-            this.confirm_item_name = stock_item.item_name;
-            this.confirm_item_date = this.date_checkout[index];
-            this.confirm_item_count = this.unit_checkout[index];
-        },
-        cancelConfirmCheckout(){
-            this.confirm_checkout = 0;
-        },
-        okConfirmCheckout(){
-            this.confirm_checkout = 0;
-            console.log('OK Confirm');
-            Inertia.post(route('checkout-stock-item'), 
-                             { 
-                                 item_slug:this.confirm_item_slug,
-                                 date:this.confirm_item_date,
-                                 unit:this.confirm_item_count,
-                              },
-                              {
-                                  preserveState: false,
-                                //   preserveScroll: true
-                              }
-                             );
-        }
-    },
+import { onMounted } from '@vue/runtime-core';
 
-    // setup() {
-    
-    //     return { };
-    // },
+defineProps({
+    stocks:Array,
+    stock_items:Array,
+    unit:Object,
+    errors: Object,
+    can_abilities: { type: Object, required: true },
+    can: { type: Object, required: true },
+});
+
+const form = useForm({
+    unit_checkout:[],
+    date_checkout:[],
+    item_balance:0,
+    confirm_checkout:0,
+    confirm_item_name:'',
+    confirm_item_slug:'',
+    confirm_item_date:'',
+    confirm_item_count:'',
+    stock_item_sum:[], //เอาตัวแปร จาก props มาใช้
+})
+
+onMounted(() => {
+ 
+      form.stock_item_sum = usePage().props.value.stock_items;
+     
+})
+
+const confirmCheckout=(index,stock_item)=>{
+        console.log('confirmCheckout');
+        form.confirm_checkout = 1;
+        form.confirm_item_slug = stock_item.slug;
+        form.confirm_item_name = stock_item.item_name;
+        form.confirm_item_date = form.date_checkout[index];
+        form.confirm_item_count = form.unit_checkout[index];
+       
 }
+
+const cancelConfirmCheckout = ()=>{
+         form.confirm_checkout = 0;
+}
+// export default {
+//     components: {
+//         AppLayout,
+//         Link,
+//         ModalConfirm,
+//     },
+//     props:{
+//         stocks:Array,
+//         stock_items:Array,
+//         unit:Object,
+//         errors: Object,
+//         can_abilities: { type: Object, required: true },
+//         can: { type: Object, required: true },
+//     },
+//     data(){
+//         return{
+//             unit_checkout:[],
+//             date_checkout:[],
+//             item_balance:0,
+//             confirm_checkout:0,
+//             confirm_item_name:'',
+//             confirm_item_slug:'',
+//             confirm_item_date:'',
+//             confirm_item_count:'',
+//             stock_item_sum:[...this.stock_items], //เอาตัวแปร จาก props มาใช้
+      
+//         }
+//     },
+//     methods:{
+//         confirmCheckout(index,stock_item){
+//              console.log('confirmCheckout');
+//             this.confirm_checkout = 1;
+//             this.confirm_item_slug = stock_item.slug;
+//             this.confirm_item_name = stock_item.item_name;
+//             this.confirm_item_date = this.date_checkout[index];
+//             this.confirm_item_count = this.unit_checkout[index];
+//         },
+//         cancelConfirmCheckout(){
+//             this.confirm_checkout = 0;
+//         },
+//         okConfirmCheckout(){
+//             this.confirm_checkout = 0;
+//             console.log('OK Confirm');
+//             Inertia.post(route('checkout-stock-item'), 
+//                              { 
+//                                  item_slug:this.confirm_item_slug,
+//                                  date:this.confirm_item_date,
+//                                  unit:this.confirm_item_count,
+//                               },
+//                               {
+//                                   preserveState: false,
+//                                 //   preserveScroll: true
+//                               }
+//                              );
+//         }
+//     },
+
+   
+// }
 
 </script>
  

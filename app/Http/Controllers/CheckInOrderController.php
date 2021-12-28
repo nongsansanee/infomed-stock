@@ -42,26 +42,17 @@ class CheckInOrderController extends Controller
      */
     public function store(Request $request)
     {
-         Log::info($request->all());
-         Log::info($request->order_id);
+        // Log::info('CheckInOrderController Store');  
+        // Log::info($request->all());
        
+        $order = OrderItem::find($request->order_id);
+       
+        //$datetime_now = Carbon::now(); 
+       // $tmp_date_now = explode(' ', $datetime_now);
 
-         $order = OrderItem::find($request->order_id);
-         Log::info($order->year);
-         Log::info($order->month);
-        //return "store";
-      
-          //  Log::info($order->items);
-          $datetime_now = Carbon::now();
-          // Log::info('datetime_now==>');
-        
          
-          $tmp_date_now = explode(' ', $datetime_now);
-           Log::info($tmp_date_now);
-         // $split_date_now = explode('-', $tmp_date_now[0]);
-
         foreach($order->items as $item ){
-            Log::info($item);
+            //Log::info($item);
           
             try{
                     $profile = [
@@ -75,8 +66,9 @@ class CheckInOrderController extends Controller
                                             'order_item_id'=>$request->order_id,
                                             'year'=>$order->year,
                                             'month'=>$order->month,
-                                            'date_action'=>$tmp_date_now[0],
+                                            'date_action'=>$request->date_receive[$item['id']],
                                             'action'=>'checkin',
+                                            'date_expire'=>$request->date_expire[$item['id']],
                                             'item_count'=>$item['unit'],
                                             'profile'=>$profile
                                         ]);
@@ -98,20 +90,20 @@ class CheckInOrderController extends Controller
                     }
                     //*******************update status order to checkin
                    // $order= OrderItem::find($request->order_id);
-                    Log::info($order->timeline);
+                    // Log::info($order->timeline);
             
                 
                     try{
-                        Log::info('checkin order');
-                        $datetime_send = $tmp_date_now[0].' '.$tmp_date_now[1];
+                        // Log::info('checkin order');
+                       // $datetime_send = $tmp_date_now[0].' '.$tmp_date_now[1];
                         $old_timeline = $order->timeline;
-                        $old_timeline['checkin_datetime']=$datetime_send;
+                        $old_timeline['checkin_datetime']=$request->date_receive[$item['id']];
                         $old_timeline['checkin_user_id']=$order->user_id;
                         //item_sum_old
                        // Log::info('-->'.$item_sum_old);
                         $old_timeline['item_sum_old']=$item_sum_old;
                      
-                        Log::info($old_timeline);
+                        // Log::info($old_timeline);
                         OrderItem::find($request->order_id)->update([
                                                                     'status'=>'checkin',
                                                                     'timeline'=>$old_timeline
@@ -126,6 +118,7 @@ class CheckInOrderController extends Controller
                 return redirect()->back();
             }
         }
+        
        
       
         return Redirect::back()->with(['status' => 'success', 'msg' => 'บันทึกรับพัสดุใหม่ลงคลังสำเร็จ']);
@@ -180,9 +173,9 @@ class CheckInOrderController extends Controller
      */
     public function update(OrderItem $order)
     {
-        Log::info('CheckInOrderController index');
+        // Log::info('CheckInOrderController index');
         
-        Log::info($order->Stock['stockname']);
+        // Log::info($order->Stock['stockname']);
 
         foreach($order->items as $key=>$item ){
             $old_item_sum = StockItem::select('item_sum')->whereId($item['id'])->first();
@@ -191,7 +184,9 @@ class CheckInOrderController extends Controller
            
         }
 
-        Log::info($old_items_sum);
+        // Log::info($old_items_sum);
+       
+     //   return Redirect::back()->withErrors(['error' => 'invalid credentials']);
         return Inertia::render('Stock/ReceiveOrder',
                                 [
                                     'order' => $order,

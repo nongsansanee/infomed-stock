@@ -141,19 +141,9 @@ class CreateOrderController extends Controller
         //get data order list (mock up test UI)
         $order_lists = OrderItem::with('User:id,name')
                                 ->where('unit_id',$division_id)
-                                ->orderBy('created_at','desc')
+                                ->orderBy('order_no')
                                 ->get();
-        // $order_lists = [
-        //                 ['id'=>'1','year'=>2021,'month'=>9,'day'=>28,'status'=>'สร้างใบสั่งซื้อ'],
-        //                 ['id'=>'2','year'=>2021,'month'=>9,'day'=>25,'status'=>'สร้างใบสั่งซื้อ'],
-        //                 ['id'=>'3','year'=>2021,'month'=>8,'day'=>24,'status'=>'รออนุมัติ'],
-        //                 ['id'=>'4','year'=>2021,'month'=>7,'day'=>28,'status'=>'ได้รับอนุมัติแล้ว'],
-        //                 ['id'=>'5','year'=>2021,'month'=>6,'day'=>27,'status'=>'ตรวจรับพัสดุแล้ว'],
-        // ];
-        // \Log::info($stocks);
-         Log::info('------------------------');
         
-
         foreach ($order_lists as $key=>$order_list) {
             $created_at_tmp =  explode(' ', $order_list['created_at']);
             $split_date_now = explode('-', $created_at_tmp[0]);

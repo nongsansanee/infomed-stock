@@ -25,6 +25,7 @@ class StockItemController extends Controller
         // \Log::info($stock_item);
         // \Log::info('------------------------');
         // \Log::info($stock_items);
+       
         return Inertia::render('Stock/ItemDetail',[
                                 'stock_item'=>$stock_item,
                                 'stock' => $stock,

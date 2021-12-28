@@ -1,17 +1,28 @@
 <template>
     <AppLayout>
-          <!--Header Alert-->
-            <div v-if="$page.props.flash.status=='success'" 
-                class="alert-banner  fixed  right-0 m-2 w-2/3 md:w-full max-w-sm ">
+        <!--Header Alert-->
+        <div v-if="$page.props.flash.status=='success'" 
+            class="alert-banner  fixed  right-0 m-2 w-2/3 md:w-full max-w-sm ">
+            <input type="checkbox" class="hidden" id="banneralert">
+            
+            <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow rounded-md text-green-800 font-bold" title="close" for="banneralert">
+                {{ $page.props.flash.msg }}
+                <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
+                    <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                </svg>
+            </label>
+        </div>
+        <div v-if="$page.props.errors.error" 
+                class="alert-banner  fixed  right-0 m-2 w-5/6 md:w-full max-w-sm ">
                 <input type="checkbox" class="hidden" id="banneralert">
                 
-                <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow rounded-md text-green-800 font-bold" title="close" for="banneralert">
-                 {{ $page.props.flash.msg }}
+                <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-red-700 shadow rounded-md text-white font-bold" title="close" for="banneralert">
+                 {{ $page.props.errors.error }}
                    <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
                         <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
                     </svg>
                 </label>
-            </div>
+        </div>
 
         <div class=" w-full  bg-blue-100 p-2 rounded-md ">
             <div class="bg-blue-800 text-white text-xl text-center ">

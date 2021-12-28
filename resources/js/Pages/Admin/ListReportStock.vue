@@ -1,6 +1,6 @@
 <template>
     <AppLayout>
-       <h4   class=" mt-3 text-center text-red-600">ระบุชื่อคลังพัสดุ ปีและเดือน ที่ต้องการดูรายงาน</h4>
+       <h4   class=" mt-3 text-center text-red-600">ระบุชื่อคลังพัสดุที่ต้องการดูรายงาน</h4>
     
         <div class="flex flex-col  mb-2 text-md font-bold text-gray-900 ">
              <div class="m-2" >
