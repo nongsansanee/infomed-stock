@@ -11,7 +11,8 @@
                     </svg>
                 </label>
         </div>
-         <div v-if="$page.props.errors.error" 
+      
+        <div v-if="$page.props.errors.error" 
                 class="alert-banner  fixed  right-0 m-2 w-5/6 md:w-full max-w-sm ">
                 <input type="checkbox" class="hidden" id="banneralert">
                 
@@ -125,7 +126,9 @@ const confirmCheckinOrder=()=>{
     // console.log(form.order_id);
     form.post(route('checkin-order'), {
         onSuccess: page => { console.log('success');},
-        onError: errors => { console.log('error');},
+        onError: errors => { 
+            console.log('error');
+        },
         onFinish: visit => { console.log('finish');},
     })
        

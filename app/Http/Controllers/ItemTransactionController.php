@@ -42,14 +42,20 @@ class ItemTransactionController extends Controller
      */
     public function store(Request $request)
     {
-        // Log::info($request->all());
-        
-        //return "store";
-        $stock_item = StockItem::whereSlug($request->item_slug)->first();
+      
+         Log::info('ItemTransactionController store');
+         Log::info($request->all());
+         return "store";
+        // Log::info($request->confirm_item_slug);
+        // Log::info($request->confirm_item_date);
+        // Log::info($request->confirm_item_count);
+        $stock_item = StockItem::whereSlug($request->confirm_item_slug)->first();
         // Log::info($stock_item);
+      
+      
         // Log::info($stock_item->stock);
-        $year_checkout= substr($request->date,0,4);
-        $month_checkout= substr($request->date,5,2);
+        $year_checkout= substr($request->confirm_item_date,0,4);
+        $month_checkout= substr($request->confirm_item_date,5,2);
         try{
                 ItemTransaction::create([
                                         'stock_id'=>$stock_item->stock_id ,
@@ -57,9 +63,9 @@ class ItemTransactionController extends Controller
                                         'user_id'=>1,
                                         'year'=>$year_checkout,
                                         'month'=>$month_checkout,
-                                        'date_action'=>$request->date,
+                                        'date_action'=>$request->confirm_item_date,
                                         'action'=>'checkout',
-                                        'item_count'=>$request->unit,
+                                        'item_count'=>$request->confirm_item_count,
                                     ]);
 
         }catch(\Illuminate\Database\QueryException $e){
@@ -67,10 +73,10 @@ class ItemTransactionController extends Controller
             return redirect()->back();
         }
 
-        $balance = $stock_item->item_sum - $request->unit;
-        Log::info($balance);
+        $balance = $stock_item->item_sum - $request->confirm_item_count;
+       // Log::info($balance);
         try{
-            StockItem::whereSlug($request->item_slug)->update(['item_sum'=>$balance]);
+            StockItem::whereSlug($request->confirm_item_slug)->update(['item_sum'=>$balance]);
         }catch(\Illuminate\Database\QueryException $e){
              //rollback
             //return redirect()->back();

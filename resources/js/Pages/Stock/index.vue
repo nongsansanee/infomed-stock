@@ -33,8 +33,8 @@
   <!-- {{$page.props.can}} -->
     <div class="w-full mt-3 p-2  ">
   
-        <div v-for="(stock_item,key) in form.stock_item_sum" :key=stock_item.id
-                class="w-full bg-pink-100 mt-3 border-2 border-pink-200 rounded-lg lg:max-w-full lg:flex">
+        <div v-for="(stock_item,key) in stock_items" :key=stock_item.id
+                class="w-full bg-pink-100 mt-3  rounded-lg lg:max-w-full lg:flex">
             
             <div
              class="flex flex-col bg-pink-200 items-center overflow-hidden text-center  bg-cover rounded-t lg:h-auto lg:w-36 lg:rounded-t-none lg:rounded-l"
@@ -139,70 +139,53 @@
         </div>
 
         <!-- Modal -->
-        <div v-if="form.confirm_checkout" 
-                class="min-w-screen h-screen animated fadeIn faster  fixed  left-0 top-0 flex justify-center items-center inset-0 z-50 outline-none focus:outline-none bg-no-repeat bg-center bg-cover"  
-                id="modal-id">
-            <div class="absolute bg-black opacity-80 inset-0 z-0"></div>
-            <div class="w-full  max-w-lg p-5 relative mx-auto my-auto rounded-xl shadow-lg  bg-white ">
-            <!--content-->
-                <div class="">
-                    <!--body-->
-                    <div class="text-center p-5 flex-auto justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 -m-1 flex items-center text-red-500 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 flex items-center text-green-500 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                                </svg>
-                                    <!-- <h2 class="text-xl font-bold py-3 ">Are you sure?</h2> -->
-                                    <p class="text-md font-bold text-red-600 py-3 px-8">คุณต้องการบันทึกการเบิกพัสดุรายการนี้ใช่หรือไม่?</p> 
-                                    <p class="mt-2">{{form.confirm_item_name}} วันที่ {{ form.confirm_item_date}} จำนวน {{form.confirm_item_count}} ชิ้น</p>   
-                    </div>
-                    <!--footer-->
-                    <div class="p-3  mt-2 text-center space-x-4 md:block">
-                        <button 
-                            class="mb-2 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
-                            v-on:click="okConfirmCheckout"
-                            >
-                            ตกลง
-                        </button>
-                        <button 
-                            class="mb-2 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
-                            v-on:click="cancelConfirmCheckout"
-                        >
-                            ยกเลิก
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+  
         <!-- End Modal -->
 
-        <!-- add component ModalConfirm -->
-            <!-- <modal-confirm v-if="confirm_checkout" 
-                :confirm_item_name="confirm_item_name"
-                :confirm_item_date="confirm_item_date"
-                :confirm_item_count="confirm_item_count"
-            ></modal-confirm> -->
-        <!-- END -->
+        <ModalUpToYou :isModalOpen="confirm_checkout" >
+
+            <template v-slot:header>
+                <!-- <div class="text-gray-900 text-xl font-medium dark:text-white">
+                    คุณต้องการลบข้อมูลบุคคลากร
+                </div> -->
+                <p class="text-md font-bold text-red-600 ">คุณต้องการบันทึกการเบิกพัสดุรายการนี้ใช่หรือไม่?</p> 
+                                        
+            </template>
+
+            <template v-slot:body>
+                <div class="text-gray-900 text-md font-medium dark:text-white">
+                    <p class="mt-2">{{form.confirm_item_name}} เบิกใช้วันที่ {{ form.confirm_item_date}} จำนวน {{form.confirm_item_count}} ชิ้น</p>   
+                </div>
+            </template>
+
+            <template v-slot:footer>
+                <div class=" w-full  text-center  md:block">
+                    <button 
+                        class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                        v-on:click="okConfirmCheckout"
+                        >
+                        ตกลง
+                    </button>
+                    <button 
+                        class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
+                        v-on:click="cancelConfirmCheckout"
+                    >
+                        ยกเลิก
+                    </button>
+                </div>
+            </template>
+        </ModalUpToYou>
     
     </div>
    
-  
-
-    
-     
-
     </AppLayout>
 </template>
 <script setup>
-//import { ref } from 'vue';
-//import { usePage } from '@inertiajs/inertia-vue3'
+
+import ModalUpToYou from '@/Components/ModalUpToYou.vue'
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link, useForm, usePage } from '@inertiajs/inertia-vue3'
-import { Inertia } from '@inertiajs/inertia';
-import ModalConfirm from '@/Components/ModalConfirm.vue'
-import { onMounted } from '@vue/runtime-core';
+import { onBeforeMount, onMounted, ref } from '@vue/runtime-core';
 
 defineProps({
     stocks:Array,
@@ -213,36 +196,57 @@ defineProps({
     can: { type: Object, required: true },
 });
 
+const confirm_checkout=ref(false);
+
 const form = useForm({
     unit_checkout:[],
     date_checkout:[],
-    item_balance:0,
-    confirm_checkout:0,
+    // item_balance:0,
+   // confirm_checkout:0,
     confirm_item_name:'',
     confirm_item_slug:'',
     confirm_item_date:'',
     confirm_item_count:'',
-    stock_item_sum:[], //เอาตัวแปร จาก props มาใช้
+   // stock_item_sum:[], //เอาตัวแปร จาก props มาใช้
+})
+
+onBeforeMount(()=>{
+           console.log('onBeforeMount');
 })
 
 onMounted(() => {
- 
-      form.stock_item_sum = usePage().props.value.stock_items;
+    console.log('onMounted');
+   //   form.stock_item_sum = usePage().props.value.stock_items;
      
 })
 
 const confirmCheckout=(index,stock_item)=>{
-        console.log('confirmCheckout');
-        form.confirm_checkout = 1;
-        form.confirm_item_slug = stock_item.slug;
-        form.confirm_item_name = stock_item.item_name;
-        form.confirm_item_date = form.date_checkout[index];
-        form.confirm_item_count = form.unit_checkout[index];
+    console.log('confirmCheckout');
+    confirm_checkout.value = true;
+    form.confirm_item_slug = stock_item.slug;
+    form.confirm_item_name = stock_item.item_name;
+    form.confirm_item_date = form.date_checkout[index];
+    form.confirm_item_count = form.unit_checkout[index];
        
 }
 
 const cancelConfirmCheckout = ()=>{
-         form.confirm_checkout = 0;
+    confirm_checkout.value = false;
+}
+
+const okConfirmCheckout=()=>{
+    confirm_checkout.value = false;
+    console.log('OK Confirm');
+    form.post(route('checkout-stock-item'), {
+        preserveState: false,
+        preserveScroll: true,
+        onSuccess: page => { console.log('success');},
+        onError: errors => { 
+            console.log('error');
+        },
+        onFinish: visit => { console.log('finish');},
+    })
+  
 }
 // export default {
 //     components: {
