@@ -17,33 +17,34 @@
     
         <div class=" w-full  bg-blue-100 p-2 rounded-md ">
             <div class="bg-blue-800 text-white text-xl text-center ">
-                {{$page.props.unit.unitname}}
+                {{unit.unitname}}
             </div>
             <div class="mt-3" >
                 <label for="">เลือกคลังพัสดุ</label> 
             </div>
             <select name="" id="" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
-                <option v-for="(stock) in  $page.props.stocks" :key=stock.id value="{{stock.id}}">{{stock.stockname}}</option>
+                <option v-for="(stock) in  stocks" :key=stock.id value="{{stock.id}}">{{stock.stockname}}</option>
             </select>
            
        
         </div>
       
 
-    <h1 class=" m-3 text-center" >ข้อมูลจำนวนคงเหลือ ณ วันที่ปัจจุบัน {{$page.props.sysdate_thai}}</h1>
+    <h1 class=" m-3 text-center" >ข้อมูลจำนวนคงเหลือ ณ วันที่ปัจจุบัน {{sysdate_thai}}</h1>
 
     <!-- item order -->
    
   
-    <div class=" flex text-right ">
+    <div class=" flex text-right px-6 justify-end  ">
      
-        <div>
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div class="flex ">
+            <p class=" text-sm py-2"> กดที่ตะกร้าเพื่อยืนยันการสั่งซื้อ</p>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
         </div >
         <div  class="">
-            <button v-if="itemsChecked"
+            <button v-if="show_preorder"
                  class="transition duration-500 ease-in-out bg-red-600 hover:bg-red-400 transform hover:-translate-y-1 hover:scale-110 inline-flex px-2   text-lg font-semibold leading-5 text-white  rounded-full"
                  v-on:click="showPreorder"
                  >
@@ -86,9 +87,13 @@
     </div>
     <!-- test -->
     <!-- display card -->
-     <div class="w-full mt-3 p-2  ">
+    <!-- {{stock_items}} -->
+      <div>
+         {{form.preview_orders}}
+     </div>
+    <div class="w-full  p-2  ">
   
-        <div v-for="(stock_item,index) in $page.props.stock_items" :key=stock_item.id
+        <div v-for="(stock_item,index) in stock_items" :key=stock_item.id
                 class="w-full   bg-red-100 border-2 border-red-200 mt-3  rounded-lg lg:max-w-full lg:flex lg:flex-col">
                  <div class="flex ml-2"> {{index+1}}. 
                     <p class=" ml-2 ">  {{stock_item.item_code}}:{{stock_item.item_name}}</p> 
@@ -105,45 +110,52 @@
                 <div class="flex ml-6">
                      <p class=" ml-2 text-xs ">  {{stock_item.checkin_last.profile['catalog_number']}}/{{stock_item.checkin_last.profile['lot_number']}}</p> 
                 </div>
+                <div  class="flex ml-6">
+                     <div class=" w-1/4 py-2 px-2 text-right"> จำนวนสั่งซื้อ:</div>
+                     <div class=" w-3/4 ">
+                     <input type="number"   placeholder="จำนวนสั่งซื้อ"   :ref="'item-'+stock_item.id" 
+                            class="block w-full mt-1 border-gray-400 rounded-md ">
+                     </div>
+                </div>
                 <div class="flex ml-6">
                     <div class=" w-1/4 py-2 px-2 text-right"> Cat.No:</div>
                     <div class=" w-3/4 ">
                       <input type="text"  v-model="stock_item.checkin_last.profile['catalog_number']" v-bind:ref="'cat_no-'+stock_item.id"
-                            class="block w-full mt-1   border-gray-400 rounded-md focus:border-green-600 focus:ring focus:ring-opacity-40 focus:ring-green-500">
+                            class="block w-full mt-1   border-gray-400 rounded-md ">
                     </div>
                 </div>
-                 <div class="flex ml-6">
+                <div class="flex ml-6">
                     <div class=" w-1/4 py-2 px-2 text-right"> Lot.No:</div>
                     <div class=" w-3/4 ">
                       <input type="text"  v-model="stock_item.checkin_last.profile['lot_number']" v-bind:ref="'cat_no-'+stock_item.id"
-                            class="block w-full mt-1   border-gray-400 rounded-md focus:border-green-600 focus:ring focus:ring-opacity-40 focus:ring-green-500">
+                            class="block w-full mt-1   border-gray-400 rounded-md ">
                     </div>
                 </div>
                 <div class="flex ml-6">
                     <div class=" w-1/4 py-2 px-2 text-right"> ราคาต่อหน่วย:</div>
                     <div class=" w-3/4 ">
-                     <input type="number"  v-model="stock_item.price" v-bind:ref="'price-'+stock_item.id"
-                            v-on:change="changePrice(key)"
-                            class="block w-full mt-1  border-gray-400 rounded-md focus:border-green-600 focus:ring focus:ring-opacity-20 focus:ring-green-500">
+                     <input type="number"  v-model="stock_item.price" 
+                            class="block w-full mt-1  border-gray-400 rounded-md ">
                     </div>
                 </div>
-                <div class="flex ml-6 mt-2">
+                  <div class="flex ml-6 mt-2">
                     <div class=" w-1/4 py-2 px-2 text-right"> บริษัทผู้ขาย:</div>
                     <div class=" w-3/4 ">
-                      <select v-model="business_selected[stock_item.id]"
-                        class="block appearance-none w-full  bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
-                        <option v-for="(business) in  $page.props.businesses" :key=business.id 
+                      <select 
+                        class="block appearance-none w-full  bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight " >
+                        <option v-for="(business) in  businesses" :key=business.id 
                             v-bind:value="{item_id:stock_item.id,business_id:business.id,business_name:business.business_name}"
-                            v-bind:ref="'business-'+stock_item.id"
                             >
                             {{business.business_name}}
                         </option>
                         </select>
                     </div>
                 </div>
-                <div class="flex justify-center my-2 mx-4">
+                <div class=" m-2">
+                    
                           <button
-                            class="w-full text-sm  text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-none"
+                            class="w-full flex justify-center text-sm  text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-none"
+                            v-on:click="checkedOrder(index)"
                         >
                             <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -151,14 +163,17 @@
                              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8  " fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                             </svg>
-                         
+                           ใส่ตะกร้า
                         </button>
                 </div>
+                        
+                
         </div>
-     </div>
+    </div>
     <!-- end display card -->
+
    <!-- {{$page.props.stock_items}} -->
-    <table class="min-w-full border-collapse block  md:table">
+    <!-- <table class="min-w-full border-collapse block  md:table">
 		<thead class="block  md:table-header-group">
 			<tr class="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
 				<th class="bg-green-700 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">ชื่อพัสดุ</th>
@@ -172,7 +187,7 @@
 			</tr>
 		</thead>
 		<tbody class="block md:table-row-group">
-			<tr v-for="(stock_item,key) in $page.props.stock_items" :key=stock_item.id
+			<tr v-for="(stock_item,key) in stock_items" :key=stock_item.id
                 class="bg-white p-2 mb-2 border-2 border-gray-500 md:border-none block md:table-row">
 				<td class="text-left  block md:table-cell md:border-b md:border-gray-400 md:rounded-l-lg">
                     <span class="inline-block w-1/3 md:hidden font-bold">ชื่อพัสดุ</span>
@@ -219,7 +234,7 @@
 					<span class="inline-block w-1/3  md:hidden font-bold">บริษัทผู้ขาย</span>
                       <select v-model="business_selected[stock_item.id]"
                         class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
-                        <option v-for="(business) in  $page.props.businesses" :key=business.id 
+                        <option v-for="(business) in  businesses" :key=business.id 
                             v-bind:value="{item_id:stock_item.id,business_id:business.id,business_name:business.business_name}"
                             v-bind:ref="'business-'+stock_item.id"
                             >
@@ -231,8 +246,9 @@
 			</tr>
 			
 		</tbody>
-	</table>
+	</table> -->
     <!-- END table -->
+
     <!-- <div>
          <button
             class=" m-3 w-full flex justify-center px-8 py-1   text-sm  text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-none"
@@ -248,9 +264,7 @@
          <h2 class=" m-3 text-center">Preview Order</h2>
      </div>
      -->
-     <div>
-         {{preview_orders}}
-     </div>
+   
      
       <!-- <span>order unit: {{ order_item_units }}</span> -->
 
@@ -259,155 +273,247 @@
 
     </AppLayout>
 </template>
-<script>
+<script setup>
 //import { ref } from 'vue';
 //import { usePage } from '@inertiajs/inertia-vue3'
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { Link } from '@inertiajs/inertia-vue3'
+import { Link, useForm, usePage } from '@inertiajs/inertia-vue3'
 import { Inertia } from '@inertiajs/inertia';
+import { onMounted, ref } from '@vue/runtime-core';
 
-export default {
-    components: {
-        AppLayout,
-        Link,
-    },
-    props:{
-        stocks:Array,
-        stock_items:Array,
-        unit:Array,
-        businesses:Array,
-        sysdate_thai:String,
-        sysdate:String,
-      
-    },
-    data(){
-        return{
-           
-           months:[
-				{id:1,name:'มกราคม' },
-				{id:2,name:'กุมภาพันธ์' },	
-				{id:3,name:'มีนาคม' },	
-                {id:4,name:'เมษายน' },	
-                {id:5,name:'พฤษภาคม' },	
-                {id:6,name:'มิถุนายน' },	
-                {id:7,name:'กรกฎาคม' },	
-                {id:8,name:'สิงหาคม' },	
-                {id:9,name:'กันยายน' },	
-                {id:10,name:'ตุลาคม' },	
-                {id:11,name:'ฟฤศจิกายน' },	
-                {id:12,name:'ธันวาคม' },		
-			],
-   
-            order_selected:[],
+defineProps({
+    stocks:Array,
+    stock_items:Array,
+    unit:Array,
+    businesses:Array,
+    sysdate_thai:String,
+    sysdate:String,
+})
 
-            preview_orders: [{
-                            stock_id:0,
-                            id:0,
-                            sap:0,
-                            item_name:'',
-                            unit:0,
-                            price:0,
-                            business_id:0,
-                            business_name:'',
-                            total:0,
-                            catalog_number:'',
-                            lot_number:'',
-                            }],
+onMounted(() => {
+    console.log('onMounted');
+     form.items = usePage().props.value.stock_items;
+    
+})
 
-            business_selected:[],
+const show_preorder=ref(false);
 
-            show_preorder:0,
-            sum_pay:0,
-        }
-    },
-    methods: {
-        checkedOrder(index){
-           // console.log('checkedOrder');
-             this.preview_orders=[];
+const form = useForm({
+    items:[],
+    order_selected:[],
+    preview_orders: [{
+                        stock_id:0,
+                        id:0,
+                        sap:0,
+                        item_name:'',
+                        unit:0,
+                        price:0,
+                        business_id:0,
+                        business_name:'',
+                        total:0,
+                        catalog_number:'',
+                        lot_number:'',
+                    }],
+
+    business_selected:[],
+   // show_preorder:0,
+
+})
+
+ 
+const itemsChecked=()=>{
+     from.preview_orders.length;
+     show_preorder.value=true;
+}
+
+const  showPreorder=()=>{
+            show_preorder.value=true;
+}
+const closePreviewOrder=()=>{
+            show_preorder.value=false;
+}
+
+const checkedOrder = (index)=>{
+           console.log('checkedOrder');
+             console.log('index->'+index);
+             console.log('index->'+form.items[index].item_name);
+             form.preview_orders=[];
            
           
-            this.order_selected.forEach(item => {
-                 //console.log(item.id);
-                  // console.log(this.$refs['check-'+item.id].);
-                if(this.$refs['item-'+item.id].value=='')
-                {
-                        alert('กรุณาใส่จำนวนที่ต้องการสั่งซื้อ');
-                        this.$refs['itemcheck-'+item.id].value=false;
-                        return;
-                }
+            // form.order_selected.forEach(item => {
+            //      console.log(item.id);
+            //     //   console.log(this.$refs['check-'+item.id].);
+            //     if(this.$refs['item-'+item.id].value=='')
+            //     {
+            //             alert('กรุณาใส่จำนวนที่ต้องการสั่งซื้อ');
+            //             this.$refs['itemcheck-'+item.id].value=false;
+            //             return;
+            //     }
 
-                // console.log(this.business_selected);
-                // console.log(this.business_selected[item.id]);
-                
-                // console.log(Object.keys(this.business_selected));
-                // if(!JSON.stringify(this.business_selected).includes(item.id))
-                // {
-                //         alert('กรุณาระบุบริษัทผู้ขาย');
-                //         return;
-                // }
-
-                let total_bath = this.$refs['item-'+item.id].value*this.$refs['price-'+item.id].value;
-              
-               this.preview_orders.push({
-                                        stock_id:item.stock_id,
-                                        id:item.id,
-                                        sap:item.sap,
-                                        item_name:item.item_name,
-                                        unit:this.$refs['item-'+item.id].value,
-                                        price:this.$refs['price-'+item.id].value,
-                                        business_id:this.business_selected[item.id].business_id,
-                                        business_name:this.business_selected[item.id].business_name,
-                                        total:total_bath,
-                                        catalog_number:this.$refs['cat_no-'+item.id].value,
-                                        lot_number:this.$refs['lot_no-'+item.id].value,
-                                    });
-            })
-           
-        },
-        createOrder(){
-               console.log('create order');
-           // console.log(this.preview_orders);
-            Inertia.post(route('add-order'), 
-                            { 
-                                order_items:this.preview_orders,
-                            },
-                            {
-                                preserveState: false,
-                            //   preserveScroll: true
-                            }
-                        );
-               
-        },
-        showPreorder(){
-            this.show_preorder=1;
-        },
-        closePreviewOrder(){
-            this.show_preorder=0;
-        },
-        changePrice(index){
-             console.log('changePrice');
-            console.log(index);
-        },
-    },
-    computed:{
-       	itemsChecked(){
-			return this.order_selected.length;	
-		},
-        sumPay(){   
-            this.sum_pay = 0;
-            this.preview_orders.forEach(item => {            
-                this.sum_pay += item.total;
-            });
+            //     // console.log(this.business_selected);
+            //     // console.log(this.business_selected[item.id]);
              
-            return this.sum_pay.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-		},
-    }
 
-    // setup() {
-    
-    //     return { };
-    // },
+            //     let total_bath = this.$refs['item-'+item.id].value*this.$refs['price-'+item.id].value;
+              
+               form.preview_orders.push({
+                                        stock_id:form.items[index].stock_id,
+                                        id:form.items[index].id,
+                                        sap:form.items[index].sap,
+                                        item_name:form.items[index].item_name,
+                                        // unit:this.$refs['item-'+item.id].value,
+                                        // price:this.$refs['price-'+item.id].value,
+                                        // business_id:this.business_selected[item.id].business_id,
+                                        // business_name:this.business_selected[item.id].business_name,
+                                        // total:total_bath,
+                                        // catalog_number:this.$refs['cat_no-'+item.id].value,
+                                        // lot_number:this.$refs['lot_no-'+item.id].value,
+                                    });
+            
+            // })
 }
+
+
+           
+
+// export default {
+//     components: {
+//         AppLayout,
+//         Link,
+//     },
+//     props:{
+//         stocks:Array,
+//         stock_items:Array,
+//         unit:Array,
+//         businesses:Array,
+//         sysdate_thai:String,
+//         sysdate:String,
+      
+//     },
+//     data(){
+//         return{
+           
+//            months:[
+// 				{id:1,name:'มกราคม' },
+// 				{id:2,name:'กุมภาพันธ์' },	
+// 				{id:3,name:'มีนาคม' },	
+//                 {id:4,name:'เมษายน' },	
+//                 {id:5,name:'พฤษภาคม' },	
+//                 {id:6,name:'มิถุนายน' },	
+//                 {id:7,name:'กรกฎาคม' },	
+//                 {id:8,name:'สิงหาคม' },	
+//                 {id:9,name:'กันยายน' },	
+//                 {id:10,name:'ตุลาคม' },	
+//                 {id:11,name:'ฟฤศจิกายน' },	
+//                 {id:12,name:'ธันวาคม' },		
+// 			],
+   
+//             order_selected:[],
+
+//             preview_orders: [{
+//                             stock_id:0,
+//                             id:0,
+//                             sap:0,
+//                             item_name:'',
+//                             unit:0,
+//                             price:0,
+//                             business_id:0,
+//                             business_name:'',
+//                             total:0,
+//                             catalog_number:'',
+//                             lot_number:'',
+//                             }],
+
+//             business_selected:[],
+
+//             show_preorder:0,
+//             sum_pay:0,
+//         }
+//     },
+//     methods: {
+//         checkedOrder(index){
+//            // console.log('checkedOrder');
+//              this.preview_orders=[];
+           
+          
+//             this.order_selected.forEach(item => {
+//                  //console.log(item.id);
+//                   // console.log(this.$refs['check-'+item.id].);
+//                 if(this.$refs['item-'+item.id].value=='')
+//                 {
+//                         alert('กรุณาใส่จำนวนที่ต้องการสั่งซื้อ');
+//                         this.$refs['itemcheck-'+item.id].value=false;
+//                         return;
+//                 }
+
+//                 // console.log(this.business_selected);
+//                 // console.log(this.business_selected[item.id]);
+                
+//                 // console.log(Object.keys(this.business_selected));
+//                 // if(!JSON.stringify(this.business_selected).includes(item.id))
+//                 // {
+//                 //         alert('กรุณาระบุบริษัทผู้ขาย');
+//                 //         return;
+//                 // }
+
+//                 let total_bath = this.$refs['item-'+item.id].value*this.$refs['price-'+item.id].value;
+              
+//                this.preview_orders.push({
+//                                         stock_id:item.stock_id,
+//                                         id:item.id,
+//                                         sap:item.sap,
+//                                         item_name:item.item_name,
+//                                         unit:this.$refs['item-'+item.id].value,
+//                                         price:this.$refs['price-'+item.id].value,
+//                                         business_id:this.business_selected[item.id].business_id,
+//                                         business_name:this.business_selected[item.id].business_name,
+//                                         total:total_bath,
+//                                         catalog_number:this.$refs['cat_no-'+item.id].value,
+//                                         lot_number:this.$refs['lot_no-'+item.id].value,
+//                                     });
+//             })
+           
+//         },
+//         createOrder(){
+//                console.log('create order');
+//            // console.log(this.preview_orders);
+//             Inertia.post(route('add-order'), 
+//                             { 
+//                                 order_items:this.preview_orders,
+//                             },
+//                             {
+//                                 preserveState: false,
+//                             //   preserveScroll: true
+//                             }
+//                         );
+               
+//         },
+//         showPreorder(){
+//             this.show_preorder=1;
+//         },
+//         closePreviewOrder(){
+//             this.show_preorder=0;
+//         },
+//         changePrice(index){
+//              console.log('changePrice');
+//             console.log(index);
+//         },
+//     },
+//     computed:{
+//        	itemsChecked(){
+// 			return this.order_selected.length;	
+// 		},
+//         sumPay(){   
+//             this.sum_pay = 0;
+//             this.preview_orders.forEach(item => {            
+//                 this.sum_pay += item.total;
+//             });
+             
+//             return this.sum_pay.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+// 		},
+//     }
+
+// }
 
 </script>
 
