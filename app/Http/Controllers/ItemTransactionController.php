@@ -45,7 +45,7 @@ class ItemTransactionController extends Controller
       
          Log::info('ItemTransactionController store');
          Log::info($request->all());
-         return "store";
+       //  return "store";
         // Log::info($request->confirm_item_slug);
         // Log::info($request->confirm_item_date);
         // Log::info($request->confirm_item_count);

@@ -93,8 +93,15 @@
          {{form.preview_orders}} -->
      </div>
 
-     <OrderItem v-for="(stock_item,index) in stock_items" :key=stock_item.id 
-        :index="index" :stock_item="stock_item" :businesses="businesses" />
+     <OrderItem v-for="(item,index) in stock_items" 
+        :key="item.id"
+        :item_index="index" 
+        :modelItem="item" 
+        :modelBusinesses="businesses"
+        :modelUnitOrder="0"
+        @update="getOrder(item,modelUnitOrder)"
+     
+     />
     <!-- Start  display card -->
     <!-- <div class="w-full  p-2  ">
   
@@ -173,7 +180,7 @@
         </div>
     </div> -->
     <!-- end display card -->
-
+    -->{{form.order_selected}}
 
     </AppLayout>
 </template>
@@ -199,29 +206,62 @@ defineProps({
 
 const show_preorder=ref(false);
 
-// const form = useForm({
-//     items:[],
-//     order_selected:[],
-//     preview_orders: [{
-//                         stock_id:0,
-//                         id:0,
-//                         sap:0,
-//                         item_name:'',
-//                         unit:0,
-//                         price:0,
-//                         business_id:0,
-//                         business_name:'',
-//                         total:0,
-//                         catalog_number:'',
-//                         lot_number:'',
-//                     }],
+const form = useForm({
+    items:[],
+    order_selected:[],
+    unit_order:0,
+    // preview_orders: [{
+    //                     stock_id:0,
+    //                     id:0,
+    //                     sap:0,
+    //                     item_name:'',
+    //                     unit:0,
+    //                     price:0,
+    //                     business_id:0,
+    //                     business_name:'',
+    //                     total:0,
+    //                     catalog_number:'',
+    //                     lot_number:'',
+    //                 }],
 
-//     business_selected:[],
+    // business_selected:[],
    
 
-// })
+})
 
- 
+ onMounted(() => {
+    console.log('onMounted');
+    //console.log('stock_item======'+usePage().props.value.stock_items);
+    form.items = usePage().props.value.stock_items;
+     
+})
+
+const getOrder=(item,order_item)=>{
+     console.log('getOrder  item->')
+     console.log(item)
+      console.log('getOrder  order_item->')
+     console.log(order_item)
+    
+}
+const checkedOrder=(item,unit)=>{
+     console.log('itemsChecked->')
+     console.log(item)
+      console.log('unit->')
+      console.log(unit)
+     //  this.preview_orders.push({
+//                                         stock_id:item.stock_id,
+//                                         id:item.id,
+//                                         sap:item.sap,
+//                                         item_name:item.item_name,
+//                                         unit:this.$refs['item-'+item.id].value,
+//                                         price:this.$refs['price-'+item.id].value,
+//                                         business_id:this.business_selected[item.id].business_id,
+//                                         business_name:this.business_selected[item.id].business_name,
+//                                         total:total_bath,
+//                                         catalog_number:this.$refs['cat_no-'+item.id].value,
+//                                         lot_number:this.$refs['lot_no-'+item.id].value,
+//                                     });
+}
 const itemsChecked=()=>{
     console.log('itemsChecked->'+from.preview_orders.length)
      from.preview_orders.length;

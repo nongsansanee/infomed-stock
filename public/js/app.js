@@ -34829,117 +34829,71 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @inertiajs/inertia-vue3 */ "./node_modules/@inertiajs/inertia-vue3/dist/index.js");
+/* harmony import */ var _vue_runtime_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @vue/runtime-core */ "./node_modules/@vue/runtime-core/dist/runtime-core.esm-bundler.js");
+/* harmony import */ var _vue_reactivity__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @vue/reactivity */ "./node_modules/@vue/reactivity/dist/reactivity.esm-bundler.js");
+
+
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
-    index: {
+    modelBusinesses: {
+      type: Object,
+      required: true
+    },
+    item_index: {
       type: Number,
       required: true
     },
-    stock_item: {
+    modelItem: {
       type: Object,
       required: true
     },
-    businesses: {
-      type: Object,
+    modelUnitOrder: {
+      type: Number,
       required: true
     }
   },
+  emits: ['update:modelItem', 'update:modelUnitOrder'],
   setup: function setup(__props, _ref) {
-    var expose = _ref.expose;
+    var expose = _ref.expose,
+        emits = _ref.emit;
     expose();
     var props = __props;
+    var input = (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_1__.ref)(null); // console.log('created');
+    // console.log(props.modelItem);
 
-    var _require = __webpack_require__(/*! @inertiajs/inertia-vue3 */ "./node_modules/@inertiajs/inertia-vue3/dist/index.js"),
-        useForm = _require.useForm,
-        usePage = _require.usePage;
+    var form = (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__.useForm)({//   item:[],
+      //  modelUnitOrder:0,
+    }); //form.item = props.stock_item;
+    // console.log('form.modelUnitOrder-->');
+    // console.log( form.modelUnitOrder);
 
-    var _require2 = __webpack_require__(/*! @vue/runtime-core */ "./node_modules/@vue/runtime-core/dist/runtime-core.esm-bundler.js"),
-        onMounted = _require2.onMounted,
-        ref = _require2.ref; // const cat_no=ref();
+    var click = function click(event) {
+      console.log('click-->');
+      console.log(props.modelItem);
+      console.log(props.modelUnitOrder);
+      console.log(event.target.ref);
+      emits('update', event.target.value); // emits('update:modelUnitOrder', event.target.value);
+    }; // const inputUnitOrder = (event) => {
+    //     console.log('input-->');
+    //     console.log( form.modelUnitOrder);
+    //     console.log(event.target.value);
+    //    //console.log('click unit_order==>'+form.unit_order);  
+    //     emits('updUnitOrder', event.target.value);
+    // };
 
-
-    var form = useForm({
-      item: [],
-      // order_selected:[],
-      // preview_orders: [{
-      //                     stock_id:0,
-      //                     id:0,
-      //                     sap:0,
-      //                     item_name:'',
-      //                     unit:0,
-      //                     price:0,
-      //                     business_id:0,
-      //                     business_name:'',
-      //                     total:0,
-      //                     catalog_number:'',
-      //                     lot_number:'',
-      //                 }],
-      // business_selected:[],
-      stock_id: 0,
-      item_id: 0,
-      item_name: '',
-      sap: 0,
-      unit: 0,
-      cat_no: '',
-      lot_no: '',
-      price: 0,
-      business_id: 0,
-      business_name: ''
-    });
-    console.log('stock_item#######>' + usePage().props.value.stock_item); //form.item = usePage().props.value.stock_item;
-    // onMounted(() => {
-    //     console.log('onMounted');
-    //      console.log('index-->'+usePage().props.value.index);
-    //     console.log('stock_item-->'+usePage().props.value.stock_item);
-    //      form.item = usePage().props.value.stock_item;
-    //      console.log(form.item);
-    // })
-
-    var checkedOrder = function checkedOrder(index) {
-      console.log('checkedOrder');
-      console.log('index->' + index);
-      console.log('item_id->' + form.items[index].item_id);
-      console.log('item_name->' + form.items[index].item_name);
-      console.log('unit->' + form.unit);
-      console.log('price->' + form.price);
-      console.log('cat_no->' + form.item.checkin_last.profile['catalog_number']); //   form.order_selected=[];
-      //  console.log('itemsChecked->'+form.preview_orders.length)  
-      // form.order_selected.forEach(item => {
-      //      console.log(item.id);
-      //     //   console.log(this.$refs['check-'+item.id].);
-      //     if(this.$refs['item-'+item.id].value=='')
-      //     {
-      //             alert('กรุณาใส่จำนวนที่ต้องการสั่งซื้อ');
-      //             this.$refs['itemcheck-'+item.id].value=false;
-      //             return;
-      //     }
-      //     // console.log(this.business_selected);
-      //     // console.log(this.business_selected[item.id]);
-      //     let total_bath = this.$refs['item-'+item.id].value*this.$refs['price-'+item.id].value;
-      //    form.order_selected.push({
-      //                             stock_id:form.items[index].stock_id,
-      //                             id:form.items[index].id,
-      //                             sap:form.items[index].sap,
-      //                             item_name:form.items[index].item_name,
-      //                             // unit:this.$refs['item-'+item.id].value,
-      //                             // price:this.$refs['price-'+item.id].value,
-      //                             // business_id:this.business_selected[item.id].business_id,
-      //                             // business_name:this.business_selected[item.id].business_name,
-      //                             // total:total_bath,
-      //                             // catalog_number:this.$refs['cat_no-'+item.id].value,
-      //                             // lot_number:this.$refs['lot_no-'+item.id].value,
-      //                         });
-      //   console.log('itemsChecked->'+form.preview_orders.length) 
-    };
 
     var __returned__ = {
-      useForm: useForm,
-      usePage: usePage,
-      onMounted: onMounted,
-      ref: ref,
+      emits: emits,
       props: props,
+      input: input,
       form: form,
-      checkedOrder: checkedOrder
+      click: click,
+      useForm: _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__.useForm,
+      usePage: _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__.usePage,
+      onMounted: _vue_runtime_core__WEBPACK_IMPORTED_MODULE_2__.onMounted,
+      ref: _vue_reactivity__WEBPACK_IMPORTED_MODULE_1__.ref
     };
     Object.defineProperty(__returned__, '__isScriptSetup', {
       enumerable: false,
@@ -35957,24 +35911,57 @@ __webpack_require__.r(__webpack_exports__);
     expose(); //import { ref } from 'vue';
     //import { usePage } from '@inertiajs/inertia-vue3'
 
-    var show_preorder = (0,_vue_runtime_core__WEBPACK_IMPORTED_MODULE_4__.ref)(false); // const form = useForm({
-    //     items:[],
-    //     order_selected:[],
-    //     preview_orders: [{
-    //                         stock_id:0,
-    //                         id:0,
-    //                         sap:0,
-    //                         item_name:'',
-    //                         unit:0,
-    //                         price:0,
-    //                         business_id:0,
-    //                         business_name:'',
-    //                         total:0,
-    //                         catalog_number:'',
-    //                         lot_number:'',
-    //                     }],
-    //     business_selected:[],
-    // })
+    var show_preorder = (0,_vue_runtime_core__WEBPACK_IMPORTED_MODULE_4__.ref)(false);
+    var form = (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__.useForm)({
+      items: [],
+      order_selected: [],
+      unit_order: 0 // preview_orders: [{
+      //                     stock_id:0,
+      //                     id:0,
+      //                     sap:0,
+      //                     item_name:'',
+      //                     unit:0,
+      //                     price:0,
+      //                     business_id:0,
+      //                     business_name:'',
+      //                     total:0,
+      //                     catalog_number:'',
+      //                     lot_number:'',
+      //                 }],
+      // business_selected:[],
+
+    });
+    (0,_vue_runtime_core__WEBPACK_IMPORTED_MODULE_5__.onMounted)(function () {
+      console.log('onMounted'); //console.log('stock_item======'+usePage().props.value.stock_items);
+
+      form.items = (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__.usePage)().props.value.stock_items;
+    });
+
+    var getOrder = function getOrder(item, order_item) {
+      console.log('getOrder  item->');
+      console.log(item);
+      console.log('getOrder  order_item->');
+      console.log(order_item);
+    };
+
+    var checkedOrder = function checkedOrder(item, unit) {
+      console.log('itemsChecked->');
+      console.log(item);
+      console.log('unit->');
+      console.log(unit); //  this.preview_orders.push({
+      //                                         stock_id:item.stock_id,
+      //                                         id:item.id,
+      //                                         sap:item.sap,
+      //                                         item_name:item.item_name,
+      //                                         unit:this.$refs['item-'+item.id].value,
+      //                                         price:this.$refs['price-'+item.id].value,
+      //                                         business_id:this.business_selected[item.id].business_id,
+      //                                         business_name:this.business_selected[item.id].business_name,
+      //                                         total:total_bath,
+      //                                         catalog_number:this.$refs['cat_no-'+item.id].value,
+      //                                         lot_number:this.$refs['lot_no-'+item.id].value,
+      //                                     });
+    };
 
     var itemsChecked = function itemsChecked() {
       console.log('itemsChecked->' + from.preview_orders.length);
@@ -36114,6 +36101,9 @@ __webpack_require__.r(__webpack_exports__);
 
     var __returned__ = {
       show_preorder: show_preorder,
+      form: form,
+      getOrder: getOrder,
+      checkedOrder: checkedOrder,
       itemsChecked: itemsChecked,
       showPreorder: showPreorder,
       closePreviewOrder: closePreviewOrder,
@@ -37133,83 +37123,76 @@ var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 var _hoisted_8 = {
   "class": "flex ml-6"
 };
-var _hoisted_9 = {
-  "class": "ml-2 text-xs"
-};
-var _hoisted_10 = {
-  "class": "flex ml-6"
-};
 
-var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "w-1/4 py-2 px-2 text-right"
 }, " จำนวนสั่งซื้อ:", -1
 /* HOISTED */
 );
 
-var _hoisted_12 = {
+var _hoisted_10 = {
   "class": "w-3/4"
 };
-var _hoisted_13 = {
+var _hoisted_11 = {
   "class": "flex ml-6"
 };
 
-var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "w-1/4 py-2 px-2 text-right"
 }, " Cat.No:", -1
 /* HOISTED */
 );
 
-var _hoisted_15 = {
+var _hoisted_13 = {
   "class": "w-3/4"
 };
-var _hoisted_16 = {
+var _hoisted_14 = {
   "class": "flex ml-6"
 };
 
-var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "w-1/4 py-2 px-2 text-right"
 }, " Lot.No:", -1
 /* HOISTED */
 );
 
-var _hoisted_18 = {
+var _hoisted_16 = {
   "class": "w-3/4"
 };
-var _hoisted_19 = {
+var _hoisted_17 = {
   "class": "flex ml-6"
 };
 
-var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "w-1/4 py-2 px-2 text-right"
 }, " ราคาต่อหน่วย:", -1
 /* HOISTED */
 );
 
-var _hoisted_21 = {
+var _hoisted_19 = {
   "class": "w-3/4"
 };
-var _hoisted_22 = {
+var _hoisted_20 = {
   "class": "flex ml-6 mt-2"
 };
 
-var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "w-1/4 py-2 px-2 text-right"
 }, " บริษัทผู้ขาย:", -1
 /* HOISTED */
 );
 
-var _hoisted_24 = {
+var _hoisted_22 = {
   "class": "w-3/4"
 };
-var _hoisted_25 = {
+var _hoisted_23 = {
   "class": "block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight"
 };
-var _hoisted_26 = ["value"];
-var _hoisted_27 = {
+var _hoisted_24 = {
   "class": "m-2"
 };
 
-var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
   "class": "h-8 w-8",
   fill: "none",
@@ -37224,73 +37207,66 @@ var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_29 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ใส่ตะกร้า ");
+var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ใส่ตะกร้า ");
 
-var _hoisted_30 = [_hoisted_28, _hoisted_29];
+var _hoisted_27 = [_hoisted_25, _hoisted_26];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.stock_item) + " ------------- " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.form.item) + " ", 1
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.item_index + 1) + ". ", 1
   /* TEXT */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.index + 1) + ". ", 1
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.modelItem.item_code) + ":" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.modelItem.item_name), 1
   /* TEXT */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.stock_item.item_code) + ":" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.stock_item.item_name), 1
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.modelItem.item_sum), 1
   /* TEXT */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.stock_item.item_sum), 1
-  /* TEXT */
-  )])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.stock_item.checkin_last.profile['catalog_number']) + "/" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.stock_item.checkin_last.profile['lot_number']), 1
-  /* TEXT */
-  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [_hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  )])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "number",
     placeholder: "จำนวนสั่งซื้อ",
     "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
-      return $setup.form.unit = $event;
+      return $props.modelUnitOrder = $event;
     }),
     "class": "block w-full mt-1 border-gray-400 rounded-md"
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $setup.form.unit]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $props.modelUnitOrder]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.modelUnitOrder), 1
+  /* TEXT */
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
-      return $props.stock_item.checkin_last.profile['catalog_number'] = $event;
+      return $props.modelItem.checkin_last.profile['catalog_number'] = $event;
     }),
     "class": "block w-full mt-1 border-gray-400 rounded-md"
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $props.stock_item.checkin_last.profile['catalog_number']]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [_hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $props.modelItem.checkin_last.profile['catalog_number']]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [_hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
-      return $props.stock_item.checkin_last.profile['lot_number'] = $event;
+      return $props.modelItem.checkin_last.profile['lot_number'] = $event;
     }),
-    ref: 'cat_no-' + $props.stock_item.id,
     "class": "block w-full mt-1 border-gray-400 rounded-md"
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $props.stock_item.checkin_last.profile['lot_number']]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [_hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $props.modelItem.checkin_last.profile['lot_number']]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [_hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "number",
     "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
-      return $props.stock_item.price = $event;
+      return $props.modelItem.price = $event;
     }),
     "class": "block w-full mt-1 border-gray-400 rounded-md"
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $props.stock_item.price]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [_hoisted_23, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", _hoisted_25, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.businesses, function (business) {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $props.modelItem.price]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [_hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", _hoisted_23, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.modelBusinesses, function (business) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
-      key: business.id,
-      value: {
-        item_id: $props.stock_item.id,
-        business_id: business.id,
-        business_name: business.business_name
-      }
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(business.business_name), 9
-    /* TEXT, PROPS */
-    , _hoisted_26);
+      key: business.id
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(business.business_name), 1
+    /* TEXT */
+    );
   }), 128
   /* KEYED_FRAGMENT */
-  ))])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_27, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  ))])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "w-full flex justify-center text-sm text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-none",
-    onClick: _cache[4] || (_cache[4] = function ($event) {
-      return $setup.checkedOrder($props.index);
-    })
-  }, _hoisted_30)])])]);
+    ref: "input",
+    onClick: $setup.click
+  }, _hoisted_27, 512
+  /* NEED_PATCH */
+  )])])]);
 }
 
 /***/ }),
@@ -40108,7 +40084,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         key: 0,
         "class": "transition duration-500 ease-in-out bg-red-600 hover:bg-red-400 transform hover:-translate-y-1 hover:scale-110 inline-flex px-2 text-lg font-semibold leading-5 text-white rounded-full",
         onClick: $setup.showPreorder
-      }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.form.preview_orders.length), 1
+      }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.form.preview_orders.length), 1
       /* TEXT */
       )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Toast"), $setup.show_preorder ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_13, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
         type: "checkbox",
@@ -40133,18 +40109,24 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         onClick: _cache[0] || (_cache[0] = function ($event) {
           return _ctx.createOrder();
         })
-      }, _hoisted_18)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" test "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" display card "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{stock_items}} "), _hoisted_19, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.stock_items, function (stock_item, index) {
+      }, _hoisted_18)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" test "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" display card "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{stock_items}} "), _hoisted_19, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.stock_items, function (item, index) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["OrderItem"], {
-          key: stock_item.id,
-          index: index,
-          stock_item: stock_item,
-          businesses: $props.businesses
+          key: item.id,
+          item_index: index,
+          modelItem: item,
+          modelBusinesses: $props.businesses,
+          modelUnitOrder: 0,
+          onUpdate: function onUpdate($event) {
+            return $setup.getOrder(item, _ctx.modelUnitOrder);
+          }
         }, null, 8
         /* PROPS */
-        , ["index", "stock_item", "businesses"]);
+        , ["item_index", "modelItem", "modelBusinesses", "onUpdate"]);
       }), 128
       /* KEYED_FRAGMENT */
-      )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Start  display card "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"w-full  p-2  \">\r\n  \r\n        <div v-for=\"(stock_item,index) in stock_items\" :key=stock_item.id\r\n                class=\"w-full   bg-red-100 border-2 border-red-200 mt-3  rounded-lg lg:max-w-full lg:flex lg:flex-col\">\r\n                 <div class=\"flex ml-2\"> {{index+1}}. \r\n                    <p class=\" ml-2 \">  {{stock_item.item_code}}:{{stock_item.item_name}}</p> \r\n                    <p class=\" ml-2 text-red-600\" >\r\n                             <span  \r\n                                class=\"inline-flex px-2  text-lg font-semibold leading-5  rounded-full\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-5 w-5\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\r\n                            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4\" />\r\n                            </svg>\r\n                            {{stock_item.item_sum}}\r\n                            </span>\r\n                    </p> \r\n                </div>\r\n                <div class=\"flex ml-6\">\r\n                     <p class=\" ml-2 text-xs \">  {{stock_item.checkin_last.profile['catalog_number']}}/{{stock_item.checkin_last.profile['lot_number']}}</p> \r\n                </div>\r\n                <div  class=\"flex ml-6\">\r\n                     <div class=\" w-1/4 py-2 px-2 text-right\"> จำนวนสั่งซื้อ:</div>\r\n                     <div class=\" w-3/4 \">\r\n                     <input type=\"number\"   placeholder=\"จำนวนสั่งซื้อ\"   :ref=\"'item-'+stock_item.id\" \r\n                            class=\"block w-full mt-1 border-gray-400 rounded-md \">\r\n                     </div>\r\n                </div>\r\n                <div class=\"flex ml-6\">\r\n                    <div class=\" w-1/4 py-2 px-2 text-right\"> Cat.No:</div>\r\n                    <div class=\" w-3/4 \">\r\n                      <input type=\"text\"  v-model=\"stock_item.checkin_last.profile['catalog_number']\" v-bind:ref=\"'cat_no-'+stock_item.id\"\r\n                            class=\"block w-full mt-1   border-gray-400 rounded-md \">\r\n                    </div>\r\n                </div>\r\n                <div class=\"flex ml-6\">\r\n                    <div class=\" w-1/4 py-2 px-2 text-right\"> Lot.No:</div>\r\n                    <div class=\" w-3/4 \">\r\n                      <input type=\"text\"  v-model=\"stock_item.checkin_last.profile['lot_number']\" v-bind:ref=\"'cat_no-'+stock_item.id\"\r\n                            class=\"block w-full mt-1   border-gray-400 rounded-md \">\r\n                    </div>\r\n                </div>\r\n                <div class=\"flex ml-6\">\r\n                    <div class=\" w-1/4 py-2 px-2 text-right\"> ราคาต่อหน่วย:</div>\r\n                    <div class=\" w-3/4 \">\r\n                     <input type=\"number\"  v-model=\"stock_item.price\" \r\n                            class=\"block w-full mt-1  border-gray-400 rounded-md \">\r\n                    </div>\r\n                </div>\r\n                  <div class=\"flex ml-6 mt-2\">\r\n                    <div class=\" w-1/4 py-2 px-2 text-right\"> บริษัทผู้ขาย:</div>\r\n                    <div class=\" w-3/4 \">\r\n                      <select \r\n                        class=\"block appearance-none w-full  bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight \" >\r\n                        <option v-for=\"(business) in  businesses\" :key=business.id \r\n                            v-bind:value=\"{item_id:stock_item.id,business_id:business.id,business_name:business.business_name}\"\r\n                            >\r\n                            {{business.business_name}}\r\n                        </option>\r\n                        </select>\r\n                    </div>\r\n                </div>\r\n                <div class=\" m-2\">\r\n                    \r\n                          <button\r\n                            class=\"w-full flex justify-center text-sm  text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-none\"\r\n                            v-on:click=\"checkedOrder(index)\"\r\n                        >\r\n                             <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-8 w-8  \" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\r\n                            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z\" />\r\n                            </svg>\r\n                           ใส่ตะกร้า\r\n                        </button>\r\n                </div>\r\n                        \r\n                \r\n        </div>\r\n    </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" end display card ")];
+      )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Start  display card "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"w-full  p-2  \">\r\n  \r\n        <div v-for=\"(stock_item,index) in stock_items\" :key=stock_item.id\r\n                class=\"w-full   bg-red-100 border-2 border-red-200 mt-3  rounded-lg lg:max-w-full lg:flex lg:flex-col\">\r\n                 <div class=\"flex ml-2\"> {{index+1}}. \r\n                    <p class=\" ml-2 \">  {{stock_item.item_code}}:{{stock_item.item_name}}</p> \r\n                    <p class=\" ml-2 text-red-600\" >\r\n                             <span  \r\n                                class=\"inline-flex px-2  text-lg font-semibold leading-5  rounded-full\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-5 w-5\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\r\n                            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4\" />\r\n                            </svg>\r\n                            {{stock_item.item_sum}}\r\n                            </span>\r\n                    </p> \r\n                </div>\r\n                <div class=\"flex ml-6\">\r\n                     <p class=\" ml-2 text-xs \">  {{stock_item.checkin_last.profile['catalog_number']}}/{{stock_item.checkin_last.profile['lot_number']}}</p> \r\n                </div>\r\n                <div  class=\"flex ml-6\">\r\n                     <div class=\" w-1/4 py-2 px-2 text-right\"> จำนวนสั่งซื้อ:</div>\r\n                     <div class=\" w-3/4 \">\r\n                     <input type=\"number\"   placeholder=\"จำนวนสั่งซื้อ\"   :ref=\"'item-'+stock_item.id\" \r\n                            class=\"block w-full mt-1 border-gray-400 rounded-md \">\r\n                     </div>\r\n                </div>\r\n                <div class=\"flex ml-6\">\r\n                    <div class=\" w-1/4 py-2 px-2 text-right\"> Cat.No:</div>\r\n                    <div class=\" w-3/4 \">\r\n                      <input type=\"text\"  v-model=\"stock_item.checkin_last.profile['catalog_number']\" v-bind:ref=\"'cat_no-'+stock_item.id\"\r\n                            class=\"block w-full mt-1   border-gray-400 rounded-md \">\r\n                    </div>\r\n                </div>\r\n                <div class=\"flex ml-6\">\r\n                    <div class=\" w-1/4 py-2 px-2 text-right\"> Lot.No:</div>\r\n                    <div class=\" w-3/4 \">\r\n                      <input type=\"text\"  v-model=\"stock_item.checkin_last.profile['lot_number']\" v-bind:ref=\"'cat_no-'+stock_item.id\"\r\n                            class=\"block w-full mt-1   border-gray-400 rounded-md \">\r\n                    </div>\r\n                </div>\r\n                <div class=\"flex ml-6\">\r\n                    <div class=\" w-1/4 py-2 px-2 text-right\"> ราคาต่อหน่วย:</div>\r\n                    <div class=\" w-3/4 \">\r\n                     <input type=\"number\"  v-model=\"stock_item.price\" \r\n                            class=\"block w-full mt-1  border-gray-400 rounded-md \">\r\n                    </div>\r\n                </div>\r\n                  <div class=\"flex ml-6 mt-2\">\r\n                    <div class=\" w-1/4 py-2 px-2 text-right\"> บริษัทผู้ขาย:</div>\r\n                    <div class=\" w-3/4 \">\r\n                      <select \r\n                        class=\"block appearance-none w-full  bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight \" >\r\n                        <option v-for=\"(business) in  businesses\" :key=business.id \r\n                            v-bind:value=\"{item_id:stock_item.id,business_id:business.id,business_name:business.business_name}\"\r\n                            >\r\n                            {{business.business_name}}\r\n                        </option>\r\n                        </select>\r\n                    </div>\r\n                </div>\r\n                <div class=\" m-2\">\r\n                    \r\n                          <button\r\n                            class=\"w-full flex justify-center text-sm  text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-none\"\r\n                            v-on:click=\"checkedOrder(index)\"\r\n                        >\r\n                             <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-8 w-8  \" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\r\n                            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z\" />\r\n                            </svg>\r\n                           ใส่ตะกร้า\r\n                        </button>\r\n                </div>\r\n                        \r\n                \r\n        </div>\r\n    </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" end display card "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" -->" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.form.order_selected), 1
+      /* TEXT */
+      )];
     }),
     _: 1
     /* STABLE */
