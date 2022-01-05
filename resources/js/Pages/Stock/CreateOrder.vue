@@ -37,13 +37,13 @@
     <div class=" flex text-right px-6 justify-end  ">
      
         <div class="flex ">
-            <p class=" text-sm py-2"> กดที่ตะกร้าเพื่อยืนยันการสั่งซื้อ</p>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <!-- <p class=" text-sm py-2 text-green-800 font-bold"> กดที่ตะกร้าเพื่อสั่งซื้อ</p> -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-green-600 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
         </div >
         <div  class="">
-            <button v-if="show_preorder"
+            <button v-if="form.preview_orders.length>0"
                  class="transition duration-500 ease-in-out bg-red-600 hover:bg-red-400 transform hover:-translate-y-1 hover:scale-110 inline-flex px-2   text-lg font-semibold leading-5 text-white  rounded-full"
                  v-on:click="showPreorder"
                  >
@@ -58,18 +58,26 @@
 
       <!--Toast-->
     <div v-if="show_preorder" 
-        class="alert-banner z-20 fixed top-60 ml-20 shadow-lg md:w-full max-w-md">
+        class="alert-banner fixed z-20  top-60 ml-10 shadow-lg w-3/4 lg:ml-96 lg:w-2/5  ">
         
-        <label for="" class=" flex items-start justify-between w-full p-1 bg-yellow-200  shadow-lg text-yellow-900 font-bold" title="close" >
+        <label for="previeworder" class=" flex items-start justify-between w-full p-1 bg-yellow-200  shadow-lg text-yellow-900 font-bold" 
+            title="close" >
             รายการพัสดุที่ต้องการสั่งซื้อ
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+            </svg>
         </label>
 
         <input type="checkbox" class="hidden" id="previeworder" v-on:click="closePreviewOrder">
-       
-        <label v-for="(preview_order,index) in preview_orders" :key=preview_order.id
-            class="close cursor-pointer flex items-start justify-between w-full p-1 bg-yellow-100 shadow-lg text-sm text-yellow-900" title="close" for="previeworder">
-            {{index+1}}.{{preview_order.item_name}} จำนวน {{preview_order.unit}} x {{preview_order.price}}  เป็นเงิน {{preview_order.total}} บาท
-        
+
+        <label v-for="(preview_order,index) in form.preview_orders" :key=preview_order.id
+            class="close cursor-pointer flex items-start justify-between  w-full pt-4 px-2 bg-yellow-100 shadow-lg text-sm text-yellow-900" 
+            title="close" for="previeworder">
+            <!-- {{preview_order[0]}} -->
+            {{index+1}}.{{preview_order[0].item_name}} จำนวน {{preview_order[0].order_input}} x {{preview_order[0].price}}  เป็นเงิน {{preview_order[0].total}} บาท 
+            <!-- <p class=" ml-4 px-2 text-red-800 font-bold bg-red-300 rounded-md">ลบ</p>  -->
+             <Link  class=" ml-4 px-2 text-red-800 font-bold bg-red-300 rounded-md">ลบ</Link>
+           
         </label>
         <label for="" class=" flex items-start justify-between w-full p-1 bg-yellow-100  shadow-lg text-yellow-800 font-bold">
              รวม  {{sumPay}} บาท</label>
@@ -88,19 +96,17 @@
     <!-- display card -->
     <!-- {{stock_items}} -->
       <div>
-        
-        <!-- {{form.preview_orders.length}}//
-         {{form.preview_orders}} -->
+        preview_orders--
+         count array-{{form.preview_orders.length}}
+         DETAIL-{{form.preview_orders}} 
      </div>
 
      <OrderItem v-for="(item,index) in stock_items" 
         :key="item.id"
-        :item_index="index" 
-        :modelItem="item" 
-        :modelBusinesses="businesses"
-        :modelUnitOrder="0"
-        @update="getOrder(item,modelUnitOrder)"
-     
+        :itemIndex="index" 
+        :itemStock="item" 
+        :businesses="businesses"
+        @previewOrder="getOrder"
      />
     <!-- Start  display card -->
     <!-- <div class="w-full  p-2  ">
@@ -180,7 +186,7 @@
         </div>
     </div> -->
     <!-- end display card -->
-    -->{{form.order_selected}}
+  
 
     </AppLayout>
 </template>
@@ -191,7 +197,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import OrderItem from '@/Components/OrderItem.vue'
 import { Link, useForm, usePage } from '@inertiajs/inertia-vue3'
 import { Inertia } from '@inertiajs/inertia';
-import { onMounted, ref } from '@vue/runtime-core';
+import { computed, onMounted, ref } from '@vue/runtime-core';
 
 defineProps({
     stocks:Array,
@@ -205,24 +211,14 @@ defineProps({
 
 
 const show_preorder=ref(false);
+const total_bath=ref(0);
+const sum_pay = ref(0);
 
 const form = useForm({
-    items:[],
-    order_selected:[],
+   // items:[],
+  //  order_selected:[],
     unit_order:0,
-    // preview_orders: [{
-    //                     stock_id:0,
-    //                     id:0,
-    //                     sap:0,
-    //                     item_name:'',
-    //                     unit:0,
-    //                     price:0,
-    //                     business_id:0,
-    //                     business_name:'',
-    //                     total:0,
-    //                     catalog_number:'',
-    //                     lot_number:'',
-    //                 }],
+    preview_orders: [],
 
     // business_selected:[],
    
@@ -236,37 +232,19 @@ const form = useForm({
      
 })
 
-const getOrder=(item,order_item)=>{
-     console.log('getOrder  item->')
-     console.log(item)
-      console.log('getOrder  order_item->')
-     console.log(order_item)
+const getOrder=(value)=>{
+    console.log('getOrder  item----->')
+    console.log(value)
+    console.log('preview_orders----->')
+    console.log(form.preview_orders.length)
+    console.log(form.preview_orders)
+    // form.preview_orders=value
+    form.preview_orders.push(value);
+    console.log('after preview_orders----->')
+    console.log(form.preview_orders.length)   
     
 }
-const checkedOrder=(item,unit)=>{
-     console.log('itemsChecked->')
-     console.log(item)
-      console.log('unit->')
-      console.log(unit)
-     //  this.preview_orders.push({
-//                                         stock_id:item.stock_id,
-//                                         id:item.id,
-//                                         sap:item.sap,
-//                                         item_name:item.item_name,
-//                                         unit:this.$refs['item-'+item.id].value,
-//                                         price:this.$refs['price-'+item.id].value,
-//                                         business_id:this.business_selected[item.id].business_id,
-//                                         business_name:this.business_selected[item.id].business_name,
-//                                         total:total_bath,
-//                                         catalog_number:this.$refs['cat_no-'+item.id].value,
-//                                         lot_number:this.$refs['lot_no-'+item.id].value,
-//                                     });
-}
-const itemsChecked=()=>{
-    console.log('itemsChecked->'+from.preview_orders.length)
-     from.preview_orders.length;
-     show_preorder.value=true;
-}
+
 
 const  showPreorder=()=>{
             show_preorder.value=true;
@@ -275,7 +253,17 @@ const closePreviewOrder=()=>{
             show_preorder.value=false;
 }
 
+const sumPay = computed(()=>{
+    sum_pay.value = 0;
+    form.preview_orders.forEach(item => {            
+                sum_pay.value += item[0].total;
+            })
+    return sum_pay.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+})
 
+
+
+//*************** Old Script ***********************************/
 // export default {
 //     components: {
 //         AppLayout,

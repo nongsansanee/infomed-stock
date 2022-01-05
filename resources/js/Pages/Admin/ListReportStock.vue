@@ -188,7 +188,7 @@ export default {
         // }
         getStockReport(stock_selected){
                 // console.log('aaaaaaaaaa');
-                // console.log(stock_selected);
+                //console.log(stock_selected);
                 // console.log(year_selected);
                 // console.log(month_selected);
                 // Inertia.get(route('admin-report-stock',{stock_slug:stock_selected,year:year_selected,month:month_selected}), 

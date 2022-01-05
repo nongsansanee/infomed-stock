@@ -61,41 +61,41 @@ Route::get('/', function () {
 //แสดงหน้าเบิกพัสดุ
  Route::get('/stock/{division_id}', [StockController::class,'index'])->name('stock')->middleware('auth','can:view_item');
  //แสดงรายละเอียดการเบิก/ตรวจรับ พัสดุ
- Route::get('/stock-item/{stock_item}', [ItemTransactionController::class,'show'])->name('list-stock-item');
+ Route::get('/stock-item/{stock_item}', [ItemTransactionController::class,'show'])->name('list-stock-item')->middleware('auth');
  //เบิกพัสดุ
- Route::post('/checkout-stock-item', [ItemTransactionController::class,'store'])->name('checkout-stock-item');
+ Route::post('/checkout-stock-item', [ItemTransactionController::class,'store'])->name('checkout-stock-item')->middleware('auth');
  
- Route::get('/create-report-stock/{division_id}', [ReportStockController::class,'index'])->name('create-report-stock');
+ Route::get('/create-report-stock/{division_id}', [ReportStockController::class,'index'])->name('create-report-stock')->middleware('auth');
  
- Route::get('/report-stock/{division_id}', [ReportStockController::class,'show'])->name('report-stock');
+ Route::get('/report-stock/{division_id}', [ReportStockController::class,'show'])->name('report-stock')->middleware('auth');
  //Route::get('/report-stock/show/{division_id}', [ReportStockController::class,'index'])->name('report-stock-show');
  
  //หน้าแรกสร้างใบสั่งซื้อ
- Route::get('/create-order/{division_id}', [CreateOrderController::class,'index'])->name('create-order');
+ Route::get('/create-order/{division_id}', [CreateOrderController::class,'index'])->name('create-order')->middleware('auth');
  //สร้างใบสั่งซื้อ
- Route::post('/create-order/add', [CreateOrderController::class,'store'])->name('add-order');
+ Route::post('/create-order/add', [CreateOrderController::class,'store'])->name('add-order')->middleware('auth');
  //พิมพ์ใบสั่งซื้อ
- Route::get('/create-order/print/{order}', [PrintFormController::class,'show'])->name('print-order');
+ Route::get('/create-order/print/{order}', [PrintFormController::class,'show'])->name('print-order')->middleware('auth');
  //แสดงรายการสร้างเอกสารใบสั่งซื้อ
- Route::get('/order-list/{division_id}', [CreateOrderController::class,'show'])->name('order-list');
+ Route::get('/order-list/{division_id}', [CreateOrderController::class,'show'])->name('order-list')->middleware('auth');
  //ส่งเอกสารใบสั่งซื้อ
- Route::post('/order-list/update', [CreateOrderController::class,'update'])->name('send-order');
+ Route::post('/order-list/update', [CreateOrderController::class,'update'])->name('send-order')->middleware('auth');
  //บันทึกรับพัสดุใหม่ลงคลัง
- Route::post('/order-list/checkin/', [CheckInOrderController::class,'store'])->name('checkin-order');
+ Route::post('/order-list/checkin/', [CheckInOrderController::class,'store'])->name('checkin-order')->middleware('auth');
 //แสดงหน้าตรวจรับพัสดุ
-  Route::get('/receive-order/{order}', [CheckInOrderController::class,'update'])->name('receive-order');
+  Route::get('/receive-order/{order}', [CheckInOrderController::class,'update'])->name('receive-order')->middleware('auth');
  //พิมพ์ใบตรวจรับ
- Route::get('/create-order/print-checkin/{order}', [PrintFormController::class,'create'])->name('print-checkin');
+ Route::get('/create-order/print-checkin/{order}', [PrintFormController::class,'create'])->name('print-checkin')->middleware('auth');
  //ดูจำนวนคงเหลือหลังตรวจรับ
- Route::get('/order-list/show/{order_id}', [CheckInOrderController::class,'show'])->name('view-checkin-order');
+ Route::get('/order-list/show/{order_id}', [CheckInOrderController::class,'show'])->name('view-checkin-order')->middleware('auth');
  
- Route::get('/admin/report-list/{division_id}', [AdminReportStockController::class,'index'])->name('report-list');
- Route::get('/admin/report-stock/{stock_slug}', [AdminReportStockController::class,'show'])->name('admin-report-stock');
+ Route::get('/admin/report-list/{division_id}', [AdminReportStockController::class,'index'])->name('report-list')->middleware('auth');
+ Route::get('/admin/report-stock/{stock_slug}', [AdminReportStockController::class,'show'])->name('admin-report-stock')->middleware('auth');
  
  //แสดงรายการใบสั่งซื้อ
- Route::get('/admin/order-list/', [AdminOrderController::class,'index'])->name('check-order-list');
+ Route::get('/admin/order-list/', [AdminOrderController::class,'index'])->name('check-order-list')->middleware('auth');
  //อนุมัติใบสั่งซื้อ
- Route::post('/admin/order-list/update', [AdminOrderController::class,'update'])->name('approve-order');
+ Route::post('/admin/order-list/update', [AdminOrderController::class,'update'])->name('approve-order')->middleware('auth');
  
  //printForm
  Route::get('/testprint', [PrintFormController::class,'index'])->name('testprint');
