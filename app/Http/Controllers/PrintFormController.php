@@ -226,14 +226,12 @@ class PrintFormController extends Controller
         $pdf->AddFont('THSarabunNew','B','THSarabunNew_b.php');
 
         // add  image watermark
-       // $pdf->Image('https://a7sas.net/wp-content/uploads/2019/07/4060.jpeg',60,30,90,0);
-      // $pdf->Image(storage_path('images/logo_med_tranparent.gif'),60,30,90,0,'GIF');
-       $pdf->Image(storage_path('app/public/images/watermark_medstock.png'),20,30,0,0,'png');
+       // $pdf->Image(storage_path('app/public/images/watermark_medstock.png'),20,30,0,0,'png');
         
         //title
         $pdf->SetFont('THSarabunNew','B');
         $pdf->SetFontSize('20'); 
-        $unit = Unit::where('unitid',$order->items[0]['stock_id'])->first();
+        $unit = Unit::where('unitid',$order->items[0][0]['stock_id'])->first();
         Log::info($unit);
         $division_name = $unit->unitname;
         $head = 'แบบฟอร์มรายการสั่งซื้อวัสดุของ สาขา/หน่วยงาน';
@@ -260,27 +258,27 @@ class PrintFormController extends Controller
         $pdf->SetLineWidth(0.1);
         foreach($order->items as $index=>$item){
             $index = $index+1;
-            $item_print = $index.'. '.$item['sap'].'    '.$item['item_name'];
+            $item_print = $index.'. '.$item[0]['sap'].'    '.$item[0]['item_name'];
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item_print),'B');
            
             
-            if(strlen($item['business_name'])>100){
+            if(strlen($item[0]['business_name'])>100){
                 $pdf->SetFontSize('12'); 
             }
             $pdf->SetXY(110, $y);
-            $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item['business_name']));
+            $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item[0]['business_name']));
 
             $pdf->SetFontSize('16');
             $pdf->SetXY(200, $y);
-            $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item['unit']));
+            $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item[0]['order_input']));
         
             $pdf->SetXY(215, $y);
-            $pdf->Cell(0,10,iconv('UTF-8', 'cp874', number_format($item['price'],2)));
+            $pdf->Cell(0,10,iconv('UTF-8', 'cp874', number_format($item[0]['price'],2)));
 
             $pdf->SetXY(250, $y);
-            $pdf->Cell(0,10,iconv('UTF-8', 'cp874', number_format($item['total'],2)));
+            $pdf->Cell(0,10,iconv('UTF-8', 'cp874', number_format($item[0]['total'],2)));
 
-            $total_all = $total_all+$item['total'];
+            $total_all = $total_all+$item[0]['total'];
             $y = $y+10;
             $pdf->SetXY($x, $y);
         }

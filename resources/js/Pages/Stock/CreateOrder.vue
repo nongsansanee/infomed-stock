@@ -22,15 +22,18 @@
             <div class="mt-3" >
                 <label for="">เลือกคลังพัสดุ</label> 
             </div>
-            <select name="" id="" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
-                <option v-for="(stock) in  stocks" :key=stock.id value="{{stock.id}}">{{stock.stockname}}</option>
+            <select name="" id="" 
+                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" 
+                 v-model="form.unit_id"
+            >
+                <option v-for="(stock) in  stocks" :key=stock.id :value="stock.id" >{{stock.stockname}}</option>
             </select>
            
        
         </div>
       
 
-    <h1 class=" m-3 text-center" >ข้อมูลจำนวนคงเหลือ ณ วันที่ปัจจุบัน {{sysdate_thai}}</h1>
+    <h1 class=" m-3 text-center text-lg font-bold" >ข้อมูลจำนวนคงเหลือ ณ วันที่ปัจจุบัน {{sysdate_thai}}</h1>
 
     <!-- item order -->
   
@@ -94,12 +97,12 @@
     </div>
     <!-- test -->
     <!-- display card -->
-    <!-- {{stock_items}} -->
-      <div>
+
+      <!-- <div>
         preview_orders--
          count array-{{form.preview_orders.length}}
          DETAIL-{{form.preview_orders}} 
-     </div>
+     </div> -->
 
      <OrderItem v-for="(item,index) in stock_items" 
         :key="item.id"
@@ -107,7 +110,12 @@
         :itemStock="item" 
         :businesses="businesses"
         @previewOrder="getOrder"
-     />
+     >
+       <template v-slot:stockName>
+            <p class="text-md font-bold text-red-600 ">คุณต้องการส่งเอกสารการสั่งซื้อพัสดุนี้ใช่หรือไม่?</p> 
+                                    
+        </template>
+     </OrderItem>
     <!-- Start  display card -->
     <!-- <div class="w-full  p-2  ">
   
@@ -215,33 +223,23 @@ const total_bath=ref(0);
 const sum_pay = ref(0);
 
 const form = useForm({
-   // items:[],
-  //  order_selected:[],
-    unit_order:0,
-    preview_orders: [],
-
-    // business_selected:[],
-   
-
+    preview_orders:[],
+    unit_id:0,
 })
 
  onMounted(() => {
-    console.log('onMounted');
+  //  console.log('onMounted');
     //console.log('stock_item======'+usePage().props.value.stock_items);
     form.items = usePage().props.value.stock_items;
+    form.unit_id = usePage().props.value.unit.unitid;
      
 })
 
 const getOrder=(value)=>{
-    console.log('getOrder  item----->')
-    console.log(value)
-    console.log('preview_orders----->')
-    console.log(form.preview_orders.length)
-    console.log(form.preview_orders)
-    // form.preview_orders=value
+    // console.log('Parent getOrder  item----->')
     form.preview_orders.push(value);
-    console.log('after preview_orders----->')
-    console.log(form.preview_orders.length)   
+    // console.log('after preview_orders----->')
+    // console.log(form.preview_orders.length)   
     
 }
 
@@ -259,6 +257,22 @@ const sumPay = computed(()=>{
                 sum_pay.value += item[0].total;
             })
     return sum_pay.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+})
+
+const createOrder=(()=>{
+            //    console.log('create order');
+            // console.log(form.preview_orders);
+            //  console.log(form.preview_orders[0]);
+   form.post(route('add-order'), {
+        preserveState: false,
+        preserveScroll: true,
+        onSuccess: page => { console.log('success');},
+        onError: errors => { 
+            console.log('error');
+        },
+        onFinish: visit => { console.log('finish');},
+    })
+               
 })
 
 
@@ -333,16 +347,6 @@ const sumPay = computed(()=>{
 //                         this.$refs['itemcheck-'+item.id].value=false;
 //                         return;
 //                 }
-
-//                 // console.log(this.business_selected);
-//                 // console.log(this.business_selected[item.id]);
-                
-//                 // console.log(Object.keys(this.business_selected));
-//                 // if(!JSON.stringify(this.business_selected).includes(item.id))
-//                 // {
-//                 //         alert('กรุณาระบุบริษัทผู้ขาย');
-//                 //         return;
-//                 // }
 
 //                 let total_bath = this.$refs['item-'+item.id].value*this.$refs['price-'+item.id].value;
               

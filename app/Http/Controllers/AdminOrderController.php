@@ -124,14 +124,17 @@ class AdminOrderController extends Controller
      */
     public function update(Request $request)
     {
+        //Log::info($request);
+       // return "test";
+       $user=Auth::user();
         $datetime_now = Carbon::now();
-        Log::info('datetime_now==>');
+       // Log::info('datetime_now==>');
       
-        Log::info($datetime_now);
+       // Log::info($datetime_now);
         $tmp_date_now = explode(' ', $datetime_now);
       
-        $order= OrderItem::find($request->order_id);
-        Log::info($order->timeline);
+        $order= OrderItem::find($request->confirm_order_id);
+       // Log::info($order->timeline);
 
         //update order_no
         try{
@@ -139,10 +142,10 @@ class AdminOrderController extends Controller
             $datetime_send = $tmp_date_now[0].' '.$tmp_date_now[1];
             $old_timeline = $order->timeline;
             $old_timeline['approve_datetime']=$datetime_send;
-            $old_timeline['approve_user_id']='1';
+            $old_timeline['approve_user_id']=$user->id;
          
             Log::info($old_timeline);
-            OrderItem::find($request->order_id)->update([
+            OrderItem::find($request->confirm_order_id)->update([
                                                         'status'=>'approve',
                                                         'timeline'=>$old_timeline
                                                             ]);

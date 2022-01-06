@@ -248,65 +248,7 @@ const okConfirmCheckout=()=>{
     })
   
 }
-// export default {
-//     components: {
-//         AppLayout,
-//         Link,
-//         ModalConfirm,
-//     },
-//     props:{
-//         stocks:Array,
-//         stock_items:Array,
-//         unit:Object,
-//         errors: Object,
-//         can_abilities: { type: Object, required: true },
-//         can: { type: Object, required: true },
-//     },
-//     data(){
-//         return{
-//             unit_checkout:[],
-//             date_checkout:[],
-//             item_balance:0,
-//             confirm_checkout:0,
-//             confirm_item_name:'',
-//             confirm_item_slug:'',
-//             confirm_item_date:'',
-//             confirm_item_count:'',
-//             stock_item_sum:[...this.stock_items], //เอาตัวแปร จาก props มาใช้
-      
-//         }
-//     },
-//     methods:{
-//         confirmCheckout(index,stock_item){
-//              console.log('confirmCheckout');
-//             this.confirm_checkout = 1;
-//             this.confirm_item_slug = stock_item.slug;
-//             this.confirm_item_name = stock_item.item_name;
-//             this.confirm_item_date = this.date_checkout[index];
-//             this.confirm_item_count = this.unit_checkout[index];
-//         },
-//         cancelConfirmCheckout(){
-//             this.confirm_checkout = 0;
-//         },
-//         okConfirmCheckout(){
-//             this.confirm_checkout = 0;
-//             console.log('OK Confirm');
-//             Inertia.post(route('checkout-stock-item'), 
-//                              { 
-//                                  item_slug:this.confirm_item_slug,
-//                                  date:this.confirm_item_date,
-//                                  unit:this.confirm_item_count,
-//                               },
-//                               {
-//                                   preserveState: false,
-//                                 //   preserveScroll: true
-//                               }
-//                              );
-//         }
-//     },
 
-   
-// }
 
 </script>
  

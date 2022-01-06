@@ -173,20 +173,23 @@ class CheckInOrderController extends Controller
      */
     public function update(OrderItem $order)
     {
-        // Log::info('CheckInOrderController index');
+        Log::info('CheckInOrderController index');
+        // Log::info($order);
+        // Log::info($order->items);
+       
         
-        // Log::info($order->Stock['stockname']);
+       //  Log::info($order->Stock['stockname']);
 
         foreach($order->items as $key=>$item ){
-            $old_item_sum = StockItem::select('item_sum')->whereId($item['id'])->first();
+            //Log::info($item[0]['id']);
+            $old_item_sum = StockItem::select('item_sum')->whereId($item[0]['id'])->first();
            // Log::info($old_item_sum);
             $old_items_sum[]=$old_item_sum['item_sum'];
            
         }
-
+       // return 'test';
         // Log::info($old_items_sum);
        
-     //   return Redirect::back()->withErrors(['error' => 'invalid credentials']);
         return Inertia::render('Stock/ReceiveOrder',
                                 [
                                     'order' => $order,

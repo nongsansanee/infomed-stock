@@ -12,6 +12,7 @@ use App\Models\Stock;
 use App\Models\StockItem;
 use App\Models\Unit;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 
@@ -25,6 +26,7 @@ class CreateOrderController extends Controller
     public function index($division_id)
     {
         $stocks = Stock::where('unit_id',$division_id)->get();
+       //$stocks = Stock::all();
         $stock_items = StockItem::where('stock_id',$division_id)->get();
         $unit = Unit::where('unitid',$division_id)->first();
 
@@ -81,15 +83,18 @@ class CreateOrderController extends Controller
     public function store(Request $request)
     {
         //dd($request);
-        Log::info($request);
-        //Log::info($request->order_items[0]['stock_id']);
+        // Log::info($request);
+        // Log::info($request->unit_id);
+      //  Log::info($request->preview_orders);
+        $user = Auth::user();
+        Log::info($user);
         $mutable = Carbon::now();
         //\Log::info($mutable);
         $tmp_date_now = explode(' ', $mutable);
         $split_date_now = explode('-', $tmp_date_now[0]);
 
         $last_create_no = OrderItem::select('create_no')
-                            ->where('unit_id',$request->order_items[0]['stock_id'])
+                            ->where('unit_id',$request->unit_id)
                             ->where('year',$split_date_now[0])
                             ->orderBy('create_no','desc')
                             ->first();
@@ -104,19 +109,20 @@ class CreateOrderController extends Controller
         }
 
         // foreach( $request->order_items as $item ){
-            Log::info($request->order_items);
+            Log::info($request->preview_orders);
             Log::info($last_create_number);
             // Log::info($item['sap']);
+       // return "CreateOrderController store dubug";
         try{
             Log::info('create order');
             OrderItem::create([
                 'create_no' => $last_create_number,
-                'unit_id' => $request->order_items[0]['stock_id'],
-                'user_id' => 2,
+                'unit_id' => $request->unit_id,
+                'user_id' => $user->id,
                 'year' => $split_date_now[0],
                 'month' => $split_date_now[1],
                 'date_order' => $tmp_date_now[0],
-                'items' => $request->order_items,
+                'items' => $request->preview_orders,
             ]);
         }catch(\Illuminate\Database\QueryException $e){
             //rollback
@@ -181,17 +187,18 @@ class CreateOrderController extends Controller
      */
     public function update(Request $request)
     {
+        $user = Auth::user();
         //dd($request);
-       // Log::info($request->order_id);
-       
+        //Log::info($request->confirm_order_id);
+       // return "CreateOrderController update";
         $datetime_now = Carbon::now();
-        Log::info('datetime_now==>');
+       // Log::info('datetime_now==>');
       
-        Log::info($datetime_now);
+        //Log::info($datetime_now);
         $tmp_date_now = explode(' ', $datetime_now);
         $split_date_now = explode('-', $tmp_date_now[0]);
 
-        $order = OrderItem::find($request->order_id);
+        $order = OrderItem::find($request->confirm_order_id);
         //Log::info($order);
         $last_order_no = OrderItem::select('order_no')
                                 ->where('unit_id',$order->unit_id)
@@ -199,24 +206,24 @@ class CreateOrderController extends Controller
                                 ->orderBy('order_no','desc')
                                 ->first();
         if($last_order_no->order_no == 0){
-            Log::info('this unit no order');
+            //Log::info('this unit no order');
             $last_order_number = 1;
         }else{
-            Log::info('this unit has order');
-            Log::info($last_order_no);
+           // Log::info('this unit has order');
+            //Log::info($last_order_no);
             $last_order_number = $last_order_no->order_no+1;
 
         }
 
-        Log::info($last_order_number);
+        //Log::info($last_order_number);
 
         //update order_no
         try{
             Log::info('send order');
             $datetime_send = $tmp_date_now[0].' '.$tmp_date_now[1];
-            $timeline = ['send_datetime'=>$datetime_send , 'send_user_id'=>'2'];
+            $timeline = ['send_datetime'=>$datetime_send , 'send_user_id'=>$user->id];
             Log::info($timeline);
-            $order = OrderItem::find($request->order_id)->update([
+            $order = OrderItem::find($request->confirm_order_id)->update([
                                                                 'order_no'=>$last_order_number,
                                                                 'status'=>'send',
                                                                 'timeline'=>$timeline

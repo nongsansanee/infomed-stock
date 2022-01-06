@@ -96,7 +96,7 @@ const form = useForm({
     item:[],
     business_input:[],
     order_input:0,
-    preview_orders: [],
+    preview_orders: Array,
    })
 
 form.item = props.itemStock
