@@ -78,7 +78,7 @@ class PrintFormController extends Controller
           //title
           $pdf->SetFont('THSarabunNew','B');
           $pdf->SetFontSize('20'); 
-          $unit = Unit::where('unitid',$order->items[0]['stock_id'])->first();
+          $unit = Unit::where('unitid',$order->items[0][0]['stock_id'])->first();
         //  Log::info($unit);
           $division_name = $unit->unitname;
           $head = 'แบบฟอร์มบันทึกการรับพัสดุ สาขา/หน่วยงาน';
@@ -108,15 +108,15 @@ class PrintFormController extends Controller
               //Log::info('stock_item_id->'.$item['id']);
               $i = $index;
               $index = $index+1;
-              $item_print = $index.'. '.$item['sap'].'    '.$item['item_name'];
+              $item_print = $index.'. '.$item[0]['sap'].'    '.$item[0]['item_name'];
               $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item_print),'B');
              
               
-              if(strlen($item['business_name'])>100){
+              if(strlen($item[0]['business_name'])>100){
                   $pdf->SetFontSize('12'); 
               }
               $pdf->SetXY(110, $y);
-              $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item['business_name']));
+              $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item[0]['business_name']));
 
               $pdf->SetFontSize('16');
               $pdf->SetXY(200, $y);
@@ -124,20 +124,20 @@ class PrintFormController extends Controller
   
               $pdf->SetFontSize('16');
               $pdf->SetXY(243, $y);
-              $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item['unit']));
+              $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item[0]['order_input']));
 
               //จำนวนคงเหลือ
-              //$item_sum = StockItem::select('item_sum')->whereId($item['id'])->first();
+              //$item_sum = StockItem::select('item_sum')->whereId($item[0]['id'])->first();
               Log::info('item_sum->'.$order->timeline['item_sum_old'][$i]);
-              $item_sum = $item['unit']+$order->timeline['item_sum_old'][$i];
+              $item_sum = $item[0]['order_input']+$order->timeline['item_sum_old'][$i];
               $pdf->SetXY(268, $y);
               $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item_sum));
 
           
             //   $pdf->SetXY(250, $y);
-            //   $pdf->Cell(0,10,iconv('UTF-8', 'cp874', number_format($item['total'],2)));
+            //   $pdf->Cell(0,10,iconv('UTF-8', 'cp874', number_format($item[0]['total'],2)));
   
-              $total_all = $total_all+$item['total'];
+              $total_all = $total_all+$item[0]['total'];
               $y = $y+10;
               $pdf->SetXY($x, $y);
           }

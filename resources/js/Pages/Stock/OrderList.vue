@@ -55,7 +55,12 @@
                 </select>
             </div>
     </div>
-  
+
+    <div v-if="order_lists.length==0"
+        class=" flex justify-center text-red-600"
+        >
+        <label for="">ไม่พบรายการใบสั่งซื้อพัสดุ</label>
+    </div>
     <OrderDetail v-for="(order_list,key) in order_lists" :key=order_list.id 
         :orderIndex="key" 
         :orderList="order_list" 
@@ -68,7 +73,7 @@
             </span>
         </template>
         <template v-slot:buttongroup>
-             <a :href="route('print-order',order_list.id)" v-if="order_list.status == 'created'" target="blank">
+             <a :href="route('print-order',order_list.id)"  target="blank">
                             <span
                                 class="inline-flex text-sm py-1 px-2  leading-5 text-white bg-blue-500 rounded-md"
                             >
@@ -80,7 +85,7 @@
                         </a>
                         <a :href="route('print-checkin',order_list.id)" v-if="order_list.status == 'checkin'" target="self">
                             <span
-                                class="flex flex-row text-sm py-1 px-2 leading-5 text-white bg-yellow-500 rounded-md"
+                                class="flex flex-row text-sm py-1 px-2 ml-3 leading-5 text-white bg-yellow-500 rounded-md"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd" />
@@ -100,7 +105,7 @@
                         </button>
                         <a :href="route('receive-order',order_list)" v-if="order_list.status == 'approve'" >
                             <span
-                                class="flex flex-row text-sm py-1 px-2  leading-5 text-white bg-green-500 hover:bg-green-700 rounded"
+                                class="flex flex-row text-sm py-1 px-2 ml-3  leading-5 text-white bg-green-500 hover:bg-green-700 rounded"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2m-4-1v8m0 0l3-3m-3 3L9 8m-5 5h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293h3.172a1 1 0 00.707-.293l2.414-2.414a1 1 0 01.707-.293H20" />

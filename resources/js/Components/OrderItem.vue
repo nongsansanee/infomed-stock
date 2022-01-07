@@ -1,5 +1,5 @@
 <template>
-      <div class="w-full  p-2  ">
+    <div class="w-full  p-2  ">
         <div 
                 class="w-full  bg-indigo-100 border-2 border-indigo-300 mt-3  rounded-lg lg:max-w-full lg:flex lg:flex-col">
                  <div class="flex ml-2"> {{itemIndex+1}}. 
@@ -16,14 +16,25 @@
                 </div>
             
                 <div  class="flex ml-6">
-                     <div class=" w-1/4 py-2 px-2 text-right"> จำนวนสั่งซื้อ:</div>
-                     <div class=" w-3/4 ">
-                     <input type="number"   placeholder="จำนวนสั่งซื้อ"   
-                            class="block w-full mt-1 border-gray-400 rounded-md "
-                            v-model="form.order_input"
-                            >
-                     </div>
+                    <div class="flex justify-end  w-1/4 py-2 px-2 "> 
+                        <div v-if="order_alert" class=" text-red-600" >
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                                </svg>
+                        </div>
+                        <div> จำนวนสั่งซื้อ:</div> 
+                    </div>
+                    <!-- <div class=" w-1/4 py-2 px-2 text-right"> จำนวนสั่งซื้อ:</div> -->
+                    <div class=" w-3/4 ">
+                    <input type="number"   placeholder="จำนวนสั่งซื้อ"   
+                        class="block w-full mt-1  rounded-md "
+                        :class="[order_alert ? 'border-red-500 border-2 ' : 'border-gray-400' ]"
+                        v-model="form.order_input"
+                        >
+                    </div>
+                    
                 </div>
+             
                 <div class="flex ml-6">
                     <div class=" w-1/4 py-2 px-2 text-right"> Cat.No:</div>
                     <div class=" w-3/4 ">
@@ -42,46 +53,83 @@
                 </div>
                 <div class="flex ml-6">
                     <div class=" w-1/4 py-2 px-2 text-right"> ราคาต่อหน่วย:</div>
-                    <div class=" w-3/4 ">
-                     <input type="number"  v-model="form.item.price" 
-                            class="block w-full mt-1  border-gray-400 rounded-md ">
-                    </div>
+                        <div class=" w-3/4 ">
+                        <input type="number"  v-model="form.item.price" 
+                                class="block w-full mt-1  border-gray-400 rounded-md ">
+                        </div>
                 </div>
-                  <div class="flex ml-6 mt-2">
-                    <div class=" w-1/4 py-2 px-2 text-right"> บริษัทผู้ขาย:</div>
+                <div class="flex ml-6 mt-2">
+                   
+                    <div class="flex justify-end  w-1/4 py-2 px-2 "> 
+                        <div v-if="business_alert" class=" text-red-600" >
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                                </svg>
+                        </div>
+                        <div> บริษัทผู้ขาย:</div> 
+                    </div>
                     <div class=" w-3/4 ">
-                      <select 
-                        class="block appearance-none w-full  bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight "
-                        v-model="form.business_input"
-                         >
-                        <option v-for="(business) in  businesses" :key="business.id" 
-                            :value="business.id+'-'+business.business_name" 
+                        <select id="business_input"
+                            class="block appearance-none w-full  bg-white border hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight "
+                            :class="[business_alert ? 'border-red-500 border-2 ' : 'border-gray-400' ]"
+                            v-model="form.business_input" 
                             >
-                            {{business.business_name}}
-                        </option>
+                            <option v-for="(business) in  businesses" :key="business.id" 
+                                :value="business.id+'-'+business.business_name" 
+                                >
+                                {{business.business_name}}
+                            </option>
                         </select>
                     </div>
                 </div>
+                <!-- <div v-if="order_alert || business_alert" class="  bg-red-200 py-2 px-2 h-auto ">
+                        <label for="" class=" px-10 text-sm text-red-700" >{{msg_alert}}</label>
+                </div> -->
                 <div class=" m-2">
                     
-                          <button
+                        <button
                             class="w-full flex justify-center text-sm  text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-none"
                             @click="addOrder"
                         >
-                             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8  " fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8  " fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                             </svg>
-                           ใส่ตะกร้า
+                        ใส่ตะกร้า
                         </button>
-                </div>
-                        
-                
+                </div>   
         </div>
     </div>
+
+    <!-- <ModalUpToYou :isModalOpen="open_alert" >
+        <template v-slot:header>
+            <p class="text-md font-bold text-red-600 ">!!!คุณใส่ข้อมูลพัสดุที่ต้องการสั่งซื้อไม่ครบ!!!</p> 
+                                    
+        </template>
+
+        <template v-slot:body>
+            <div class="text-gray-900 text-md font-medium dark:text-white">
+                <label class="  flex  justify-start w-full  text-lg text-red-700">
+                    {{msg_alert}}
+                </label>
+            </div>
+        </template>
+
+        <template v-slot:footer>
+            <div class=" w-full  text-center  md:block">
+                <button 
+                    class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                    v-on:click="closeAlert"
+                    >
+                    ตกลง
+                </button>
+                
+            </div>
+        </template>
+    </ModalUpToYou> -->
 </template>
 <script setup>
+import ModalUpToYou from '@/Components/ModalUpToYou.vue'
 import {  useForm, usePage } from '@inertiajs/inertia-vue3'
-import { onMounted} from '@vue/runtime-core';
 import { ref } from '@vue/reactivity';
 
 const emits = defineEmits(['previewOrder'])
@@ -101,8 +149,13 @@ const form = useForm({
 
 form.item = props.itemStock
 const total_bath=ref(0);
+const business_alert=ref(false);
+const order_alert=ref(false);
+const msg_alert=ref('');
 // console.log('item==>')
 // console.log(form.item)
+
+const closeAlert=()=>{ open_alert.value=false};
 
 const addOrder=()=>{
      console.log('child add order item==>')
@@ -110,7 +163,27 @@ const addOrder=()=>{
     // console.log('add order order_input==>')
     // console.log(form.order_input)
     // console.log('add order business_input==>')
-    // console.log(form.business_input)
+    // console.log(form.business_input);
+    // console.log(form.business_input.length);
+    if(form.business_input.length==0){
+        business_alert.value=true
+        // console.log('business_alert=====>'+business_alert.value)
+        msg_alert.value="กรุณาระบุบริษัทผู้ขาย";
+       // document.getElementById("business_input").focus();
+       return false;
+    }else{
+         business_alert.value=false;
+    }
+    if(form.order_input==0){
+        order_alert.value=true
+         msg_alert.value="กรุณาระบุจำนวนสั่งซื้อ";
+      //  document.getElementById("order_in").focus();
+        return false;
+    }else{
+          order_alert.value=false;
+    }
+
+   
     const business_input_array = form.business_input.split("-");
     // console.log(business_input_array[0])
     // console.log(business_input_array[1])

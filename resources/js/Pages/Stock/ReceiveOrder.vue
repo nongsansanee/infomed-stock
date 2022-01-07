@@ -33,8 +33,6 @@
                 <div>วันที่อนุมัติ:{{order.timeline['approve_datetime']}}</div>
             </div>
         </div>
-        
-        
           <!-- {{order}}       -->
         <div v-for="(item,key) in order.items" :key="key"
             class=" w-full flex flex-col p-2 my-2 space-y-2 bg-pink-100  border-2 border-gray-500 rounded "
@@ -47,7 +45,12 @@
              </div>
             <div class=" flex flex-row   ">
                 <span class=" font-bold "> จำนวนก่อนสั่งซื้อ: </span>
-                <span class=" font-bold text-red-500 mx-4 "> {{old_items_sum[key]}} </span>
+                <span class=" font-bold text-red-500 mx-4 "> {{order.timeline.item_sum_before_order[key]}} </span>
+                <span class=" font-bold ">ชิ้น</span>
+             </div>
+             <div class=" flex flex-row   ">
+                <span class=" font-bold "> จำนวนคงเหลือปัจจุบัน: </span>
+                <span class=" font-bold text-green-600 mx-4 "> {{old_items_sum[key]}} </span>
                 <span class=" font-bold ">ชิ้น</span>
              </div>
             <div class=" flex flex-row   ">

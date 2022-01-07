@@ -23,7 +23,7 @@
                                <span v-if="orderList.status=='created'" >ยังไม่ส่งไปภาคฯ</span>
                                 <span v-if="orderList.status=='send'" >รอภาคฯอนุมัติ</span>
                                 <span v-if="orderList.status=='approve'" >ภาคฯอนุมัติแล้ว</span>
-                                <span v-if="orderList.status=='checkin'"  class="inline-flex text-sm font-semibold leading-5 text-green-800 bg-green-200 rounded-md">ตรวจรับพัสดุแล้ว</span>
+                                <span v-if="orderList.status=='checkin'"  >ตรวจรับพัสดุแล้ว</span>
                             </span>
                     </Link>
                 </div>

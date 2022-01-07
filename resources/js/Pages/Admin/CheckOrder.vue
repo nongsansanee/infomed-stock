@@ -61,6 +61,12 @@
             </div>
         </div>
 
+        <div v-if="order_lists.length==0"
+            class=" flex justify-center text-red-600"
+            >
+            <label for="">ไม่พบรายการใบสั่งซื้อพัสดุ</label>
+        </div>
+
         <OrderDetail v-for="(order_list,key) in order_lists" :key=order_list.id 
             :orderIndex="key" 
             :orderList="order_list" 
@@ -109,7 +115,7 @@
             </template>
 
         </OrderDetail>
-
+<!-- {{order_lists}} -->
         <ModalUpToYou :isModalOpen="confirm_approve_order" >
             <template v-slot:header>
                 <p class="text-md font-bold text-red-600 ">คุณต้องการอนุมัติเอกสารการสั่งซื้อพัสดุนี้ใช่หรือไม่?</p> 
@@ -120,7 +126,7 @@
                 <div class="text-gray-900 text-md font-medium dark:text-white">
                     <label 
                             class="  flex  justify-start w-full text-sm text-red-900">
-                        ใบสั่งซื้อเลขที่:{{form.confirm_order_id}}/{{form.confirm_order_year}} ของ {{form.confirm_stockname_order}}
+                        ใบสั่งซื้อเลขที่:{{confirm_order_no}}/{{form.confirm_order_year}} ของ {{form.confirm_stockname_order}}
                     
                     </label>
                 </div>
@@ -176,6 +182,7 @@ defineProps({
 })
 
 const confirm_approve_order=ref(false)
+const confirm_order_no=ref(0);
 
 const form = useForm({
     confirm_order_id:0,
@@ -184,12 +191,13 @@ const form = useForm({
 })
 
 const confirmApproveOrder=(order)=>{
-        // console.log('confirmApproveOrder');
+    // console.log('confirmApproveOrder');
         // console.log(order);
         // console.log(order.id);
         // console.log(order.stock['stockname']);
     
     confirm_approve_order.value = true;
+    confirm_order_no.value = order.order_no;
     form.confirm_order_id = order.id;
     form.confirm_order_year = order.year;
     form.confirm_stockname_order = order.stock['stockname'];
@@ -202,13 +210,15 @@ const cancelApproveOrder=()=>{
 
 const okConfirmApproveOrder=()=>{
     confirm_approve_order.value = false;
-    console.log('OK ApproveOrder');
-    console.log(form.confirm_order_id);
+    // console.log('OK ApproveOrder');
+    // console.log(form.confirm_order_id);
     
     form.post(route('approve-order'), {
             preserveState: false,
             preserveScroll: true,
-            onSuccess: page => { console.log('success');},
+            onSuccess: page => { 
+                console.log('success');
+                },
             onError: errors => { 
                 console.log('error');
             },

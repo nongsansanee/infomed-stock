@@ -30,6 +30,7 @@ class AdminOrderController extends Controller
         $split_date_now = explode('-', $tmp_date_now[0]);
    
         $order_lists = OrderItem::where('year',$split_date_now[0]) 
+                                ->where('status','!=','created')
                                 ->with('User:id,name')
                                 ->with('Stock:id,stockname')
                                 ->orderBy('order_no','desc')

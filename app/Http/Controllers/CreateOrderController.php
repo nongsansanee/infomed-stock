@@ -85,7 +85,7 @@ class CreateOrderController extends Controller
         //dd($request);
         // Log::info($request);
         // Log::info($request->unit_id);
-      //  Log::info($request->preview_orders);
+        Log::info($request->preview_orders);
         $user = Auth::user();
         Log::info($user);
         $mutable = Carbon::now();
@@ -108,6 +108,15 @@ class CreateOrderController extends Controller
            
         }
 
+        /**************หาจำนวนคงเหลือ ณ วันที่สั่งซื้อ*************************/
+        foreach ($request->preview_orders as $item) {
+            $item_stock = StockItem::select('item_sum')->whereId($item[0]['id'])->first();
+            Log::info($item_stock->item_sum);
+            $item_sum_before_order[] =$item_stock->item_sum;
+        }
+
+      //  return "debug";
+
         // foreach( $request->order_items as $item ){
             Log::info($request->preview_orders);
             Log::info($last_create_number);
@@ -115,6 +124,7 @@ class CreateOrderController extends Controller
        // return "CreateOrderController store dubug";
         try{
             Log::info('create order');
+            $timeline['item_sum_before_order']=$item_sum_before_order;
             OrderItem::create([
                 'create_no' => $last_create_number,
                 'unit_id' => $request->unit_id,
@@ -123,6 +133,7 @@ class CreateOrderController extends Controller
                 'month' => $split_date_now[1],
                 'date_order' => $tmp_date_now[0],
                 'items' => $request->preview_orders,
+                'timeline' => $timeline,
             ]);
         }catch(\Illuminate\Database\QueryException $e){
             //rollback
@@ -220,13 +231,16 @@ class CreateOrderController extends Controller
         //update order_no
         try{
             Log::info('send order');
+            $old_timeline = $order->timeline;
             $datetime_send = $tmp_date_now[0].' '.$tmp_date_now[1];
-            $timeline = ['send_datetime'=>$datetime_send , 'send_user_id'=>$user->id];
-            Log::info($timeline);
+            $old_timeline['send_datetime']=$datetime_send;
+            $old_timeline['send_user_id']=$user->id;
+           // $timeline = ['send_datetime'=>$datetime_send , 'send_user_id'=>$user->id];
+            Log::info($old_timeline);
             $order = OrderItem::find($request->confirm_order_id)->update([
                                                                 'order_no'=>$last_order_number,
                                                                 'status'=>'send',
-                                                                'timeline'=>$timeline
+                                                                'timeline'=>$old_timeline
                                                             ]);
         }catch(\Illuminate\Database\QueryException $e){
             //rollback
