@@ -108,6 +108,9 @@ class PrintFormController extends Controller
               //Log::info('stock_item_id->'.$item['id']);
               $i = $index;
               $index = $index+1;
+              if(strlen($item[0]['item_name'])>30){
+                $pdf->SetFontSize('12'); 
+              }
               $item_print = $index.'. '.$item[0]['sap'].'    '.$item[0]['item_name'];
               $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item_print),'B');
              
@@ -186,6 +189,10 @@ class PrintFormController extends Controller
           $pdf->SetXY(200,3);
           $date_print = 'วันเวลาที่พิมพ์'.'  '.$date_now_show.'  '.$tmp_date_now[1].' น.';
           $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', $date_print), 0, 0, 'R');
+
+          $pdf->SetXY(10,3);
+          $date_print = 'อ้างอิงจากเลขที่ใบสั่งซื้อ:'.'  '.$order['create_no'].'/'.$order['year'];
+          $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', $date_print), 0, 0, 'L');
   
           //test font color
           // $pdf->SetFontSize('50');
@@ -226,7 +233,7 @@ class PrintFormController extends Controller
         $pdf->AddFont('THSarabunNew','B','THSarabunNew_b.php');
 
         // add  image watermark
-       // $pdf->Image(storage_path('app/public/images/watermark_medstock.png'),20,30,0,0,'png');
+       $pdf->Image(storage_path('app/public/images/watermark_medstock.png'),20,30,0,0,'png');
         
         //title
         $pdf->SetFont('THSarabunNew','B');
@@ -258,6 +265,9 @@ class PrintFormController extends Controller
         $pdf->SetLineWidth(0.1);
         foreach($order->items as $index=>$item){
             $index = $index+1;
+            if(strlen($item[0]['item_name'])>30){
+                $pdf->SetFontSize('12'); 
+            }
             $item_print = $index.'. '.$item[0]['sap'].'    '.$item[0]['item_name'];
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item_print),'B');
            
@@ -332,6 +342,9 @@ class PrintFormController extends Controller
         $date_print = 'วันเวลาที่พิมพ์'.'  '.$date_now_show.'  '.$tmp_date_now[1].' น.';
         $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', $date_print), 0, 0, 'R');
 
+        $pdf->SetXY(10,3);
+        $date_print = 'เลขที่ใบสั่งซื้อ:'.'  '.$order['create_no'].'/'.$order['year'];
+        $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', $date_print), 0, 0, 'L');
         //test font color
         // $pdf->SetFontSize('50');
         // $pdf->SetTextColor(255,192,203);

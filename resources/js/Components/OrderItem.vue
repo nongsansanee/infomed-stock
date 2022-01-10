@@ -165,6 +165,15 @@ const addOrder=()=>{
     // console.log('add order business_input==>')
     // console.log(form.business_input);
     // console.log(form.business_input.length);
+     if(form.order_input==0){
+        order_alert.value=true
+         msg_alert.value="กรุณาระบุจำนวนสั่งซื้อ";
+      //  document.getElementById("order_in").focus();
+        return false;
+    }else{
+          order_alert.value=false;
+    }
+    
     if(form.business_input.length==0){
         business_alert.value=true
         // console.log('business_alert=====>'+business_alert.value)
@@ -174,14 +183,7 @@ const addOrder=()=>{
     }else{
          business_alert.value=false;
     }
-    if(form.order_input==0){
-        order_alert.value=true
-         msg_alert.value="กรุณาระบุจำนวนสั่งซื้อ";
-      //  document.getElementById("order_in").focus();
-        return false;
-    }else{
-          order_alert.value=false;
-    }
+   
 
    
     const business_input_array = form.business_input.split("-");

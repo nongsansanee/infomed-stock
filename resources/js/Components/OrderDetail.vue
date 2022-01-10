@@ -11,11 +11,11 @@
                    
               
                     <p  class="flex items-center font-bold  ">
-                        {{orderIndex+1}}.เลขเอกสาร:{{orderList.create_no}}/{{orderList.year}}
+                        {{orderIndex+1}}.เลขที่ใบสั่งซื้อ:{{orderList.create_no}}/{{orderList.year}}
                     </p>
-                    <p v-if="orderList.status != 'created'" class=" font-bold  ">
+                    <!-- <p v-if="orderList.status != 'created'" class=" font-bold  ">
                          เลขที่ใบสั่งซื้อ:{{orderList.order_no}}/{{orderList.year}}
-                    </p>
+                    </p> -->
                     <Link >
                             <span
                                 class="inline-flex px-2 text-sm font-semibold leading-5 text-red-900 bg-red-200 rounded-md"
