@@ -36799,7 +36799,9 @@ __webpack_require__.r(__webpack_exports__);
   setup: function setup(__props, _ref) {
     var expose = _ref.expose;
     expose();
-    var confirm_checkout = (0,_vue_runtime_core__WEBPACK_IMPORTED_MODULE_3__.ref)(false);
+    var confirm_checkout = (0,_vue_runtime_core__WEBPACK_IMPORTED_MODULE_3__.ref)(false); // const date_alert=ref(false);
+    // const msg_alert=ref('');
+
     var form = (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__.useForm)({
       unit_checkout: [],
       date_checkout: [],
@@ -36820,6 +36822,16 @@ __webpack_require__.r(__webpack_exports__);
 
     var confirmCheckout = function confirmCheckout(index, stock_item) {
       console.log('confirmCheckout');
+      console.log(form.date_checkout[index]); // if(form.date_checkout.length==0){
+      //     date_alert.value=true
+      //     msg_alert.value="กรุณาระบุวันที่เบิก";
+      //     console.log('กรุณาระบุวันที่เบิก');
+      //   //  document.getElementById("order_in").focus();
+      //     return false;
+      // }else{
+      //     date_alert.value=false;
+      // }
+
       confirm_checkout.value = true;
       form.confirm_item_slug = stock_item.slug;
       form.confirm_item_name = stock_item.item_name;
@@ -41774,7 +41786,7 @@ var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
   "stroke-linejoin": "round",
   "stroke-width": "2",
   d: "M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-})]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" icon zoom "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\r\n                <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7\" />\r\n                </svg> ")], -1
+})])], -1
 /* HOISTED */
 );
 
@@ -41989,10 +42001,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           }
         }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6 \" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\r\n                            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z\" />\r\n                            </svg> "), _hoisted_40, _hoisted_41], 8
         /* PROPS */
-        , _hoisted_39)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"flex items-center\">\r\n            \r\n                <div class=\"text-sm\">\r\n                <p class=\"leading-none text-gray-900\">Jonathan Reinink</p>\r\n                <p class=\"text-gray-600\">Aug 18</p>\r\n                </div>\r\n            </div> ")])]);
+        , _hoisted_39)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])]);
       }), 128
       /* KEYED_FRAGMENT */
-      )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Modal "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" End Modal "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["ModalUpToYou"], {
+      )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["ModalUpToYou"], {
         isModalOpen: $setup.confirm_checkout
       }, {
         header: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {

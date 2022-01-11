@@ -42,10 +42,6 @@
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
-                <!-- icon zoom -->
-                <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-                </svg> -->
             </div>
             
             <div
@@ -98,7 +94,8 @@
                             <label for="">วันที่เบิก:</label>
                             <input type="date" name="" id=""
                                 v-model="form.date_checkout[key]"
-                                class="w-full px-12 py-2 border-2 rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500">
+                                class="w-full px-12 py-2 border-2 rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
+                                >
                         </div>
                         <div class=" m-2">
                             <label for="">จำนวน:</label>
@@ -125,22 +122,12 @@
                             บันทึกการเบิก
                         </button>
                     </div>
-                </div>
-            <!-- <div class="flex items-center">
-            
-                <div class="text-sm">
-                <p class="leading-none text-gray-900">Jonathan Reinink</p>
-                <p class="text-gray-600">Aug 18</p>
-                </div>
-            </div> -->
-            
+                </div>        
             </div>
         
         </div>
 
-        <!-- Modal -->
-  
-        <!-- End Modal -->
+     
 
         <ModalUpToYou :isModalOpen="confirm_checkout" >
 
@@ -197,7 +184,8 @@ defineProps({
 });
 
 const confirm_checkout=ref(false);
-
+// const date_alert=ref(false);
+// const msg_alert=ref('');
 const form = useForm({
     unit_checkout:[],
     date_checkout:[],
@@ -222,6 +210,17 @@ onMounted(() => {
 
 const confirmCheckout=(index,stock_item)=>{
     console.log('confirmCheckout');
+    console.log(form.date_checkout[index]);
+    // if(form.date_checkout.length==0){
+    //     date_alert.value=true
+    //     msg_alert.value="กรุณาระบุวันที่เบิก";
+    //     console.log('กรุณาระบุวันที่เบิก');
+    //   //  document.getElementById("order_in").focus();
+    //     return false;
+    // }else{
+    //     date_alert.value=false;
+    // }
+    
     confirm_checkout.value = true;
     form.confirm_item_slug = stock_item.slug;
     form.confirm_item_name = stock_item.item_name;
