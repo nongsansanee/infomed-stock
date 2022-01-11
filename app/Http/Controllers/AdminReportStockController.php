@@ -72,7 +72,8 @@ class AdminReportStockController extends Controller
      */
     public function show($stock_slug)
     {
-        Log::info($stock_slug);
+      //  Log::info('AdminReportStockController show');
+       // Log::info($stock_slug);
         // Log::info($year);
         // Log::info($month);
       //  return "test";

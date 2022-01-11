@@ -4,7 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\StockController;
-use App\Http\Controllers\StockItemController;
+//use App\Http\Controllers\StockItemController;
 use App\Http\Controllers\ReportStockController;
 use App\Http\Controllers\CreateOrderController;
 use App\Http\Controllers\AdminReportStockController;
@@ -67,8 +67,9 @@ Route::get('/', function () {
  
  Route::get('/create-report-stock/{division_id}', [ReportStockController::class,'index'])->name('create-report-stock')->middleware('auth');
  
- Route::get('/report-stock/{division_id}', [ReportStockController::class,'show'])->name('report-stock')->middleware('auth');
- //Route::get('/report-stock/show/{division_id}', [ReportStockController::class,'index'])->name('report-stock-show');
+ //ยังไม่ใช้
+ //Route::get('/report-stock/{division_id}', [ReportStockController::class,'show'])->name('report-stock')->middleware('auth');
+ 
  
  //หน้าแรกสร้างใบสั่งซื้อ
  Route::get('/create-order/{division_id}', [CreateOrderController::class,'index'])->name('create-order')->middleware('auth');

@@ -97,7 +97,8 @@
                     <div v-if="view_order">
                         <div v-for="(item,index) in view_items" :key=item.id>
                                 <span   class=" px-1" >
-                                     {{index+1}}.{{item[0].sap}}:{{item[0].item_name}} จำนวน {{item[0].order_input}} ชิ้น ราคาชิ้นละ {{item[0].price}} บาท -->stock_item_id({{item[0].id}})
+                                     {{index+1}}.{{item[0].sap}}:{{item[0].item_name}} จำนวน {{item[0].order_input}} ชิ้น ราคาชิ้นละ {{item[0].price}} บาท 
+                                     <!-- stock_item_id({{item[0].id}}) -->
                                 </span>
                         </div>
                     </div>
