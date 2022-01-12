@@ -2,6 +2,7 @@
    <AppLayout>
        <div class=" flex w-full h-52 justify-center bg-blue-100 rounded-md ">
            <p class=" my-2 ">ข่าวประชาสัมพันธ์</p> 
+              {{ $page.props.flash.user_abilities }}
        </div>
   
        <!-- <div>
@@ -31,7 +32,7 @@ export default {
     },
     props: {
         user_name: { type: String, required: true },
-        can_abilities: { type: Object, required: true },
+       // can_abilities: { type: Object, required: true },
        // mainMenuLinks:{type: Object, required: true},
     },
     setup() {

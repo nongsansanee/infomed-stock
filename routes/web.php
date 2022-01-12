@@ -65,11 +65,13 @@ Route::get('/', function () {
  //เบิกพัสดุ
  Route::post('/checkout-stock-item', [ItemTransactionController::class,'store'])->name('checkout-stock-item')->middleware('auth');
  
- Route::get('/create-report-stock/{division_id}', [ReportStockController::class,'index'])->name('create-report-stock')->middleware('auth');
- 
- //ยังไม่ใช้
+
+ //ไม่แน่ใจว่าจะใช้ หน้าแสดงข้อมูลปีเดือน ที่มีการเบิกพัสดุ
  //Route::get('/report-stock/{division_id}', [ReportStockController::class,'show'])->name('report-stock')->middleware('auth');
- 
+ //ไม่แน่ใจว่าจะใช้ หน้าแสดงรายละเอียดการเบิกพัสดุ
+ Route::get('/report-checkout-item/{division_id}', [ReportStockController::class,'index'])->name('report-checkout-item')->middleware('auth');
+ Route::get('/get-checkout-item/{stock_id}/{year}/{month}', [ReportStockController::class,'show'])->name('get-checkout-item')->middleware('auth');
+
  
  //หน้าแรกสร้างใบสั่งซื้อ
  Route::get('/create-order/{division_id}', [CreateOrderController::class,'index'])->name('create-order')->middleware('auth');

@@ -7,9 +7,9 @@
             <div class="mt-3" >
                 <label for="">เลือกคลังพัสดุ</label> 
             </div>
-            <select name="" id="" 
+            <select name="" id="" v-model="form.unit_selected"
                 class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
-                <option v-for="(stock) in  $page.props.stocks" v-bind:key=stock.id v-bind:value="stock.id">{{stock.stockname}}</option>
+                <option v-for="(stock) in  stocks" v-bind:key=stock.id v-bind:value="stock.id">{{stock.stockname}}</option>
             </select>
            
         <!-- {{$page.props.stock_items}} -->
@@ -27,14 +27,14 @@
         <div class="flex flex-col  mb-2 text-md font-bold text-gray-900 ">
             <div class=" m-2">
                 <label for="">ปี พ.ศ.</label>
-                <select name="" id="" v-model="year_selected"
+                <select name="" id="" v-model="form.year_selected"
                     class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
                     <option v-for="(year,index) in  years" :key=index v-bind:value="year">{{year+543}}</option>
                 </select>
             </div>
             <div  class=" m-2">
                 <label for="">เดือน</label>
-                <select name="" id="" v-model="month_selected"
+                <select name="" id="" v-model="form.month_selected"
                     class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
                     <option v-for="(month) in  months" :key=month.id v-bind:value="month.id">{{month.name}}</option>
                 </select>
@@ -48,7 +48,7 @@
             >
                 Cancel
             </button> -->
-            <button v-on:click="getReportStock()"
+            <button v-on:click="getReportStock(form.unit_selected,form.year_selected,form.month_selected)"
                 class=" flex justify-center px-8 py-2 mb-2  text-sm  text-white bg-blue-600 rounded-md hover:bg-blue-400 focus:outline-none"
             >
                 <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -58,9 +58,34 @@
             </button>
         </div>
 
+    <!-- {{item_trans}} -->
+        <div v-if="item_trans.length==0" class=" w-full text-center">
+            <label for="">ไม่พบข้อมูล</label>
+        </div>    
+
+      <div  class="w-full mt-3 p-2  ">
+  
+        <div v-for="(item_tran,key) in item_trans" :key=item_tran.id
+            class="w-full bg-blue-100  mt-3 border-2 border-blue-300 rounded-md lg:max-w-full lg:flex">
+            <!-- {{item_tran}} -->
+            <div class=" mx-2" >
+                 {{key+1}}.SAP:ชื่อพัสดุ:{{item_tran.stock_item['item_code']}}:{{item_tran.stock_item['item_name']}}
+            </div>   
+            <div class=" mx-2">
+                วันที่เบิก:{{item_tran.date_action}}
+            </div>  
+            <div class=" mx-2">
+                จำนวนที่เบิก:{{item_tran.item_count}} ชิ้น
+            </div>
+            <div class=" mx-2">
+                ผู้เบิก:{{item_tran.user_id}}
+            </div>      
+        </div>
+      </div>
+
         <!-- TABLE -->
     <!-- {{$page.props.stock_items}} -->
-    <table v-if="demo_show_stock_items != 0" class="min-w-full border-collapse block  md:table">
+    <!-- <table v-if="demo_show_stock_items" class="min-w-full border-collapse block  md:table">
 		<thead class="block  md:table-header-group">
 			<tr class="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
 				<th class="bg-pink-700 p-2 text-white font-bold md:border md:border-grey-300 text-left block md:table-cell md:rounded-lg">SAP:ชื่อพัสดุ</th>
@@ -98,10 +123,10 @@
             </tr>
 			
 		</tbody>
-	</table>
+	</table> -->
     <!-- END table -->
 
-      <div v-if="demo_show_stock_items !=0"  class=" mt-6 flex flex-col  ">
+      <div v-if="demo_show_stock_items1"  class=" mt-6 flex flex-col  ">
                 <!-- <button
                     class="px-3 py-1  text-sm text-gray-700 bg-gray-400 rounded-md hover:bg-gray-300 focus:outline-none"
                 >
@@ -135,60 +160,60 @@
 
     </AppLayout>
 </template>
-<script>
+<script setup>
 //import { ref } from 'vue';
 //import { usePage } from '@inertiajs/inertia-vue3'
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { Link } from '@inertiajs/inertia-vue3'
+import { Link, useForm } from '@inertiajs/inertia-vue3'
+import { ref } from '@vue/reactivity';
 
-export default {
-    components: {
-        AppLayout,
-        Link,
-    },
-    props:{
-        stocks:Array,
-        stock_items:Array,
-        unit:Array,
-    },
-    data(){
-        return{
-            demo_show_stock_items:0,
-            unit_selected:'',
-            year_selected:'',
-            month_selected:'',
-            years:[2022,2021,2020,2019,2018],
-           
-            months:[
-                    {id:1,name:'มกราคม' },
-                    {id:2,name:'กุมภาพันธ์' },	
-                    {id:3,name:'มีนาคม' },	
-                    {id:4,name:'เมษายน' },	
-                    {id:5,name:'พฤษภาคม' },	
-                    {id:6,name:'มิถุนายน' },	
-                    {id:7,name:'กรกฎาคม' },	
-                    {id:8,name:'สิงหาคม' },	
-                    {id:9,name:'กันยายน' },	
-                    {id:10,name:'ตุลาคม' },	
-                    {id:11,name:'พฤศจิกายน' },	
-                    {id:12,name:'ธันวาคม' },		
-                ],
-        }
-    },
-    methods:{
-        getReportStock(){
-            console.log('hi');
-            console.log(this.unit_selected);
-            console.log(this.year_selected);
-            console.log(this.month_selected);
-            this.demo_show_stock_items=1;
-        }
-    },
+defineProps({
+    stocks:Object,
+    stock_items:Object,
+    unit:Object, 
+})
 
-    // setup() {
-    
-    //     return { };
-    // },
+const  demo_show_stock_items=ref(false);
+const months=ref([
+        {id:1,name:'มกราคม' },
+        {id:2,name:'กุมภาพันธ์' },	
+        {id:3,name:'มีนาคม' },	
+        {id:4,name:'เมษายน' },	
+        {id:5,name:'พฤษภาคม' },	
+        {id:6,name:'มิถุนายน' },	
+        {id:7,name:'กรกฎาคม' },	
+        {id:8,name:'สิงหาคม' },	
+        {id:9,name:'กันยายน' },	
+        {id:10,name:'ตุลาคม' },	
+        {id:11,name:'พฤศจิกายน' },	
+        {id:12,name:'ธันวาคม' },
+])
+
+const   years=ref([2022,2021,2020,2019,2018])
+const item_trans=ref('')
+const form = useForm({
+    unit_selected:'',
+    year_selected:'',
+    month_selected:'',
+   // item_trans:{type:Object},
+})
+
+const  getReportStock=(stock_id,year,month)=>{
+//             console.log('hi');
+    // console.log(stock_id);
+    // console.log(year);
+    // console.log(month);
+    demo_show_stock_items.value=true;
+
+    axios.get(route('get-checkout-item',
+                         {stock_id:form.unit_selected , year:form.year_selected , month:form.month_selected}
+                    )).then(res => {
+        // console.log(res.data);
+        item_trans.value = res.data.item_trans;
+
+    });
+  
 }
+
 
 </script>
