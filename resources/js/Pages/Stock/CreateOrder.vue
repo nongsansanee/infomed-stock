@@ -32,6 +32,7 @@
        
         </div>
       
+    <h1 class=" m-3 text-center text-lg font-bold" >สร้างเอกสารใบสัญญาสั่งซื้อพัสดุ </h1>
 
     <h1 class=" m-3 text-center text-lg font-bold" >ข้อมูลจำนวนคงเหลือ ณ วันที่ปัจจุบัน {{sysdate_thai}}</h1>
 
@@ -53,9 +54,7 @@
                 {{form.preview_orders.length}}
             </button>
               
-        </div>
-        
-        
+        </div>    
     </div>
 
 
@@ -191,138 +190,6 @@ const createOrder=(()=>{
     })
                
 })
-
-
-
-//*************** Old Script ***********************************/
-// export default {
-//     components: {
-//         AppLayout,
-//         Link,
-//     },
-//     props:{
-//         stocks:Array,
-//         stock_items:Array,
-//         unit:Array,
-//         businesses:Array,
-//         sysdate_thai:String,
-//         sysdate:String,
-      
-//     },
-//     data(){
-//         return{
-           
-//            months:[
-// 				{id:1,name:'มกราคม' },
-// 				{id:2,name:'กุมภาพันธ์' },	
-// 				{id:3,name:'มีนาคม' },	
-//                 {id:4,name:'เมษายน' },	
-//                 {id:5,name:'พฤษภาคม' },	
-//                 {id:6,name:'มิถุนายน' },	
-//                 {id:7,name:'กรกฎาคม' },	
-//                 {id:8,name:'สิงหาคม' },	
-//                 {id:9,name:'กันยายน' },	
-//                 {id:10,name:'ตุลาคม' },	
-//                 {id:11,name:'ฟฤศจิกายน' },	
-//                 {id:12,name:'ธันวาคม' },		
-// 			],
-   
-//             order_selected:[],
-
-//             preview_orders: [{
-//                             stock_id:0,
-//                             id:0,
-//                             sap:0,
-//                             item_name:'',
-//                             unit:0,
-//                             price:0,
-//                             business_id:0,
-//                             business_name:'',
-//                             total:0,
-//                             catalog_number:'',
-//                             lot_number:'',
-//                             }],
-
-//             business_selected:[],
-
-//             show_preorder:0,
-//             sum_pay:0,
-//         }
-//     },
-//     methods: {
-//         checkedOrder(index){
-//            // console.log('checkedOrder');
-//              this.preview_orders=[];
-           
-          
-//             this.order_selected.forEach(item => {
-//                  //console.log(item.id);
-//                   // console.log(this.$refs['check-'+item.id].);
-//                 if(this.$refs['item-'+item.id].value=='')
-//                 {
-//                         alert('กรุณาใส่จำนวนที่ต้องการสั่งซื้อ');
-//                         this.$refs['itemcheck-'+item.id].value=false;
-//                         return;
-//                 }
-
-//                 let total_bath = this.$refs['item-'+item.id].value*this.$refs['price-'+item.id].value;
-              
-//                this.preview_orders.push({
-//                                         stock_id:item.stock_id,
-//                                         id:item.id,
-//                                         sap:item.sap,
-//                                         item_name:item.item_name,
-//                                         unit:this.$refs['item-'+item.id].value,
-//                                         price:this.$refs['price-'+item.id].value,
-//                                         business_id:this.business_selected[item.id].business_id,
-//                                         business_name:this.business_selected[item.id].business_name,
-//                                         total:total_bath,
-//                                         catalog_number:this.$refs['cat_no-'+item.id].value,
-//                                         lot_number:this.$refs['lot_no-'+item.id].value,
-//                                     });
-//             })
-           
-//         },
-//         createOrder(){
-//                console.log('create order');
-//            // console.log(this.preview_orders);
-//             Inertia.post(route('add-order'), 
-//                             { 
-//                                 order_items:this.preview_orders,
-//                             },
-//                             {
-//                                 preserveState: false,
-//                             //   preserveScroll: true
-//                             }
-//                         );
-               
-//         },
-//         showPreorder(){
-//             this.show_preorder=1;
-//         },
-//         closePreviewOrder(){
-//             this.show_preorder=0;
-//         },
-//         changePrice(index){
-//              console.log('changePrice');
-//             console.log(index);
-//         },
-//     },
-//     computed:{
-//        	itemsChecked(){
-// 			return this.order_selected.length;	
-// 		},
-//         sumPay(){   
-//             this.sum_pay = 0;
-//             this.preview_orders.forEach(item => {            
-//                 this.sum_pay += item.total;
-//             });
-             
-//             return this.sum_pay.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-// 		},
-//     }
-
-// }
 
 </script>
 

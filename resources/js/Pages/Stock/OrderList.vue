@@ -42,7 +42,7 @@
      
     <!-- show order lists -->
     <div class=" flex justify-between my-2 ">
-            <div class=" font-bold" >ประวัติการสั่งซื้อพัสดุ</div>
+            <div class=" font-bold" >รายการใบสัญญาสั่งซื้อพัสดุ</div>
             <div >
                 <select name="" id=""
                     class=" w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow  focus:outline-none focus:shadow-outline"
@@ -218,73 +218,5 @@ const okConfirmSendOrder=()=>{
     })
     
 }
-
-/****************Old Script*******************************/
-// export default {
-//     components: {
-//         AppLayout,
-//         Link,
-//     },
-//     props:{
-//         stocks:Array,
-//         unit:Object,
-//         order_lists:Object,
-//     },
-//     data(){
-//         return{
-//             confirm_send_order:0,
-//             confirm_items:Array,
-//             confirm_order_id:0,
-//             view_items:Array,
-//             view_order:0,
-//         }
-//     },
-//     methods:{
-//          confirmSendOrder(order){
-      
-//             this.confirm_send_order = 1;
-//             this.confirm_items = order.items;
-//             this.confirm_order_id = order.id;
-           
-//         },
-//         cancelSendOrder(){
-//             this.confirm_send_order = 0;
-//         },
-//         okConfirmSendOrder(){
-//             this.confirm_send_order = 0;
-           
-//             Inertia.post(route('send-order'), 
-//                              { 
-//                                  order_id:this.confirm_order_id,
-//                               },
-//                               {
-//                                   preserveState: false,
-                              
-//                               }
-//                              );
-//         },
-//         confirmCheckinOrder(order){
-            
-//             // console.log(order.id);
-//             // console.log(order);
-//                  Inertia.post(route('checkin-order'), 
-//                              { 
-//                                  order_id:order.id,
-//                               },
-//                               {
-//                                   preserveState: false,
-                              
-//                               }
-//                  )
-//         },
-//         viewDetailItem(index,items){
-//             // console.log(index);
-//             // console.log(items);
-//             this.view_items=items;
-//             this.view_order=index;
-//         }
-        
-//     },
-// }
 
 </script>

@@ -20,4 +20,8 @@ class Stock extends Model
     public function stockItems(){
         return $this->hasMany(StockItem::class);
     }
+
+    public function budgets(){
+        return $this->hasMany(budget::class);
+    }
 }

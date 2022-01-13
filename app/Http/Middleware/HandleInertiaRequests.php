@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -36,9 +37,10 @@ class HandleInertiaRequests extends Middleware
     {
 
        // $user = Auth::user();
+    //    Log::info('HandleInertiaRequest share()');
+    //    Log::info($request->user());
 
         return array_merge(parent::share($request), [
-            
             'auth' => $request->user() ?[
                 'user' => $request->user(),
                 'abilities'=> $request->user()->abilities,

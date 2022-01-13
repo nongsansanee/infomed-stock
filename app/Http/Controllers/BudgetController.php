@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\budget;
+use App\Models\Stock;
+use App\Models\Unit;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
-class LoginController extends Controller
+class BudgetController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,24 +18,35 @@ class LoginController extends Controller
      */
     public function index()
     {
-        Log::info('LoginController index');
-        
-        // return Inertia::render('Annouce');
-        $user = Auth::user();
-        //$user->abilities;
-        Log::info($user->abilities);
-        // return Inertia::render('Annouce');
-        // $can_abilities= [
-        //         'can' => $user->can('manage_master_data'),
-        // ];
-        // Log::info($can_abilities);
-        $main_menu_links = [
-               'is_admin_division_stock'=> $user->can('view_master_data'),
-              // 'user_abilities'=>$user->abilities,
-        ];
-     
-        request()->session()->flash('mainMenuLinks', $main_menu_links);
-        return Inertia::render('Annouce');
+        //return "budget list test";
+        // $budgets = budget::where('status','on')
+        //                 ->with('stock:id,stockname')
+        //                 ->get();
+
+
+        $stocks = Stock::where('status','1')
+                        ->get();
+
+        foreach($stocks as $key=>$stock){
+            $budget_year = budget::where('stock_id',$stock->id)
+                                            ->where('year','2022')
+                                            ->where('status','on')          
+                                            ->first();
+            Log::info($budget_year);
+            if(!$budget_year){
+               
+                $budget_year['budget']['budget_add']=0.00;
+                // $budget_year=[
+                //             {'budget_add'=>'0'},
+                //     ];
+                Log::info($budget_year);
+            }
+            $stocks[$key]['budget'] = $budget_year;
+        }
+        return Inertia::render('Admin/ListBudget',[
+                           // 'budgets'=>$budgets,
+                            'stocks'=>$stocks,
+                        ]);
     }
 
     /**

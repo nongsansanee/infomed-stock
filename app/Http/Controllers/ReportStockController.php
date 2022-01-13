@@ -48,7 +48,7 @@ class ReportStockController extends Controller
             // \Log::info($stock_items);
             return Inertia::render('Stock/CreateReportStock',[
                                     'stocks'=>$stocks,
-                                    'stock_items'=>$stock_items,
+                                    //'stock_items'=>$stock_items,
                                     'unit'=> $unit,
                                     ]);
         }
@@ -99,7 +99,8 @@ class ReportStockController extends Controller
                                                         'action'=>'checkout',
                                                         'status'=>'active'
                                                     ])
-                                                    ->with('stockItem:id,item_name,item_code')
+                                                    ->with('stockItem:id,item_name,item_code,item_sum')
+                                                    ->with('user:id,name')
                                                     ->orderBy('date_action')->get();
 
        // Log::info($stock_item_checkouts);

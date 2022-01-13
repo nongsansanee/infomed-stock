@@ -33,20 +33,20 @@
         </div>
         <!-- {{$page.props.//}} -->
         <p v-if="item_trans.length==0"
-        class="w-full  text-center bg-pink-200"
+        class="w-full  text-center "
         >
             ไม่พบข้อมูลการเบิกตามเงื่อนไขที่ระบุ
         </p>
         <!-- show order lists -->
-         <h1 class="p-2 mt-3 text-center" >รายงานการเบิกพัสดุ </h1>
-          <h1 class="p-2 mt-1 text-center" >{{form.stock_selected.text}}</h1>
+         <h1 class="p-2 mt-3 text-center font-bold" >รายงานการเบิกพัสดุ </h1>
+          <h1 class="p-2 mt-1 text-center font-bold" >{{form.stock_selected.text}}</h1>
          <button class=" mb-2 bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-2 border border-green-500 rounded">
            Export EXCEL
         </button>
 <!-- {{item_trans.length}} -->
     <!-- display card -->
     <!-- {{stock_items}} -->
-    <div  class="w-full mt-3 p-2  ">
+    <div  class="w-full  p-2  ">
   
         <div v-for="(stock_item,key) in stock_items" :key=stock_item.index
             class="w-full bg-red-100  mt-3 border-2 border-red-300 rounded-lg lg:max-w-full lg:flex">

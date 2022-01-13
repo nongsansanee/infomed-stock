@@ -31,7 +31,7 @@ export default {
         AppLayout
     },
     props: {
-        user_name: { type: String, required: true },
+       // user_name: { type: String, required: true },
        // can_abilities: { type: Object, required: true },
        // mainMenuLinks:{type: Object, required: true},
     },

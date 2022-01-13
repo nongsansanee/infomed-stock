@@ -9,6 +9,7 @@ use App\Http\Controllers\ReportStockController;
 use App\Http\Controllers\CreateOrderController;
 use App\Http\Controllers\AdminReportStockController;
 use App\Http\Controllers\AdminOrderController;
+use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\CheckInOrderController;
 use App\Http\Controllers\ItemTransactionController;
 use App\Http\Controllers\LoginController;
@@ -59,7 +60,7 @@ Route::get('/', function () {
  
  Route::get('/annouce', [LoginController::class,'index'])->middleware('auth');
 //แสดงหน้าเบิกพัสดุ
- Route::get('/stock/{division_id}', [StockController::class,'index'])->name('stock')->middleware('auth','can:view_item');
+ Route::get('/stock/{division_id}', [StockController::class,'index'])->name('stock')->middleware('auth','can:checkout_item');
  //แสดงรายละเอียดการเบิก/ตรวจรับ พัสดุ
  Route::get('/stock-item/{stock_item}', [ItemTransactionController::class,'show'])->name('list-stock-item')->middleware('auth');
  //เบิกพัสดุ
@@ -69,7 +70,7 @@ Route::get('/', function () {
  //ไม่แน่ใจว่าจะใช้ หน้าแสดงข้อมูลปีเดือน ที่มีการเบิกพัสดุ
  //Route::get('/report-stock/{division_id}', [ReportStockController::class,'show'])->name('report-stock')->middleware('auth');
  //ไม่แน่ใจว่าจะใช้ หน้าแสดงรายละเอียดการเบิกพัสดุ
- Route::get('/report-checkout-item/{division_id}', [ReportStockController::class,'index'])->name('report-checkout-item')->middleware('auth');
+ Route::get('/report-checkout-item/{division_id}', [ReportStockController::class,'index'])->name('report-checkout-item')->middleware('auth','can:manage_master_data');
  Route::get('/get-checkout-item/{stock_id}/{year}/{month}', [ReportStockController::class,'show'])->name('get-checkout-item')->middleware('auth');
 
  
@@ -99,6 +100,9 @@ Route::get('/', function () {
  Route::get('/admin/order-list/', [AdminOrderController::class,'index'])->name('check-order-list')->middleware('auth');
  //อนุมัติใบสั่งซื้อ
  Route::post('/admin/order-list/update', [AdminOrderController::class,'update'])->name('approve-order')->middleware('auth');
+ 
+ //แสดงรายการงบประมาณตั้งต้นแต่ละสาขา
+ Route::get('/admin/budget-list/', [BudgetController::class,'index'])->name('budget-list')->middleware('auth','can:manage_master_data');
  
  //printForm
  Route::get('/testprint', [PrintFormController::class,'index'])->name('testprint');

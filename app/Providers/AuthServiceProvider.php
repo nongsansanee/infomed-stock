@@ -26,19 +26,32 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-        Log::info('AuthServiceProvider boot');
+        // Log::info('AuthServiceProvider boot');
     
         Gate::before(function ($user , $ability ) {
-            Log::info($user->abilities);
+            Log::info('gate before');
+           // Log::info($user->abilities);
            if($user->abilities->contains($ability)){
                return true;
            }
         });
 
-        // Gate::define('checkout_item',function(User $user){
-        //     return $user->email=='officer1@med.si';
-        // });
+        Gate::define('checkout_item',function(User $user){
+            Log::info('gate checkout_item');
+            //Log::info($user->abilities);
+            if($user->abilities->contains('checkout_item')){
+                return true;
+            }
+        });
 
+        Gate::define('manage_master_data',function(User $user){
+            Log::info('gate checkout_item');
+            //Log::info($user->abilities);
+            if($user->abilities->contains('manage_master_data')){
+                return true;
+            }
+        });
+     
         // Gate::define('manage_master_data',function(User $user){
         //     return $user->email=='admin_stock@med.si';
         // });
