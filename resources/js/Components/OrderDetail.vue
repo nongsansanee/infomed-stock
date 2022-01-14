@@ -8,14 +8,12 @@
                            <slot name="stockname"></slot>
                 </div>
                 <div class=" flex justify-between border-b-2 border-blue-500  py-1 mb-2">
-                   
-              
                     <p  class="flex items-center font-bold  ">
                         {{orderIndex+1}}.เลขที่ใบสั่งซื้อ:{{orderList.create_no}}/{{orderList.year}}
                     </p>
-                    <!-- <p v-if="orderList.status != 'created'" class=" font-bold  ">
-                         เลขที่ใบสั่งซื้อ:{{orderList.order_no}}/{{orderList.year}}
-                    </p> -->
+                    <p v-if="orderList.status == 'approve' || orderList.status == 'checkin'" class=" font-bold  ">
+                         ใช้งบไป: {{orderList.timeline.approve_budget}}  บาท
+                    </p>
                     <Link >
                             <span
                                 class="inline-flex px-2 text-sm font-semibold leading-5 text-red-900 bg-red-200 rounded-md"

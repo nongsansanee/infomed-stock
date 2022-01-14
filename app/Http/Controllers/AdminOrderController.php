@@ -135,8 +135,15 @@ class AdminOrderController extends Controller
         $tmp_date_now = explode(' ', $datetime_now);
       
         $order= OrderItem::find($request->confirm_order_id);
-       // Log::info($order->timeline);
-
+       // Log::info($order->items);
+        $budget_order = 0;
+        foreach($order->items as $item){
+          //  Log::info($item);
+          //  Log::info($item[0]['total']);
+            $budget_order += (int)$item[0]['total'];
+        }
+        // Log::info($budget_order);
+        // return 'test';
         //update order_no
         try{
             Log::info('approve order');
@@ -144,6 +151,7 @@ class AdminOrderController extends Controller
             $old_timeline = $order->timeline;
             $old_timeline['approve_datetime']=$datetime_send;
             $old_timeline['approve_user_id']=$user->id;
+            $old_timeline['approve_budget']=$budget_order;
          
             Log::info($old_timeline);
             OrderItem::find($request->confirm_order_id)->update([

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\budget;
+use App\Models\OrderItem;
 use App\Models\Stock;
 use App\Models\Unit;
 use Illuminate\Http\Request;
@@ -24,24 +25,42 @@ class BudgetController extends Controller
         //                 ->get();
 
 
-        $stocks = Stock::where('status','1')
-                        ->get();
-
+        $stocks = Stock::where('status','1')->get();
+        $use_budget=0;
+        $balance_budget=0.0;
         foreach($stocks as $key=>$stock){
             $budget_year = budget::where('stock_id',$stock->id)
                                             ->where('year','2022')
                                             ->where('status','on')          
                                             ->first();
-            Log::info($budget_year);
+            //Log::info($budget_year);
+            foreach($stock->orderItems as $order){
+                // Log::info($order->timeline['approve_budget']);
+                 $use_budget += $order->timeline['approve_budget'];
+            }
+
+          
             if(!$budget_year){
                
-                $budget_year['budget']['budget_add']=0.00;
-                // $budget_year=[
-                //             {'budget_add'=>'0'},
-                //     ];
-                Log::info($budget_year);
+                $budget_year['budget_add']=0.00;
+                $budget_year['year']=0;
+                $balance_budget = 0.0;
+               // Log::info($budget_year);
+            }else{
+                Log::info($budget_year->budget_add);
+                $balance_budget = (float)$budget_year->budget_add - (float)$use_budget;
+                Log::info($balance_budget);
             }
+          
             $stocks[$key]['budget'] = $budget_year;
+             //Log::info($stock->unit_id);
+           
+         
+            
+             
+           $stocks[$key]['orders'] = $stock->orderItems;
+           $stocks[$key]['use_budget'] = $use_budget;
+           $stocks[$key]['balance_budget'] = $balance_budget;
         }
         return Inertia::render('Admin/ListBudget',[
                            // 'budgets'=>$budgets,

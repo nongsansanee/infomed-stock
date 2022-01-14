@@ -230,13 +230,13 @@ class CreateOrderController extends Controller
 
         //update order_no
         try{
-            Log::info('send order');
+          //  Log::info('send order');
             $old_timeline = $order->timeline;
             $datetime_send = $tmp_date_now[0].' '.$tmp_date_now[1];
             $old_timeline['send_datetime']=$datetime_send;
             $old_timeline['send_user_id']=$user->id;
            // $timeline = ['send_datetime'=>$datetime_send , 'send_user_id'=>$user->id];
-            Log::info($old_timeline);
+         //   Log::info($old_timeline);
             $order = OrderItem::find($request->confirm_order_id)->update([
                                                                 'order_no'=>$last_order_number,
                                                                 'status'=>'send',
