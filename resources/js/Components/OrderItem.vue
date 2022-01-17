@@ -191,6 +191,9 @@ const addOrder=()=>{
     // console.log(business_input_array[1])
     form.preview_orders=[]
     total_bath.value = form.order_input * form.item.price;
+    let show_total_bath =  total_bath.value.toFixed(2);
+   // console.log('sum_pay=='+show_sum_pay);
+   // return show_total_bath.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     form.preview_orders.push({
                                 stock_id:form.item.stock_id,
                                 id:form.item.id,
@@ -200,7 +203,7 @@ const addOrder=()=>{
                                 price:form.item.price,
                                 business_id:business_input_array[0],
                                 business_name:business_input_array[1],
-                                total:total_bath.value,
+                                total:show_total_bath,
                                 catalog_number:form.item.checkin_last.profile.catalog_number,
                                 lot_number:form.item.checkin_last.profile.lot_number,
                             });

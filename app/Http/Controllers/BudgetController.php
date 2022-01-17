@@ -19,52 +19,10 @@ class BudgetController extends Controller
      */
     public function index()
     {
-        //return "budget list test";
-        // $budgets = budget::where('status','on')
-        //                 ->with('stock:id,stockname')
-        //                 ->get();
-
-
-        $stocks = Stock::where('status','1')->get();
-        $use_budget=0;
-        $balance_budget=0.0;
-        foreach($stocks as $key=>$stock){
-            $budget_year = budget::where('stock_id',$stock->id)
-                                            ->where('year','2022')
-                                            ->where('status','on')          
-                                            ->first();
-            //Log::info($budget_year);
-            foreach($stock->orderItems as $order){
-                // Log::info($order->timeline['approve_budget']);
-                 $use_budget += $order->timeline['approve_budget'];
-            }
-
-          
-            if(!$budget_year){
-               
-                $budget_year['budget_add']=0.00;
-                $budget_year['year']=0;
-                $balance_budget = 0.0;
-               // Log::info($budget_year);
-            }else{
-                Log::info($budget_year->budget_add);
-                $balance_budget = (float)$budget_year->budget_add - (float)$use_budget;
-                Log::info($balance_budget);
-            }
-          
-            $stocks[$key]['budget'] = $budget_year;
-             //Log::info($stock->unit_id);
-           
-         
-            
-             
-           $stocks[$key]['orders'] = $stock->orderItems;
-           $stocks[$key]['use_budget'] = $use_budget;
-           $stocks[$key]['balance_budget'] = $balance_budget;
-        }
+       
         return Inertia::render('Admin/ListBudget',[
                            // 'budgets'=>$budgets,
-                            'stocks'=>$stocks,
+                           // 'stocks'=>$stocks,
                         ]);
     }
 
@@ -95,9 +53,60 @@ class BudgetController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($year)
     {
-        //
+        //Log::info($year);
+       // $year = $request->year_selected;
+        Log::info($year);
+       // return "test";
+        $stocks = Stock::where('status','1')->get();
+        $use_budget=0;
+        $balance_budget=0.0;
+        foreach($stocks as $key=>$stock){
+            $budget_year = budget::where('stock_id',$stock->id)
+                                            ->where('year',$year)
+                                            ->where('status','on')          
+                                            ->first();
+           // Log::info($budget_year->count());
+ 
+            if(!$budget_year){
+               
+                $budget_year['budget_add']=0.00;
+                $budget_year['year']=0;
+                $balance_budget = 0.0;
+               // Log::info($budget_year);
+            }else{
+                $stock_orders = OrderItem::where('unit_id',$stock->id)
+                                            ->where('year',$year)
+                                            ->whereIn('status',['approve','checkin'])
+                                            ->get();
+                if( $stock_orders->count()!=0){
+                    foreach($stock_orders as $order){
+                         Log::info($order->timeline['approve_budget']);
+                        $use_budget += $order->timeline['approve_budget'];
+                    }
+                }else{
+                    $use_budget = 0.0;
+                }
+                Log::info($budget_year->budget_add);
+                $balance_budget = (float)$budget_year->budget_add - (float)$use_budget;
+                Log::info($balance_budget);
+                $stocks[$key]['orders'] = $stock_orders;
+                $stocks[$key]['use_budget'] = $use_budget;
+                $stocks[$key]['balance_budget'] = $balance_budget;
+            }
+          
+            $stocks[$key]['budget'] = $budget_year;
+             //Log::info($stock->unit_id);
+
+        }
+        return response()->json([
+            'stocks' => $stocks
+        ]);
+        // return Inertia::render('Admin/ListBudget',[
+        //     // 'budgets'=>$budgets,
+        //     'stock_budgets'=>$stocks,
+        // ]);
     }
 
     /**

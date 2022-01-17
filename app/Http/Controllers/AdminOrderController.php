@@ -140,7 +140,7 @@ class AdminOrderController extends Controller
         foreach($order->items as $item){
           //  Log::info($item);
           //  Log::info($item[0]['total']);
-            $budget_order += (int)$item[0]['total'];
+            $budget_order += (float)$item[0]['total'];
         }
         // Log::info($budget_order);
         // return 'test';

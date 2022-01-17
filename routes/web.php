@@ -103,6 +103,10 @@ Route::get('/', function () {
  
  //แสดงรายการงบประมาณตั้งต้นแต่ละสาขา
  Route::get('/admin/budget-list/', [BudgetController::class,'index'])->name('budget-list')->middleware('auth','can:manage_master_data');
- 
+Route::get('/admin/get-list-budget/{year}', [BudgetController::class,'show'])->name('get-list-budget')->middleware('auth','can:manage_master_data');
+//Route::get('/admin/get-list-budget', [BudgetController::class,'show'])->name('get-list-budget')->middleware('auth','can:manage_master_data');
+  
+//พิมพ์งบประมาณคงเหลือและใบสั่งซื้อ
+ Route::get('/admin/print-budget-order/{stock_id}/{year}', [PrintFormController::class,'printBudgetOrder'])->name('print-budget-order')->middleware('auth','can:manage_master_data');
  //printForm
  Route::get('/testprint', [PrintFormController::class,'index'])->name('testprint');

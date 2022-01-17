@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\budget;
 use App\Models\OrderItem;
+use App\Models\Stock;
 use App\Models\StockItem;
 use App\Models\Unit;
 use Illuminate\Http\Request;
@@ -360,9 +362,86 @@ class PrintFormController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function printBudgetOrder($stock_id,$year)
     {
-        //
+        Log::info('printBudgetOrder');
+        Log::info($stock_id);
+        Log::info($year);
+       // return "printBudgetOrder";
+
+        $stocks = Stock::whereId($stock_id)->get();
+        $use_budget=0;
+        $balance_budget=0.0;
+        foreach($stocks as $key=>$stock){
+            $budget_year = budget::where('stock_id',$stock_id)
+                                            ->where('year',$year)
+                                            ->where('status','on')          
+                                            ->first();
+           // Log::info($budget_year->count());
+ 
+            if(!$budget_year){
+               
+                $budget_year['budget_add']=0.00;
+                $budget_year['year']=0;
+                $balance_budget = 0.0;
+               // Log::info($budget_year);
+            }else{
+                $stock_orders = OrderItem::where('unit_id',$stock->id)
+                                            ->where('year',$year)
+                                            ->whereIn('status',['approve','checkin'])
+                                            ->get();
+                if( $stock_orders->count()!=0){
+                    foreach($stock_orders as $order){
+                         Log::info($order->timeline['approve_budget']);
+                        $use_budget += $order->timeline['approve_budget'];
+                    }
+                }else{
+                    $use_budget = 0.0;
+                }
+                Log::info($budget_year->budget_add);
+                $balance_budget = (float)$budget_year->budget_add - (float)$use_budget;
+                Log::info($balance_budget);
+                $stocks[$key]['orders'] = $stock_orders;
+                $stocks[$key]['use_budget'] = $use_budget;
+                $stocks[$key]['balance_budget'] = $balance_budget;
+            }
+          
+            $stocks[$key]['budget'] = $budget_year;
+        }
+
+        
+        $pdf = new FPDI('l');
+        $pdf->AddPage();
+        $pdf->AddFont('THSarabunNew','','THSarabunNew.php');
+        $pdf->AddFont('THSarabunNew','B','THSarabunNew_b.php');
+
+        // add  image watermark
+       $pdf->Image(storage_path('app/public/images/watermark_medstock.png'),20,30,0,0,'png');
+        
+        //title
+        $pdf->SetFont('THSarabunNew','B');
+        $pdf->SetFontSize('20'); 
+        $unit = Unit::where('unitid',$order->items[0][0]['stock_id'])->first();
+        Log::info($unit);
+        $division_name = $unit->unitname;
+        $head = 'สรุปงบประมาณการสั่งซื้อวัสดุของ สาขา/หน่วยงาน';
+        $title = $head.'  '.$division_name;
+        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $title),0,0,'C');
+        
+        $pdf->SetXY(18, 15);
+        $title2 = 'ปีงบประมาณ  '.$year.' ได้รับงบ '.$budget_year->budget_add.'  บาท';
+        $pdf->Cell(0,15,iconv('UTF-8', 'cp874', $title2),0,0,'C');
+
+ 
+        //head column
+        $pdf->SetFont('THSarabunNew','B');
+        $pdf->SetFontSize('16'); 
+        $pdf->SetXY(18, 27);
+        $pdf->SetLineWidth(2);
+        // $pdf->Line(10,50,10,50);
+        $pdf->SetLineWidth(1);
+        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับ             เลขที่ใบสั่งซื้อ                         วันที่สั่งซื้อ                                            ใช้งบไป'),'B');
+        $pdf->Output('I');
     }
 
     /**

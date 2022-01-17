@@ -1,7 +1,8 @@
 <template>
     <div >
         <label for=""  class=" px-6">
-            ORDER NO.: {{orderItem.order_no}}/{{orderItem.year}} DATE ORDER: {{orderItem.date_order}} BUDGET:{{orderItem.timeline['approve_budget']}} Bath.
+           {{orderIndex+1}}. เลขที่ใบสั่งซื้อ(แบบสัญญา): {{orderItem.order_no}}/{{orderItem.year}} วันที่สั่งซื้อ: {{orderItem.date_order}} 
+            เป็นเงิน:{{approve_budget}} บาท
         </label>
        
     </div>
@@ -11,10 +12,21 @@
 </template>
 <script setup>
 const { ref, computed }=require("@vue/reactivity")
+const { onMounted }=require("@vue/runtime-core")
 
 const props = defineProps({
+    orderIndex:{type:Number,required:true},
     orderItem:{type:Object,required:true},
     stockBudget:{type:Number,required:true}
+})
+
+const approve_budget = ref(0);
+
+onMounted(() => {
+   // console.log('Component BudgetOrder');
+   // console.log(props.orderItem.timeline['approve_budget'])
+    approve_budget.value = props.orderItem.timeline['approve_budget'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+   //  console.log(approve_budget.value)
 })
 
 // const balance=ref(0);

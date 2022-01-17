@@ -76,13 +76,14 @@
             class="close cursor-pointer flex items-start justify-between  w-full pt-4 px-2 bg-yellow-100 shadow-lg text-sm text-yellow-900" 
             title="close" for="previeworder">
             <!-- {{preview_order[0]}} -->
-            {{index+1}}.{{preview_order[0].item_name}} จำนวน {{preview_order[0].order_input}} x {{preview_order[0].price}}  เป็นเงิน {{preview_order[0].total}} บาท 
+            {{index+1}}.{{preview_order[0].item_name}} จำนวน {{preview_order[0].order_input}} x {{preview_order[0].price}}  
+            เป็นเงิน {{preview_order[0].total}} บาท 
             <!-- <p class=" ml-4 px-2 text-red-800 font-bold bg-red-300 rounded-md">ลบ</p>  -->
              <Link  class=" ml-4 px-2 text-red-800 font-bold bg-red-300 rounded-md">ลบ</Link>
            
         </label>
         <label for="" class=" flex items-start justify-between w-full p-1 bg-yellow-100  shadow-lg text-yellow-800 font-bold">
-             รวม  {{sumPay}} บาท</label>
+             รวม  {{sum_pay}} บาท </label>
          <button
             class="  w-full flex justify-center py-2  text-sm  text-yellow-900 font-bold bg-yellow-300 hover:bg-yellow-200 focus:outline-none"
             v-on:click="createOrder()"
@@ -162,18 +163,43 @@ const getOrder=(value)=>{
 
 const  showPreorder=()=>{
             show_preorder.value=true;
+    sum_pay.value = 0;
+    let tmp_total = 0.0;
+    let tmp_sum_pay = 0.0;
+    
+    form.preview_orders.forEach(item => {       
+               // console.log('total=='+item[0].total);    
+                tmp_total = parseFloat(item[0].total);
+               // console.log('tmp_total==>'+tmp_total);
+                tmp_sum_pay = tmp_sum_pay + tmp_total;
+               // console.log('tmp_sum_pay===>'+tmp_sum_pay);
+                //console.log('sum_pay==>'+sum_pay.value);
+            })
+   
+   sum_pay.value = tmp_sum_pay.toFixed(2);
+    //sum_pay.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+   // console.log('show_sum_pay==>'+show_sum_pay);
 }
 const closePreviewOrder=()=>{
             show_preorder.value=false;
 }
 
-const sumPay = computed(()=>{
-    sum_pay.value = 0;
-    form.preview_orders.forEach(item => {            
-                sum_pay.value += item[0].total;
-            })
-    return sum_pay.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-})
+//const sumPay = computed(()=>{
+    //sum_pay.value = 0;
+    // var  sum_pay = 0.0;
+    // form.preview_orders.forEach(item => {       
+    //             console.log('total=='+item[0].total);     
+    //             sum_pay += item[0].total;
+    //              console.log('sum_pay==>'+sum_pay);
+    //         })
+   
+    // let show_sum_pay =  sum_pay.toFixed(2);
+    // console.log('show_sum_pay==>'+show_sum_pay);
+  //  return show_sum_pay.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+ // return sum_pay;
+//})
+
+
 
 const createOrder=(()=>{
             //    console.log('create order');

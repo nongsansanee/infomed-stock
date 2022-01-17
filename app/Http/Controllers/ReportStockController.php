@@ -84,10 +84,10 @@ class ReportStockController extends Controller
      */
     public function show($stock_id,$year,$month)
     {
-        Log::info('ReportStockController show');
-        Log::info($stock_id);
-        Log::info($year);
-        Log::info($month);
+        // Log::info('ReportStockController show');
+        // Log::info($stock_id);
+        // Log::info($year);
+        // Log::info($month);
 
 
         // return 'test';
