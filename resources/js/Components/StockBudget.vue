@@ -40,12 +40,17 @@
                             class="px-3  bg-yellow-200  rounded-md">
                             แก้ไข
                         </div>
-                        <div v-if="stockBudget.orders.length>0" class=" bg-blue-200  rounded-md">
+                        <div v-if="stockBudget.orders.length>0" class="flex  rounded-md">
                             <button
-                                class=" flex justify-center px-2 text-blue-900 rounded-md hover:bg-blue-200 focus:outline-none"
+                                class=" flex justify-center px-2 bg-blue-100 text-blue-900 rounded-md hover:bg-blue-200 focus:outline-none"
                                 v-on:click="viewAllOrder()"
                                 >
                                 ดูรายการเบิก
+                            </button>
+                            <button
+                                class=" flex justify-center px-2 ml-2 bg-blue-100 text-blue-900 rounded-md hover:bg-blue-200 focus:outline-none"
+                                >
+                                เพิ่มงบประมาณ
                             </button>
                         </div>
                         

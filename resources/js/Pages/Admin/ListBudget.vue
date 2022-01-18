@@ -30,8 +30,7 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import StockBudget from '@/Components/StockBudget.vue';
 import { useForm, usePage } from '@inertiajs/inertia-vue3';
-import { computed, ref } from '@vue/reactivity';
-import { onMounted, forceUpdate } from '@vue/runtime-core';
+import {  ref } from '@vue/reactivity';
 
 
 defineProps({
@@ -68,7 +67,7 @@ const getListBudget=()=>{
   
 
     axios.get(route('get-list-budget',{year:form.year_selected})).then(res => {
-        console.log(res.data.stocks);
+       // console.log(res.data.stocks);
         stock_budgets.value = res.data.stocks;   
     });
    // forceUpdate();
