@@ -19,13 +19,29 @@
                 <!-- {{stockBudget}} -->
                 <div v-if="stockBudget.budget['budget_add']==0" 
                     class="flex justify-between px-3 " >
-                        <div class="px-3">
+                        <!-- <div class="px-3">
                             <label  class=" ">
                             ไม่พบข้อมูลงบประมาณ
                             </label>
+                           
+                        </div> -->
+                        <div>
+                             <label  class=" ">
+                            ระบุงบประมาณ:
+                            </label>
+                             <input type="number" 
+                                class=" rounded-md "
+                                v-model="form.budget_input"
+                                >
                         </div>
-                        <div  class=" px-3 bg-green-200 rounded-md">
-                            บันทึก
+                        <div  class=" p-2 ">
+                            <!-- บันทึก -->
+                              <button
+                                class=" flex justify-center px-2 bg-green-200 text-green-900 rounded-md shadow-md hover:bg-green-300 focus:outline-none"
+                                v-on:click="addBudget()"
+                                >
+                                บันทึก
+                            </button>
                         </div>
                 </div>
                 <div v-if="stockBudget.budget['budget_add']!=0"  
@@ -42,16 +58,16 @@
                         </div>
                         <div v-if="stockBudget.orders.length>0" class="flex  rounded-md">
                             <button
-                                class=" flex justify-center px-2 bg-blue-100 text-blue-900 rounded-md hover:bg-blue-200 focus:outline-none"
+                                class=" flex justify-center px-2 bg-blue-200 text-blue-900 rounded-md shadow-md hover:bg-blue-300 focus:outline-none"
                                 v-on:click="viewAllOrder()"
                                 >
                                 ดูรายการเบิก
                             </button>
-                            <button
-                                class=" flex justify-center px-2 ml-2 bg-blue-100 text-blue-900 rounded-md hover:bg-blue-200 focus:outline-none"
+                            <!-- <button
+                                class=" flex justify-center px-2 ml-2 bg-blue-200 text-blue-900 rounded-md shadow-md hover:bg-blue-300 focus:outline-none"
                                 >
                                 เพิ่มงบประมาณ
-                            </button>
+                            </button> -->
                         </div>
                         
                     </div>
@@ -89,6 +105,7 @@
 </template>
 <script setup>
 import BudgetOrder from '@/Components/BudgetOrder.vue';
+import { useForm } from '@inertiajs/inertia-vue3';
 const { ref, computed }=require("@vue/reactivity")
 const { onMounted, watch }=require("@vue/runtime-core")
 
@@ -102,13 +119,9 @@ const props = defineProps({
 //const budget_balance = ref(0);
 const view_order=ref(false);
 
-// console.log('child component StockBudget');
-// budget_add.value = props.stockBudget.budget['budget_add'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-// if(props.stockBudget.budget['budget_add']!=0){
-//       //  console.log('balance_budget-->'+props.stockBudget.balance_budget);
-//         budget_balance.value = props.stockBudget.balance_budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-//        // console.log(budget_balance.value);
-// }
+const form = useForm({
+    budget_input:{type:Number,defaulte:0}
+})
 
 
 const budget_add = computed(()=>{
@@ -118,30 +131,21 @@ const budget_add = computed(()=>{
 const budget_balance = computed(()=>{
      if(props.stockBudget.budget['budget_add']!=0){
       //  console.log('balance_budget-->'+props.stockBudget.balance_budget);
-       return budget_balance.value = props.stockBudget.balance_budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+       return  props.stockBudget.balance_budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
        // console.log(budget_balance.value);
     }else{
         return '0';
     }
 })
-// watch(()=>props.stockBudget.budget['budget_add']=>{
-//      console.log('child component watch StockBudget');
-// })
-// onMounted(() => {
-//     console.log('child component StockBudget');
-//     console.log(props.stockBudget.budget['budget_add']);
-//    budget_add.value = props.stockBudget.budget['budget_add'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-//     //console.log(budget_add.value);
- 
-//     if(props.stockBudget.budget['budget_add']!=0){
-//       //  console.log('balance_budget-->'+props.stockBudget.balance_budget);
-//         budget_balance.value = props.stockBudget.balance_budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-//        // console.log(budget_balance.value);
-//     }
-// })
-
 
 const viewAllOrder=()=>{
     view_order.value=!view_order.value;
+}
+
+const addBudget=()=>{
+    console.log('addBudget');
+    console.log(props.stockBudget.id);
+    console.log(props.budgetYear);
+    console.log(form.budget_input)
 }
 </script>
