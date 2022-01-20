@@ -101,10 +101,12 @@ Route::get('/', function () {
  //อนุมัติใบสั่งซื้อ
  Route::post('/admin/order-list/update', [AdminOrderController::class,'update'])->name('approve-order')->middleware('auth');
  
- //แสดงรายการงบประมาณตั้งต้นแต่ละสาขา
+ //แสดงหน้าแรก ค้นหาข้อมูลงบประมาณในแต่ละปี
  Route::get('/admin/budget-list/', [BudgetController::class,'index'])->name('budget-list')->middleware('auth','can:manage_master_data');
-Route::get('/admin/get-list-budget/{year}', [BudgetController::class,'show'])->name('get-list-budget')->middleware('auth','can:manage_master_data');
-//Route::get('/admin/get-list-budget', [BudgetController::class,'show'])->name('get-list-budget')->middleware('auth','can:manage_master_data');
+//ดึงรายการงบประมาณตั้งต้นแต่ละสาขา ตามปีที่ระบุ
+ Route::get('/admin/get-list-budget/{year}', [BudgetController::class,'show'])->name('get-list-budget')->middleware('auth','can:manage_master_data');
+//บันทึกงบประมาณสาขา
+Route::post('/admin/add-budget',[BudgetController::class,'store'])->name('add-budget')->middleware('auth','can:manage_master_data');
   
 //พิมพ์งบประมาณคงเหลือและใบสั่งซื้อ
  Route::get('/admin/print-budget-order/{stock_id}/{year}', [PrintFormController::class,'printBudgetOrder'])->name('print-budget-order')->middleware('auth','can:manage_master_data');

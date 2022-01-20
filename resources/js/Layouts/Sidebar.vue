@@ -110,13 +110,35 @@
           <div class=" flex flex-col items-start ml-8 h-10 hover:bg-gray-200 rounded-lg cursor-pointer">
             <div class="mt-2"><i :class="iconSubMenu" class="pr-2 submenu-icon-style"></i>สิทธิ์ผู้ใช้งาน</div>
           </div>
-          <!-- <Link :href="route('manage_workunit')"> -->
-          <!-- <div class=" flex flex-col items-start ml-8 h-10 hover:bg-gray-200 rounded-lg cursor-pointer">
-            <div class="mt-2"><i :class="iconSubMenu" class="pr-2 submenu-icon-style"></i>หน่วยงาน</div>
-          </div> -->
-          <!-- </Link> -->
         </div>
 
+        <!-- budget menu group -->
+        
+        <div class="w-full flex items-center justify-between text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer" @click="budgetMenuOpen = !budgetMenuOpen">
+          <div class="flex flex-row">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span class="text-gray-700 ml-2">การจัดการงบประมาณ</span> 
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+          </svg>
+          </div>
+          <i :class="budgetMenuOpen ? iconExplandBudget : iconCollapseBudget" class="ml-2" style="fontSize: 0.7rem"></i>
+        </div >
+        <div :class="budgetMenuOpen ? '' : 'hidden'">
+          <Link href="#">
+            <div class=" flex flex-col items-start ml-8 h-10 hover:bg-gray-200 rounded-lg cursor-pointer">
+              <div class="mt-2"><i :class="iconSubMenu" class="pr-2 submenu-icon-style"></i>บันทึกงบประมาณประจำปี</div>
+            </div>
+          </Link>
+          <Link :href="route('budget-list')">
+            <div class=" flex flex-col items-start ml-8 h-10 hover:bg-gray-200 rounded-lg cursor-pointer">
+              <div class="mt-2"><i :class="iconSubMenu" class="pr-2 submenu-icon-style"></i>รายงานการใช้งบประมาณ</div>
+            </div>
+          </Link>
+         
+        </div>
       
 
         <Link :href="route('report-list','27')">
@@ -164,7 +186,7 @@
             <span class="text-gray-700 ml-2">บันทึกข้อมูลใบสั่งซื้อ(เก่า)</span>
           </div>
         </Link>
-
+<!-- 
         <Link :href="route('budget-list')">
           <div class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -172,7 +194,7 @@
             </svg>
             <span class="text-gray-700 ml-2">บันทึกงบประมาณประจำปี</span>
           </div>
-        </Link>
+        </Link> -->
 
         <!-- <div class="w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -225,13 +247,18 @@ export default {
     const iconExpland = ref("pi pi-caret-down")
     const iconSubMenu = ref(iconCollapse.value)
 
+    const iconCollapseBudget = ref("pi pi-caret-right")
+    const iconExplandBudget = ref("pi pi-caret-down")
+    const iconSubMenuBudget = ref(iconCollapseBudget.value)
+
     const reserveRoomMenuOpen = ref(false)
-    const equipmentMenuOpen = ref(false)
+    const budgetMenuOpen = ref(false)
     const managementMenuOpen = ref(false)
 
     return {
-      reserveRoomMenuOpen, equipmentMenuOpen, managementMenuOpen,   //menu
-      iconCollapse, iconExpland, iconSubMenu  // icon
+      reserveRoomMenuOpen, budgetMenuOpen, managementMenuOpen,   //menu
+      iconCollapse, iconExpland, iconSubMenu,  // icon
+      iconCollapseBudget, iconExplandBudget, iconSubMenuBudget  // icon
     }
   }
 }

@@ -1,5 +1,6 @@
 <template>
     <AppLayout>
+
         <div class="flex flex-col  mb-2 text-md font-bold text-gray-900 ">
             <div class=" m-2">
                 <label for="">ระบุปีงบประมาณ:</label>
@@ -34,11 +35,10 @@ import {  ref } from '@vue/reactivity';
 
 
 defineProps({
-  // budgets:{type:Object,required:true},
-  // stock_budgets:{type:Object},
+  years:{type:Object,required:true},
 })
 
-const years=ref([2021,2022])
+//const years=ref([2021,2022])
 //const balance_budget = ref(0);
 //const sum_order = ref(0);
 //const stock_order = ref('');
@@ -51,7 +51,7 @@ const form=useForm({
 
 
 const getListBudget=()=>{
-    console.log('getListBudget');
+    //console.log('getListBudget');
 
     // form.get(route('get-list-budget'), {
     //         preserveState: false,

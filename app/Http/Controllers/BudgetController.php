@@ -7,7 +7,10 @@ use App\Models\OrderItem;
 use App\Models\Stock;
 use App\Models\Unit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Redis;
 use Inertia\Inertia;
 
 class BudgetController extends Controller
@@ -19,10 +22,28 @@ class BudgetController extends Controller
      */
     public function index()
     {
-       
+        $year_send= array();
+      
+        $year_start = budget::select('year')->orderBy('year','asc')->first();
+        $year_start = $year_start->year - 1;
+      
+        array_push($year_send,$year_start);
+
+        $budget_years = budget::select('year')->distinct()->get();
+    
+        foreach($budget_years as  $year){
+           // Log::info($year->year);
+           array_push($year_send,$year->year);
+          // Log::info($year_send);
+        }
+
+        $year_end = budget::select('year')->orderBy('year','desc')->first();
+        $year_end = $year_end->year + 1;
+        array_push($year_send,$year_end);
+        //Log::info($year_send);
         return Inertia::render('Admin/ListBudget',[
-                           // 'budgets'=>$budgets,
-                           // 'stocks'=>$stocks,
+                            'years'=>$year_send,
+                           
                         ]);
     }
 
@@ -44,7 +65,25 @@ class BudgetController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Log::info($request);
+        $user = Auth::user();
+      //  return ' BudgetController store';
+        try{
+           // budget::latest()->first();
+            budget::create([
+                    'stock_id'=>$request->stock_id,
+                    'year'=>$request->budget_year,
+                    'budget_add'=>$request->budget_input,
+                    'status'=>'on',
+                    'user_id'=> $user->id
+            ]);
+        }catch(\Illuminate\Database\QueryException $e){
+            //rollback
+            Log::info($e->getMessage());
+            return redirect()->back()->with(['status' => 'error', 'msg' =>  'เกิดความผิดพลาดในการบันทึกข้อมูลกรุณาติดต่อเจ้าหน้าที่ IT ที่น่ารัก']);
+        }
+       
+        return Redirect::back()->with(['status' => 'success', 'msg' => 'บันทึกงบประมาณสำเร็จ']);
     }
 
     /**
@@ -64,9 +103,9 @@ class BudgetController extends Controller
         $balance_budget=0.0;
         foreach($stocks as $key=>$stock){
             $budget_year = budget::where('stock_id',$stock->id)
-                                            ->where('year',$year)
-                                            ->where('status','on')          
+                                            ->where('year',$year) 
                                             ->first();
+                                          //  ->where('status','on')    
            // Log::info($budget_year->count());
  
             if(!$budget_year){
@@ -88,9 +127,9 @@ class BudgetController extends Controller
                 }else{
                     $use_budget = 0.0;
                 }
-                Log::info($budget_year->budget_add);
+              //  Log::info($budget_year->budget_add);
                 $balance_budget = (float)$budget_year->budget_add - (float)$use_budget;
-                Log::info($balance_budget);
+              //  Log::info($balance_budget);
                 $stocks[$key]['orders'] = $stock_orders;
                 $stocks[$key]['use_budget'] = $use_budget;
                 $stocks[$key]['balance_budget'] = $balance_budget;

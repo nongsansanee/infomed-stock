@@ -35250,7 +35250,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _Components_BudgetOrder_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/Components/BudgetOrder.vue */ "./resources/js/Components/BudgetOrder.vue");
-/* harmony import */ var _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @inertiajs/inertia-vue3 */ "./node_modules/@inertiajs/inertia-vue3/dist/index.js");
+/* harmony import */ var _Components_ModalUpToYou_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/Components/ModalUpToYou.vue */ "./resources/js/Components/ModalUpToYou.vue");
+/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+/* harmony import */ var _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @inertiajs/inertia-vue3 */ "./node_modules/@inertiajs/inertia-vue3/dist/index.js");
+
+
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -35284,13 +35288,26 @@ __webpack_require__.r(__webpack_exports__);
 
 
     var view_order = ref(false);
-    var form = (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_1__.useForm)({
+    var confirm_add_budget = ref(false);
+    var budget_confirm_show = ref(0);
+    var show_alert_msg = ref(false);
+    var form = (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_3__.useForm)({
+      stock_id: {
+        type: Number
+      },
+      stock_name: {
+        type: String
+      },
+      budget_year: {
+        type: Number
+      },
       budget_input: {
         type: Number,
         defaulte: 0
       }
     });
     var budget_add = computed(function () {
+      //console.log(props.stockBudget.budget)
       return props.stockBudget.budget['budget_add'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     });
     var budget_balance = computed(function () {
@@ -35306,11 +35323,49 @@ __webpack_require__.r(__webpack_exports__);
       view_order.value = !view_order.value;
     };
 
-    var addBudget = function addBudget() {
-      console.log('addBudget');
-      console.log(props.stockBudget.id);
-      console.log(props.budgetYear);
-      console.log(form.budget_input);
+    var confirmAddBudget = function confirmAddBudget(order) {
+      //  console.log(order);
+      confirm_add_budget.value = true;
+      form.stock_id = props.stockBudget.id;
+      form.stock_name = props.stockBudget.stockname;
+      form.budget_year = props.budgetYear;
+      budget_confirm_show.value = form.budget_input.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); // confirm_items.value = order.items;
+      // form.confirm_order_id = order.id;
+    };
+
+    var cancelAddBudget = function cancelAddBudget() {
+      confirm_add_budget.value = false;
+    };
+
+    var closeAlert = function closeAlert() {
+      show_alert_msg.value = false;
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia.visit(route('budget-list'));
+    };
+
+    var okConfirmAddBudget = function okConfirmAddBudget() {
+      confirm_add_budget.value = false; // console.log(form.confirm_order_id);
+      // console.log('addBudget');
+      // console.log(props.stockBudget.id);
+      // console.log(props.budgetYear);
+      // console.log(form.budget_input);
+
+      form.stock_id = props.stockBudget.id;
+      form.budget_year = props.budgetYear;
+      form.post(route('add-budget'), {
+        preserveState: true,
+        preserveScroll: true,
+        onSuccess: function onSuccess(page) {
+          console.log('success');
+          show_alert_msg.value = true;
+        },
+        onError: function onError(errors) {
+          console.log('error');
+          show_alert_msg.value = true;
+        },
+        onFinish: function onFinish(visit) {
+          console.log('finish');
+        }
+      });
     };
 
     var __returned__ = {
@@ -35320,13 +35375,21 @@ __webpack_require__.r(__webpack_exports__);
       watch: watch,
       props: props,
       view_order: view_order,
+      confirm_add_budget: confirm_add_budget,
+      budget_confirm_show: budget_confirm_show,
+      show_alert_msg: show_alert_msg,
       form: form,
       budget_add: budget_add,
       budget_balance: budget_balance,
       viewAllOrder: viewAllOrder,
-      addBudget: addBudget,
+      confirmAddBudget: confirmAddBudget,
+      cancelAddBudget: cancelAddBudget,
+      closeAlert: closeAlert,
+      okConfirmAddBudget: okConfirmAddBudget,
       BudgetOrder: _Components_BudgetOrder_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-      useForm: _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_1__.useForm
+      ModalUpToYou: _Components_ModalUpToYou_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+      Inertia: _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia,
+      useForm: _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_3__.useForm
     };
     Object.defineProperty(__returned__, '__isScriptSetup', {
       enumerable: false,
@@ -35536,17 +35599,24 @@ __webpack_require__.r(__webpack_exports__);
     var iconCollapse = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)("pi pi-caret-right");
     var iconExpland = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)("pi pi-caret-down");
     var iconSubMenu = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(iconCollapse.value);
+    var iconCollapseBudget = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)("pi pi-caret-right");
+    var iconExplandBudget = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)("pi pi-caret-down");
+    var iconSubMenuBudget = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(iconCollapseBudget.value);
     var reserveRoomMenuOpen = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(false);
-    var equipmentMenuOpen = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(false);
+    var budgetMenuOpen = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(false);
     var managementMenuOpen = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(false);
     return {
       reserveRoomMenuOpen: reserveRoomMenuOpen,
-      equipmentMenuOpen: equipmentMenuOpen,
+      budgetMenuOpen: budgetMenuOpen,
       managementMenuOpen: managementMenuOpen,
       //menu
       iconCollapse: iconCollapse,
       iconExpland: iconExpland,
-      iconSubMenu: iconSubMenu // icon
+      iconSubMenu: iconSubMenu,
+      // icon
+      iconCollapseBudget: iconCollapseBudget,
+      iconExplandBudget: iconExplandBudget,
+      iconSubMenuBudget: iconSubMenuBudget // icon
 
     };
   }
@@ -35771,13 +35841,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: {// budgets:{type:Object,required:true},
-    // stock_budgets:{type:Object},
+  props: {
+    years: {
+      type: Object,
+      required: true
+    }
   },
   setup: function setup(__props, _ref) {
     var expose = _ref.expose;
-    expose();
-    var years = (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_3__.ref)([2021, 2022]); //const balance_budget = ref(0);
+    expose(); //const years=ref([2021,2022])
+    //const balance_budget = ref(0);
     //const sum_order = ref(0);
     //const stock_order = ref('');
 
@@ -35788,7 +35861,8 @@ __webpack_require__.r(__webpack_exports__);
     });
 
     var getListBudget = function getListBudget() {
-      console.log('getListBudget'); // form.get(route('get-list-budget'), {
+      //console.log('getListBudget');
+      // form.get(route('get-list-budget'), {
       //         preserveState: false,
       //         preserveScroll: true,
       //         onSuccess: page => { 
@@ -35799,7 +35873,6 @@ __webpack_require__.r(__webpack_exports__);
       //         },
       //         onFinish: visit => { console.log('finish');},
       // })
-
       axios.get(route('get-list-budget', {
         year: form.year_selected
       })).then(function (res) {
@@ -35809,7 +35882,6 @@ __webpack_require__.r(__webpack_exports__);
     };
 
     var __returned__ = {
-      years: years,
       stock_budgets: stock_budgets,
       rerender: rerender,
       form: form,
@@ -38432,33 +38504,27 @@ var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 );
 
 var _hoisted_7 = {
-  "class": "p-2"
-};
-var _hoisted_8 = {
   key: 1,
   "class": "flex justify-between px-3"
 };
-var _hoisted_9 = {
+var _hoisted_8 = {
   "class": "px-3 text-green-600 font-bold"
 };
-var _hoisted_10 = {
+var _hoisted_9 = {
   "class": "flex px-3"
 };
-var _hoisted_11 = {
+var _hoisted_10 = {
   key: 0,
   "class": "px-3 bg-yellow-200 rounded-md"
 };
-var _hoisted_12 = {
+var _hoisted_11 = {
   key: 1,
   "class": "flex rounded-md"
 };
-var _hoisted_13 = {
-  key: 2
-};
-var _hoisted_14 = ["href"];
+var _hoisted_12 = ["href"];
 
-var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "inline-flex text-sm py-1 px-3 leading-5 text-white bg-blue-500 rounded-md"
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  "class": "inline-flex text-sm ml-2 py-1 px-3 leading-5 text-white bg-blue-500 rounded-md shadow-lg hover:bg-blue-700"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
   "class": "h-6 w-6",
@@ -38472,16 +38538,48 @@ var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_16 = [_hoisted_15];
-var _hoisted_17 = {
+var _hoisted_14 = [_hoisted_13];
+var _hoisted_15 = {
+  key: 2
+};
+var _hoisted_16 = {
   key: 3,
   "class": "px-3"
 };
-var _hoisted_18 = {
+var _hoisted_17 = {
   "class": "px-3 text-red-600 font-bold"
 };
+
+var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+  "class": "text-md font-bold text-red-600"
+}, "คุณต้องการบันทึกงบประมาณใช่หรือไม่?", -1
+/* HOISTED */
+);
+
+var _hoisted_19 = {
+  "class": "w-full flex flex-col text-gray-900 text-md font-medium dark:text-white"
+};
+var _hoisted_20 = {
+  "for": ""
+};
+var _hoisted_21 = {
+  "for": ""
+};
+
+var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+  "class": "text-md font-bold text-red-600"
+}, "กรุณาอ่าน ", -1
+/* HOISTED */
+);
+
+var _hoisted_23 = {
+  "class": "w-full flex flex-col text-gray-900 text-md font-medium dark:text-white"
+};
+var _hoisted_24 = {
+  "for": ""
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" v-if=\"form.year_selected\" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.stockIndex + 1) + ". " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.stockBudget.stockname), 1
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("Header Alert"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div v-if=\"$page.props.flash.status=='success'\" \r\n                class=\"alert-banner  fixed  right-0 m-2 w-2/3 md:w-full max-w-sm \">\r\n                <input type=\"checkbox\" class=\"hidden\" id=\"banneralert\">\r\n                \r\n                <label class=\"close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow rounded-md text-green-800 font-bold\" title=\"close\" for=\"banneralert\">\r\n                    {{ $page.props.flash.msg }}\r\n                    <svg class=\"fill-current text-white \" xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 18 18\">\r\n                        <path d=\"M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z\"></path>\r\n                    </svg>\r\n                </label>\r\n            </div>\r\n            <div v-if=\"$page.props.errors.error\" \r\n                    class=\"alert-banner  fixed  right-0 m-2 w-5/6 md:w-full max-w-sm \">\r\n                    <input type=\"checkbox\" class=\"hidden\" id=\"banneralert\">\r\n                    \r\n                    <label class=\"close cursor-pointer flex items-center justify-between w-full p-2 bg-red-700 shadow rounded-md text-white font-bold\" title=\"close\" for=\"banneralert\">\r\n                    {{ $page.props.errors.error }}\r\n                    <svg class=\"fill-current text-white \" xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 18 18\">\r\n                            <path d=\"M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z\"></path>\r\n                        </svg>\r\n                    </label>\r\n            </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.stockIndex + 1) + ". " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.stockBudget.stockname), 1
   /* TEXT */
   )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div v-if=\"stockBudget.budget['budget_add']==0\" class=\" px-3 bg-green-200 rounded-md\">\r\n                        บันทึก\r\n                    </div>\r\n                    <div v-else class=\" px-3 bg-yellow-200  rounded-md\">\r\n                        แก้ไข\r\n                    </div> ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{stockBudget}} "), $props.stockBudget.budget['budget_add'] == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"px-3\">\r\n                            <label  class=\" \">\r\n                            ไม่พบข้อมูลงบประมาณ\r\n                            </label>\r\n                           \r\n                        </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "number",
@@ -38491,19 +38589,29 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $setup.form.budget_input]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" บันทึก "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $setup.form.budget_input]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "p-2"
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" บันทึก "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "flex justify-center px-2 bg-green-200 text-green-900 rounded-md shadow-md hover:bg-green-300 focus:outline-none",
-    onClick: _cache[1] || (_cache[1] = function ($event) {
-      return $setup.addBudget();
-    })
-  }, " บันทึก ")])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.stockBudget.budget['budget_add'] != 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_9, " ได้อนุมัติ " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.budget_add) + " บาท ", 1
+    onClick: $setup.confirmAddBudget
+  }, " บันทึก ")])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{stockBudget.budget['budget_add']}} "), $props.stockBudget.budget['budget_add'] != 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_8, " ได้อนุมัติ " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.budget_add) + " บาท ", 1
   /* TEXT */
-  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [$props.stockBudget.budget['budget_add'] != 0 && $props.stockBudget.orders.length == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_11, " แก้ไข ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.stockBudget.orders.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": "flex justify-center px-2 bg-blue-200 text-blue-900 rounded-md shadow-md hover:bg-blue-300 focus:outline-none",
-    onClick: _cache[2] || (_cache[2] = function ($event) {
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [$props.stockBudget.budget['budget_add'] != 0 && $props.stockBudget.orders.length == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_10, " แก้ไข ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.stockBudget.orders.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "flex justify-center py-1 px-2 bg-blue-200 text-blue-900 rounded-md shadow-md hover:bg-blue-300 focus:outline-none",
+    onClick: _cache[1] || (_cache[1] = function ($event) {
       return $setup.viewAllOrder();
     })
-  }, " ดูรายการเบิก "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button\r\n                                class=\" flex justify-center px-2 ml-2 bg-blue-200 text-blue-900 rounded-md shadow-md hover:bg-blue-300 focus:outline-none\"\r\n                                >\r\n                                เพิ่มงบประมาณ\r\n                            </button> ")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.view_order ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{stockBudget.orders.length}} "), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.stockBudget.orders, function (order, index) {
+  }, " ดูรายการเบิก "), $props.stockBudget.budget['budget_add'] != 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("a", {
+    key: 0,
+    href: _ctx.route('print-budget-order', {
+      stock_id: $props.stockBudget.id,
+      year: $props.budgetYear
+    }),
+    target: "blank",
+    "class": ""
+  }, _hoisted_14, 8
+  /* PROPS */
+  , _hoisted_12)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button\r\n                                class=\" flex justify-center px-2 ml-2 bg-blue-200 text-blue-900 rounded-md shadow-md hover:bg-blue-300 focus:outline-none\"\r\n                                >\r\n                                เพิ่มงบประมาณ\r\n                            </button> ")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.view_order ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{stockBudget.orders.length}} "), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.stockBudget.orders, function (order, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["BudgetOrder"], {
       key: order.id,
       orderIndex: index,
@@ -38514,18 +38622,66 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , ["orderIndex", "orderItem", "stockBudget"]);
   }), 128
   /* KEYED_FRAGMENT */
-  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{budgetYear}} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" :href=\"route('print-budget-order',stockBudget.id,budgetYear)\" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
-    href: _ctx.route('print-budget-order', {
-      stock_id: $props.stockBudget.id,
-      year: $props.budgetYear
-    }),
-    target: "blank",
-    "class": "mx-6"
-  }, _hoisted_16, 8
-  /* PROPS */
-  , _hoisted_14)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.stockBudget.budget['budget_add'] != 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_18, " คงเหลือ " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.budget_balance) + "บาท ", 1
+  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{budgetYear}} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{stockBudget.orders.length}} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" v-if=\"stockBudget.orders.length !=0\"  "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" :href=\"route('print-budget-order',stockBudget.id,budgetYear)\" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <a :href=\"route('print-budget-order',{stock_id:stockBudget.id,year:budgetYear})\"\r\n                        v-if=\"stockBudget.budget['budget_add'] !=0\"\r\n                        target=\"blank\" class=\" mx-6\">\r\n                        <span\r\n                            class=\"inline-flex text-sm py-1 px-3  leading-5 text-white bg-blue-500 rounded-md\"\r\n                        >\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6\" viewBox=\"0 0 20 20\" fill=\"currentColor\">\r\n                            <path fill-rule=\"evenodd\" d=\"M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z\" clip-rule=\"evenodd\" />\r\n                            </svg>\r\n                                พิมพ์\r\n                        </span>\r\n                    </a> ")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.stockBudget.budget['budget_add'] != 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_17, " คงเหลือ " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.budget_balance) + "บาท ", 1
   /* TEXT */
-  )])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]);
+  )])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["ModalUpToYou"], {
+    isModalOpen: $setup.confirm_add_budget
+  }, {
+    header: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [_hoisted_18];
+    }),
+    body: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.form.stock_name), 1
+      /* TEXT */
+      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, " ปีงบ:" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.form.budget_year + 543), 1
+      /* TEXT */
+      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_21, " จำนวน " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.budget_confirm_show) + " บาท ", 1
+      /* TEXT */
+      )])];
+    }),
+    footer: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+        "class": "w-full text-center md:block"
+      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+        "class": "mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400",
+        onClick: $setup.okConfirmAddBudget
+      }, " ตกลง "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+        "class": "mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600",
+        onClick: $setup.cancelAddBudget
+      }, " ยกเลิก ")])];
+    }),
+    _: 1
+    /* STABLE */
+
+  }, 8
+  /* PROPS */
+  , ["isModalOpen"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["ModalUpToYou"], {
+    isModalOpen: $setup.show_alert_msg
+  }, {
+    header: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [_hoisted_22];
+    }),
+    body: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$page.props.flash.status) + ":" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$page.props.flash.msg), 1
+      /* TEXT */
+      )])];
+    }),
+    footer: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+        "class": "w-full text-center md:block"
+      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+        "class": "mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400",
+        onClick: $setup.closeAlert
+      }, " ตกลง ")])];
+    }),
+    _: 1
+    /* STABLE */
+
+  }, 8
+  /* PROPS */
+  , ["isModalOpen"])], 64
+  /* STABLE_FRAGMENT */
+  );
 }
 
 /***/ }),
@@ -39197,7 +39353,27 @@ var _hoisted_20 = {
 
 var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("สิทธิ์ผู้ใช้งาน");
 
-var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"flex flex-row\" data-v-932c6af0><svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\" data-v-932c6af0><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z\" data-v-932c6af0></path></svg><span class=\"text-gray-700 ml-2\" data-v-932c6af0>การจัดการงบประมาณ</span><svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-4 w-4\" viewBox=\"0 0 20 20\" fill=\"currentColor\" data-v-932c6af0><path d=\"M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z\" data-v-932c6af0></path></svg></div>", 1);
+
+var _hoisted_23 = {
+  "class": "flex flex-col items-start ml-8 h-10 hover:bg-gray-200 rounded-lg cursor-pointer"
+};
+var _hoisted_24 = {
+  "class": "mt-2"
+};
+
+var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("บันทึกงบประมาณประจำปี");
+
+var _hoisted_26 = {
+  "class": "flex flex-col items-start ml-8 h-10 hover:bg-gray-200 rounded-lg cursor-pointer"
+};
+var _hoisted_27 = {
+  "class": "mt-2"
+};
+
+var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("รายงานการใช้งบประมาณ");
+
+var _hoisted_29 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
@@ -39216,7 +39392,7 @@ var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_30 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
@@ -39235,7 +39411,7 @@ var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_31 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
@@ -39254,7 +39430,7 @@ var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_32 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
@@ -39273,7 +39449,7 @@ var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_33 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
@@ -39289,25 +39465,6 @@ var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 })]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "text-gray-700 ml-2"
 }, "บันทึกข้อมูลใบสั่งซื้อ(เก่า)")], -1
-/* HOISTED */
-);
-
-var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
-  xmlns: "http://www.w3.org/2000/svg",
-  "class": "h-6 w-6",
-  fill: "none",
-  viewBox: "0 0 24 24",
-  stroke: "currentColor"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
-  "stroke-linecap": "round",
-  "stroke-linejoin": "round",
-  "stroke-width": "2",
-  d: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-})]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "text-gray-700 ml-2"
-}, "บันทึกงบประมาณประจำปี")], -1
 /* HOISTED */
 );
 
@@ -39418,13 +39575,57 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([$setup.iconSubMenu, "pr-2 submenu-icon-style"])
   }, null, 2
   /* CLASS */
-  ), _hoisted_21])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <Link :href=\"route('manage_workunit')\"> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\" flex flex-col items-start ml-8 h-10 hover:bg-gray-200 rounded-lg cursor-pointer\">\r\n            <div class=\"mt-2\"><i :class=\"iconSubMenu\" class=\"pr-2 submenu-icon-style\"></i>หน่วยงาน</div>\r\n          </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" </Link> ")], 2
+  ), _hoisted_21])])], 2
+  /* CLASS */
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" budget menu group "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": "w-full flex items-center justify-between text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer",
+    onClick: _cache[1] || (_cache[1] = function ($event) {
+      return $setup.budgetMenuOpen = !$setup.budgetMenuOpen;
+    })
+  }, [_hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([$setup.budgetMenuOpen ? $setup.iconExplandBudget : $setup.iconCollapseBudget, "ml-2"]),
+    style: {
+      "fontSize": "0.7rem"
+    }
+  }, null, 2
+  /* CLASS */
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($setup.budgetMenuOpen ? '' : 'hidden')
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+    href: "#"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+        "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([$setup.iconSubMenu, "pr-2 submenu-icon-style"])
+      }, null, 2
+      /* CLASS */
+      ), _hoisted_25])])];
+    }),
+    _: 1
+    /* STABLE */
+
+  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+    href: _ctx.route('budget-list')
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_27, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+        "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([$setup.iconSubMenu, "pr-2 submenu-icon-style"])
+      }, null, 2
+      /* CLASS */
+      ), _hoisted_28])])];
+    }),
+    _: 1
+    /* STABLE */
+
+  }, 8
+  /* PROPS */
+  , ["href"])], 2
   /* CLASS */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     href: _ctx.route('report-list', '27')
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_22];
+      return [_hoisted_29];
     }),
     _: 1
     /* STABLE */
@@ -39435,7 +39636,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     href: _ctx.route('report-checkout-item', 27)
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_23];
+      return [_hoisted_30];
     }),
     _: 1
     /* STABLE */
@@ -39446,7 +39647,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     href: _ctx.route('check-order-list')
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_24];
+      return [_hoisted_31];
     }),
     _: 1
     /* STABLE */
@@ -39457,7 +39658,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     href: _ctx.route('check-order-list')
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_25];
+      return [_hoisted_32];
     }),
     _: 1
     /* STABLE */
@@ -39468,29 +39669,35 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     href: _ctx.route('check-order-list')
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_26];
+      return [_hoisted_33];
     }),
     _: 1
     /* STABLE */
 
   }, 8
   /* PROPS */
-  , ["href"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
-    href: _ctx.route('budget-list')
-  }, {
-    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_27];
-    }),
-    _: 1
-    /* STABLE */
-
-  }, 8
-  /* PROPS */
-  , ["href"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer\">\r\n          <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\r\n            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4\" />\r\n          </svg>\r\n          <span class=\"text-gray-700 ml-2\">ตรวจรับพัสดุ</span>\r\n        </div> ")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2
+  , ["href"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" \r\n        <Link :href=\"route('budget-list')\">\r\n          <div class=\"w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer\">\r\n            <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\r\n              <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z\" />\r\n            </svg>\r\n            <span class=\"text-gray-700 ml-2\">บันทึกงบประมาณประจำปี</span>\r\n          </div>\r\n        </Link> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"w-full flex items-center text-blue-400 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer\">\r\n          <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\r\n            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4\" />\r\n          </svg>\r\n          <span class=\"text-gray-700 ml-2\">ตรวจรับพัสดุ</span>\r\n        </div> ")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2
   /* CLASS */
   )], 2112
   /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */
   );
+}
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/Pages/Admin/AddBudget.vue?vue&type=template&id=4a83c266":
+/*!********************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/Pages/Admin/AddBudget.vue?vue&type=template&id=4a83c266 ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render)
+/* harmony export */ });
+function render(_ctx, _cache) {
+  return null;
 }
 
 /***/ }),
@@ -39795,7 +40002,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         }),
         "class": "block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 pr-6 rounded shadow leading-tight focus:outline-none focus:shadow-outline",
         onChange: $setup.getListBudget
-      }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.years, function (year, index) {
+      }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.years, function (year, index) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
           key: index,
           value: year
@@ -67580,6 +67787,30 @@ _Sidebar_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"].__f
 
 /***/ }),
 
+/***/ "./resources/js/Pages/Admin/AddBudget.vue":
+/*!************************************************!*\
+  !*** ./resources/js/Pages/Admin/AddBudget.vue ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _AddBudget_vue_vue_type_template_id_4a83c266__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AddBudget.vue?vue&type=template&id=4a83c266 */ "./resources/js/Pages/Admin/AddBudget.vue?vue&type=template&id=4a83c266");
+
+const script = {}
+script.render = _AddBudget_vue_vue_type_template_id_4a83c266__WEBPACK_IMPORTED_MODULE_0__.render
+/* hot reload */
+if (false) {}
+
+script.__file = "resources/js/Pages/Admin/AddBudget.vue"
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (script);
+
+/***/ }),
+
 /***/ "./resources/js/Pages/Admin/CheckOrder.vue":
 /*!*************************************************!*\
   !*** ./resources/js/Pages/Admin/CheckOrder.vue ***!
@@ -69087,6 +69318,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/Pages/Admin/AddBudget.vue?vue&type=template&id=4a83c266":
+/*!******************************************************************************!*\
+  !*** ./resources/js/Pages/Admin/AddBudget.vue?vue&type=template&id=4a83c266 ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_AddBudget_vue_vue_type_template_id_4a83c266__WEBPACK_IMPORTED_MODULE_0__.render)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_AddBudget_vue_vue_type_template_id_4a83c266__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./AddBudget.vue?vue&type=template&id=4a83c266 */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/Pages/Admin/AddBudget.vue?vue&type=template&id=4a83c266");
+
+
+/***/ }),
+
 /***/ "./resources/js/Pages/Admin/CheckOrder.vue?vue&type=template&id=a96bc6a2":
 /*!*******************************************************************************!*\
   !*** ./resources/js/Pages/Admin/CheckOrder.vue?vue&type=template&id=a96bc6a2 ***!
@@ -69706,6 +69953,7 @@ function compileToFunction(template, options) {
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var map = {
+	"./Admin/AddBudget.vue": "./resources/js/Pages/Admin/AddBudget.vue",
 	"./Admin/CheckOrder.vue": "./resources/js/Pages/Admin/CheckOrder.vue",
 	"./Admin/ListBudget.vue": "./resources/js/Pages/Admin/ListBudget.vue",
 	"./Admin/ListReportStock.vue": "./resources/js/Pages/Admin/ListReportStock.vue",
