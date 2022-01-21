@@ -56,10 +56,10 @@
                                 v-model="form.budget_input"
                                 >
                         </div>
-                        <div  class=" p-2 ">
+                        <div  class=" p-2 mr-2 ">
                             <!-- บันทึก -->
                               <button
-                                class=" flex justify-center px-2 bg-green-200 text-green-900 rounded-md shadow-md hover:bg-green-300 focus:outline-none"
+                                class=" flex justify-center py-1 px-2 bg-green-200 text-green-900 rounded-md shadow-md hover:bg-green-300 focus:outline-none"
                                 v-on:click="confirmAddBudget"
                                 >
                                 บันทึก
@@ -74,12 +74,17 @@
                         ได้อนุมัติ  {{budget_add}} บาท 
                         </label>
                     </div>
-                    <div class="flex px-3 ">
+                    <div class="flex px-2 ">
                         <div v-if="stockBudget.budget['budget_add']!=0 && stockBudget.orders.length==0" 
-                            class="px-3  bg-yellow-200  rounded-md">
-                            แก้ไข
+                            class="px-3 ">
+                             <button
+                                class=" flex justify-center py-1 px-2 bg-yellow-200 text-yellow-900 rounded-md shadow-md hover:bg-yellow-300 focus:outline-none"
+                                v-on:click="editBudget"
+                                >
+                                แก้ไข
+                            </button>
                         </div>
-                        <div v-if="stockBudget.orders.length>0" class="flex  rounded-md">
+                        <div v-if="stockBudget.orders.length>0" class="flex mr-2">
                             <button
                                 class=" flex justify-center py-1 px-2 bg-blue-200 text-blue-900 rounded-md shadow-md hover:bg-blue-300 focus:outline-none"
                                 v-on:click="viewAllOrder()"
@@ -147,7 +152,6 @@
             <p class="text-md font-bold text-red-600 ">คุณต้องการบันทึกงบประมาณใช่หรือไม่?</p> 
                                     
         </template>
-
         <template v-slot:body>
             <div class="w-full flex flex-col text-gray-900 text-md font-medium dark:text-white">
                 <div for="">
@@ -180,7 +184,44 @@
         </template>
     </ModalUpToYou>
 
-      <ModalUpToYou :isModalOpen="show_alert_msg" >
+    <ModalUpToYou :isModalOpen="confirm_edit_budget" >
+        <template v-slot:header>
+            <p class="text-md font-bold text-red-600 ">แก้ไขงบประมาณ</p> 
+                                    
+        </template>
+        <template v-slot:body>
+            <div class="w-full flex flex-col text-gray-900 text-md font-medium dark:text-white">
+                <div for="">
+                    {{form.stock_name}} 
+                </div>
+                <div>
+                    ปีงบ:{{form.budget_year+543}} 
+                </div>
+                 <div for="">
+                     <input type="number"  class=" rounded-md " v-model="form.budget_edit">
+                </div>
+            </div>
+        </template>
+
+        <template v-slot:footer>
+            <div class=" w-full  text-center  md:block">
+                <button 
+                    class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                    v-on:click="okConfirmEditBudget"
+                    >
+                    ตกลง
+                </button>
+                <button 
+                    class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
+                    v-on:click="cancelEditBudget"
+                >
+                    ยกเลิก
+                </button>
+            </div>
+        </template>
+    </ModalUpToYou>
+
+    <ModalUpToYou :isModalOpen="show_alert_msg" >
         <template v-slot:header>
             <p class="text-md font-bold text-red-600 ">กรุณาอ่าน </p> 
                                     
@@ -229,11 +270,16 @@ const confirm_add_budget=ref(false);
 const budget_confirm_show = ref(0);
 const show_alert_msg=ref(false);
 
+const confirm_edit_budget=ref(false);
+
+
 const form = useForm({
     stock_id:{type:Number},
     stock_name:{type:String},
     budget_year:{type:Number},
     budget_input:{type:Number,defaulte:0},
+    budget_edit:{type:Number,defaulte:0},
+  //  budget_edit:{type:Object},
 
 })
 
@@ -264,8 +310,6 @@ const confirmAddBudget=(order)=>{
     form.stock_name = props.stockBudget.stockname;
     form.budget_year = props.budgetYear;
     budget_confirm_show.value = form.budget_input.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    // confirm_items.value = order.items;
-    // form.confirm_order_id = order.id;
            
 }
 
@@ -274,17 +318,20 @@ const  cancelAddBudget=()=>{
 }
 
 const  closeAlert=()=>{
+     console.log('close alert='+form.budget_year);
     show_alert_msg.value = false;
     Inertia.visit(route('budget-list'));
+//    Inertia.visit(route('get-list-budget',{year:form.budget_year}),{
+//        method: 'get',
+//    })
+    //  axios.get(route('get-list-budget',{year:form.year_selected})).then(res => {
+    //    // console.log(res.data.stocks);
+    //     stock_budgets.value = res.data.stocks;   
+    // });
 }
 
 const okConfirmAddBudget=()=>{
     confirm_add_budget.value = false;
-    // console.log(form.confirm_order_id);
-    // console.log('addBudget');
-    // console.log(props.stockBudget.id);
-    // console.log(props.budgetYear);
-    // console.log(form.budget_input);
     form.stock_id = props.stockBudget.id;
     form.budget_year = props.budgetYear;
     form.post(route('add-budget'), {
@@ -304,6 +351,47 @@ const okConfirmAddBudget=()=>{
     })
     
 }
+
+const editBudget=()=>{
+    console.log('edit budget');
+    form.stock_id = props.stockBudget.id;
+    form.stock_name = props.stockBudget.stockname;
+    form.budget_year = props.budgetYear;
+    form.budget_edit = props.stockBudget.budget['budget_add'];
+    confirm_edit_budget.value = true;
+
+    //form.budget_edit= props.stockBudget.budget;
+    // Inertia.visit(route('edit-budget'),{
+    //     method: 'get',
+    //     data: {budget:props.stockBudget.budget},
+    // });
+}
+
+const okConfirmEditBudget=()=>{
+      confirm_edit_budget.value = false;
+       form.post(route('edit-budget'), {
+            preserveState: true,
+            preserveScroll: true,
+            onSuccess: page => { 
+                console.log('success');
+                show_alert_msg.value = true;
+                console.log(form.budget_year);
+                },
+            onError: errors => { 
+                console.log('error');
+                  show_alert_msg.value = true;
+            },
+            onFinish: visit => { 
+                console.log('finish');
+            },
+    })
+
+}
+
+const  cancelEditBudget=()=>{
+    confirm_edit_budget.value = false;
+}
+   
 
 
 </script>

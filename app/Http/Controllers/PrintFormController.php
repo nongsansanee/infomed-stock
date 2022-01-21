@@ -40,7 +40,7 @@ class PrintFormController extends Controller
 
         //title
         $division_name = 'สาขาวิชาการบริบาลผู้ป่วยนอก';
-        $head = 'แบบฟอร์มรายการสั่งซื้อวัสดุของ สาขา/หน่วยงาน';
+        $head = 'แบบฟอร์มรายการสั่งซื้อวัสดุ(แบบสัญญา)ของ สาขา/หน่วยงาน';
         $title = $head.'  '.$division_name;
         // $pdf->Cell(0,0,'Hello World',0,0,'C');
         // $pdf->Ln(5);
@@ -241,9 +241,9 @@ class PrintFormController extends Controller
         $pdf->SetFont('THSarabunNew','B');
         $pdf->SetFontSize('20'); 
         $unit = Unit::where('unitid',$order->items[0][0]['stock_id'])->first();
-        Log::info($unit);
+        //Log::info($unit);
         $division_name = $unit->unitname;
-        $head = 'แบบฟอร์มรายการสั่งซื้อวัสดุของ สาขา/หน่วยงาน';
+        $head = 'แบบฟอร์มรายการสั่งซื้อวัสดุ(แบบสัญญา)ของ สาขา/หน่วยงาน';
         $title = $head.'  '.$division_name;
         $pdf->Cell(0,15,iconv('UTF-8', 'cp874', $title),0,0,'C');
 

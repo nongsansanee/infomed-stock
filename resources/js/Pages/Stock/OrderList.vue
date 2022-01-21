@@ -59,7 +59,7 @@
     <div v-if="order_lists.length==0"
         class=" flex justify-center text-red-600"
         >
-        <label for="">ไม่พบรายการใบสั่งซื้อพัสดุ</label>
+        <label for="">ไม่พบรายการใบสัญญาสั่งซื้อพัสดุ</label>
     </div>
     <OrderDetail v-for="(order_list,key) in order_lists" :key=order_list.id 
         :orderIndex="key" 

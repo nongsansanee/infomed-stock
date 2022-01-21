@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\OrderItem;
 use Illuminate\Database\Seeder;
-use App\Models\Ordertem;
+
 
 class OrderItemSeeder extends Seeder
 {

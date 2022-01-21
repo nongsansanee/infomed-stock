@@ -96,6 +96,7 @@ class CreateOrderController extends Controller
         $last_create_no = OrderItem::select('create_no')
                             ->where('unit_id',$request->unit_id)
                             ->where('year',$split_date_now[0])
+                            ->where('type','contract')
                             ->orderBy('create_no','desc')
                             ->first();
         if($last_create_no == null){
@@ -158,6 +159,7 @@ class CreateOrderController extends Controller
         //get data order list (mock up test UI)
         $order_lists = OrderItem::with('User:id,name')
                                 ->where('unit_id',$division_id)
+                                ->where('type','contract')
                                 ->orderBy('order_no')
                                 ->get();
         
@@ -214,6 +216,7 @@ class CreateOrderController extends Controller
         $last_order_no = OrderItem::select('order_no')
                                 ->where('unit_id',$order->unit_id)
                                 ->where('year',$split_date_now[0])
+                                ->where('type','contract')
                                 ->orderBy('order_no','desc')
                                 ->first();
         if($last_order_no->order_no == 0){

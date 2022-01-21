@@ -9,6 +9,7 @@ use App\Http\Controllers\ReportStockController;
 use App\Http\Controllers\CreateOrderController;
 use App\Http\Controllers\AdminReportStockController;
 use App\Http\Controllers\AdminOrderController;
+use App\Http\Controllers\AdminOrderPurchaseController;
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\CheckInOrderController;
 use App\Http\Controllers\ItemTransactionController;
@@ -74,15 +75,15 @@ Route::get('/', function () {
  Route::get('/get-checkout-item/{stock_id}/{year}/{month}', [ReportStockController::class,'show'])->name('get-checkout-item')->middleware('auth');
 
  
- //หน้าแรกสร้างใบสั่งซื้อ
+ //หน้าแรกสร้างใบสั่งซื้อแบบสัญญา
  Route::get('/create-order/{division_id}', [CreateOrderController::class,'index'])->name('create-order')->middleware('auth');
- //สร้างใบสั่งซื้อ
+ //สร้างใบสั่งซื้อแบบสัญญา
  Route::post('/create-order/add', [CreateOrderController::class,'store'])->name('add-order')->middleware('auth');
- //พิมพ์ใบสั่งซื้อ
+ //พิมพ์ใบสั่งซื้อแบบสัญญา
  Route::get('/create-order/print/{order}', [PrintFormController::class,'show'])->name('print-order')->middleware('auth');
- //แสดงรายการสร้างเอกสารใบสั่งซื้อ
+ //แสดงรายการสร้างเอกสารใบสั่งซื้อแบบสัญญา
  Route::get('/order-list/{division_id}', [CreateOrderController::class,'show'])->name('order-list')->middleware('auth');
- //ส่งเอกสารใบสั่งซื้อ
+ //ส่งเอกสารใบสั่งซื้อแบบสัญญา
  Route::post('/order-list/update', [CreateOrderController::class,'update'])->name('send-order')->middleware('auth');
  //บันทึกรับพัสดุใหม่ลงคลัง
  Route::post('/order-list/checkin/', [CheckInOrderController::class,'store'])->name('checkin-order')->middleware('auth');
@@ -96,7 +97,7 @@ Route::get('/', function () {
  Route::get('/admin/report-list/{division_id}', [AdminReportStockController::class,'index'])->name('report-list')->middleware('auth');
  Route::get('/admin/report-stock/{stock_slug}', [AdminReportStockController::class,'show'])->name('admin-report-stock')->middleware('auth');
  
- //แสดงรายการใบสั่งซื้อ
+ //แสดงรายการใบสั่งซื้อแบบสัญญา
  Route::get('/admin/order-list/', [AdminOrderController::class,'index'])->name('check-order-list')->middleware('auth');
  //อนุมัติใบสั่งซื้อ
  Route::post('/admin/order-list/update', [AdminOrderController::class,'update'])->name('approve-order')->middleware('auth');
@@ -106,9 +107,13 @@ Route::get('/', function () {
 //ดึงรายการงบประมาณตั้งต้นแต่ละสาขา ตามปีที่ระบุ
  Route::get('/admin/get-list-budget/{year}', [BudgetController::class,'show'])->name('get-list-budget')->middleware('auth','can:manage_master_data');
 //บันทึกงบประมาณสาขา
-Route::post('/admin/add-budget',[BudgetController::class,'store'])->name('add-budget')->middleware('auth','can:manage_master_data');
-  
+ Route::post('/admin/add-budget',[BudgetController::class,'store'])->name('add-budget')->middleware('auth','can:manage_master_data');
+//แก้ไขข้อมูลงบ
+ Route::post('/admin/edit-budget',[BudgetController::class,'edit'])->name('edit-budget')->middleware('auth','can:manage_master_data');
 //พิมพ์งบประมาณคงเหลือและใบสั่งซื้อ
  Route::get('/admin/print-budget-order/{stock_id}/{year}', [PrintFormController::class,'printBudgetOrder'])->name('print-budget-order')->middleware('auth','can:manage_master_data');
- //printForm
+ 
+//หน้าแรกบันทึกใบสั่งซื้อเก่า
+Route::get('/admin/add-order-purchase/', [AdminOrderPurchaseController::class,'index'])->name('add-order-purchase')->middleware('auth','can:manage_master_data');
+ //printForm test
  Route::get('/testprint', [PrintFormController::class,'index'])->name('testprint');

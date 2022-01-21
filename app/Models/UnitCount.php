@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class UnitCount extends Model
 {
     use HasFactory;
+    
+    protected $table = 'unit_counts';
+
+    protected $fillable = [ 
+        'countname',
+    ];
 }

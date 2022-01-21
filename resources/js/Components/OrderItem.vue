@@ -100,32 +100,7 @@
         </div>
     </div>
 
-    <!-- <ModalUpToYou :isModalOpen="open_alert" >
-        <template v-slot:header>
-            <p class="text-md font-bold text-red-600 ">!!!คุณใส่ข้อมูลพัสดุที่ต้องการสั่งซื้อไม่ครบ!!!</p> 
-                                    
-        </template>
-
-        <template v-slot:body>
-            <div class="text-gray-900 text-md font-medium dark:text-white">
-                <label class="  flex  justify-start w-full  text-lg text-red-700">
-                    {{msg_alert}}
-                </label>
-            </div>
-        </template>
-
-        <template v-slot:footer>
-            <div class=" w-full  text-center  md:block">
-                <button 
-                    class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
-                    v-on:click="closeAlert"
-                    >
-                    ตกลง
-                </button>
-                
-            </div>
-        </template>
-    </ModalUpToYou> -->
+  
 </template>
 <script setup>
 import ModalUpToYou from '@/Components/ModalUpToYou.vue'

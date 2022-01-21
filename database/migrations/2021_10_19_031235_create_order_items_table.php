@@ -25,6 +25,7 @@ class CreateOrderItemsTable extends Migration
             $table->string('status')->default('created');
             $table->json('items')->nullable(); 
             $table->json('timeline')->nullable(); 
+            $table->string('type')->default('contract'); //contract , purchase
             $table->timestamps();
         });
     }

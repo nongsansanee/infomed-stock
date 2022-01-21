@@ -23,6 +23,7 @@ class OrderItem extends Model
         'status',
         'items',
         'timeline',
+        'type'
     ];
 
     protected $casts = [

@@ -80,7 +80,7 @@ class BudgetController extends Controller
         }catch(\Illuminate\Database\QueryException $e){
             //rollback
             Log::info($e->getMessage());
-            return redirect()->back()->with(['status' => 'error', 'msg' =>  'เกิดความผิดพลาดในการบันทึกข้อมูลกรุณาติดต่อเจ้าหน้าที่ IT ที่น่ารัก']);
+            return redirect()->back()->with(['status' => 'error', 'msg' =>  'เกิดความผิดพลาดในการบันทึกข้อมูลกรุณาติดต่อเจ้าหน้าที่ IT ภาคฯ']);
         }
        
         return Redirect::back()->with(['status' => 'success', 'msg' => 'บันทึกงบประมาณสำเร็จ']);
@@ -96,7 +96,7 @@ class BudgetController extends Controller
     {
         //Log::info($year);
        // $year = $request->year_selected;
-        Log::info($year);
+       // Log::info($year);
        // return "test";
         $stocks = Stock::where('status','1')->get();
         $use_budget=0;
@@ -121,7 +121,7 @@ class BudgetController extends Controller
                                             ->get();
                 if( $stock_orders->count()!=0){
                     foreach($stock_orders as $order){
-                         Log::info($order->timeline['approve_budget']);
+                        // Log::info($order->timeline['approve_budget']);
                         $use_budget += $order->timeline['approve_budget'];
                     }
                 }else{
@@ -154,9 +154,24 @@ class BudgetController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        //
+       // Log::info($request);
+        //return 'test edit budget';
+        $user = Auth::user();
+  
+        try{
+          // budget::latest()->first();
+            budget::where(['stock_id'=>$request->stock_id , 'year'=>$request->budget_year])
+                    ->update(['budget_add'=>$request->budget_edit]);
+            //Log::info($update_budget);
+        }catch(\Illuminate\Database\QueryException $e){
+            //rollback
+            Log::info($e->getMessage());
+            return redirect()->back()->with(['status' => 'error', 'msg' =>  'เกิดความผิดพลาดในการแก้ไขข้อมูลกรุณาติดต่อเจ้าหน้าที่ IT ภาคฯ']);
+        }
+       
+        return Redirect::back()->with(['status' => 'success', 'msg' => 'แก้ไขงบประมาณสำเร็จ']);
     }
 
     /**
