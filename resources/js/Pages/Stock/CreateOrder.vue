@@ -184,21 +184,6 @@ const closePreviewOrder=()=>{
             show_preorder.value=false;
 }
 
-//const sumPay = computed(()=>{
-    //sum_pay.value = 0;
-    // var  sum_pay = 0.0;
-    // form.preview_orders.forEach(item => {       
-    //             console.log('total=='+item[0].total);     
-    //             sum_pay += item[0].total;
-    //              console.log('sum_pay==>'+sum_pay);
-    //         })
-   
-    // let show_sum_pay =  sum_pay.toFixed(2);
-    // console.log('show_sum_pay==>'+show_sum_pay);
-  //  return show_sum_pay.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
- // return sum_pay;
-//})
-
 
 
 const createOrder=(()=>{

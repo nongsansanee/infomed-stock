@@ -133,7 +133,7 @@ const msg_alert=ref('');
 const closeAlert=()=>{ open_alert.value=false};
 
 const addOrder=()=>{
-     console.log('child add order item==>')
+    // console.log('child add order item==>')
     // console.log(form.item)
     // console.log('add order order_input==>')
     // console.log(form.order_input)
@@ -182,7 +182,7 @@ const addOrder=()=>{
                                 catalog_number:form.item.checkin_last.profile.catalog_number,
                                 lot_number:form.item.checkin_last.profile.lot_number,
                             });
-    console.log(form.preview_orders)
+    //console.log(form.preview_orders)
     emits('previewOrder',  form.preview_orders);
 
 }
