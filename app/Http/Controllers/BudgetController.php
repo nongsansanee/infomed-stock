@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\budget;
 use App\Models\OrderItem;
+use App\Models\OrderPurchase;
 use App\Models\Stock;
 use App\Models\Unit;
 use Illuminate\Http\Request;
@@ -100,6 +101,7 @@ class BudgetController extends Controller
        // return "test";
         $stocks = Stock::where('status','1')->get();
         $use_budget=0;
+        $purchase_use_budget=0;
         $balance_budget=0.0;
         foreach($stocks as $key=>$stock){
             $budget_year = budget::where('stock_id',$stock->id)
@@ -115,7 +117,9 @@ class BudgetController extends Controller
                 $balance_budget = 0.0;
                // Log::info($budget_year);
             }else{
-                $stock_orders = OrderItem::where('unit_id',$stock->id)
+                //*********ข้อมูลใบสัญญาสั่งซื้อ
+                $stock_orders = OrderItem::select('order_no','year','date_order','timeline','type')
+                                            ->where('unit_id',$stock->id)
                                             ->where('year',$year)
                                             ->whereIn('status',['approve','checkin'])
                                             ->get();
@@ -128,15 +132,34 @@ class BudgetController extends Controller
                     $use_budget = 0.0;
                 }
               //  Log::info($budget_year->budget_add);
-                $balance_budget = (float)$budget_year->budget_add - (float)$use_budget;
-              //  Log::info($balance_budget);
+          
+
+                //*********ข้อมูลใบสั่งซื้อ
+                $purchase_orders = OrderPurchase::select('date_order','project_name','budget','timeline')
+                                        ->where('unit_id',$stock->id)
+                                        ->where('year',$year)
+                                        ->where('status','approved')
+                                        ->get();
+                if( $purchase_orders->count()!=0){
+                    foreach($purchase_orders as $purchase_order){
+                     $purchase_use_budget += $purchase_order->budget;
+                    }
+                }else{
+                    $purchase_use_budget = 0.0;
+                }
+
+                $balance_budget = (float)$budget_year->budget_add - (float)$use_budget - (float)$purchase_use_budget; 
+
+               // Log::info('purchase_use_budget=>'.$purchase_use_budget);
                 $stocks[$key]['orders'] = $stock_orders;
+                $stocks[$key]['purchase_orders'] = $purchase_orders;
                 $stocks[$key]['use_budget'] = $use_budget;
+                $stocks[$key]['purchase_use_budget'] = $purchase_use_budget;
                 $stocks[$key]['balance_budget'] = $balance_budget;
             }
           
             $stocks[$key]['budget'] = $budget_year;
-             //Log::info($stock->unit_id);
+          //   Log::info($stocks);
 
         }
         return response()->json([

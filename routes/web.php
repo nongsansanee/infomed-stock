@@ -62,10 +62,19 @@ Route::get('/', function () {
  Route::get('/annouce', [LoginController::class,'index'])->middleware('auth');
 //แสดงหน้าเบิกพัสดุ
  Route::get('/stock/{division_id}', [StockController::class,'index'])->name('stock')->middleware('auth','can:checkout_item');
+
+ Route::controller(ItemTransactionController::class)
+        ->middleware('auth')
+        ->group(function(){
+          //แสดงรายละเอียดการเบิก/ตรวจรับ พัสดุ
+          Route::get('/stock-item/{stock_item}','show')->name('list-stock-item'); 
+          //เบิกพัสดุ
+          Route::post('/checkout-stock-item','store')->name('checkout-stock-item');
+        });
  //แสดงรายละเอียดการเบิก/ตรวจรับ พัสดุ
- Route::get('/stock-item/{stock_item}', [ItemTransactionController::class,'show'])->name('list-stock-item')->middleware('auth');
+ //Route::get('/stock-item/{stock_item}', [ItemTransactionController::class,'show'])->name('list-stock-item')->middleware('auth');
  //เบิกพัสดุ
- Route::post('/checkout-stock-item', [ItemTransactionController::class,'store'])->name('checkout-stock-item')->middleware('auth');
+ //Route::post('/checkout-stock-item', [ItemTransactionController::class,'store'])->name('checkout-stock-item')->middleware('auth');
  
 
  //ไม่แน่ใจว่าจะใช้ หน้าแสดงข้อมูลปีเดือน ที่มีการเบิกพัสดุ
@@ -113,7 +122,17 @@ Route::get('/', function () {
 //พิมพ์งบประมาณคงเหลือและใบสั่งซื้อ
  Route::get('/admin/print-budget-order/{stock_id}/{year}', [PrintFormController::class,'printBudgetOrder'])->name('print-budget-order')->middleware('auth','can:manage_master_data');
  
+ 
+ Route::controller(AdminOrderPurchaseController::class)
+        ->middleware('auth','can:manage_master_data')
+        ->group(function(){
+          //หน้าแรกบันทึกใบสั่งซื้อเก่า
+          Route::get('/admin/add-order-purchase/','index')->name('add-order-purchase'); 
+          //เบิกพัสดุ
+          Route::post('/admin/store-purchase/','store')->name('store-purchase');
+        });
 //หน้าแรกบันทึกใบสั่งซื้อเก่า
-Route::get('/admin/add-order-purchase/', [AdminOrderPurchaseController::class,'index'])->name('add-order-purchase')->middleware('auth','can:manage_master_data');
- //printForm test
+//Route::get('/admin/add-order-purchase/', [AdminOrderPurchaseController::class,'index'])->name('add-order-purchase')->middleware('auth','can:manage_master_data');
+ 
+//printForm test
  Route::get('/testprint', [PrintFormController::class,'index'])->name('testprint');

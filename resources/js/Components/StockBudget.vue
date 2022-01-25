@@ -75,7 +75,7 @@
                         </label>
                     </div>
                     <div class="flex px-2 ">
-                        <div v-if="stockBudget.budget['budget_add']!=0 && stockBudget.orders.length==0" 
+                        <div v-if="stockBudget.budget['budget_add']!=0 && stockBudget.orders.length==0 &&  stockBudget.purchase_orders.length==0" 
                             class="px-3 ">
                              <button
                                 class=" flex justify-center py-1 px-2 bg-yellow-200 text-yellow-900 rounded-md shadow-md hover:bg-yellow-300 focus:outline-none"
@@ -84,7 +84,7 @@
                                 แก้ไข
                             </button>
                         </div>
-                        <div v-if="stockBudget.orders.length>0" class="flex mr-2">
+                        <div v-if="stockBudget.orders.length>0 || stockBudget.purchase_orders.length>0  " class="flex mr-2">
                             <button
                                 class=" flex justify-center py-1 px-2 bg-blue-200 text-blue-900 rounded-md shadow-md hover:bg-blue-300 focus:outline-none"
                                 v-on:click="viewAllOrder()"
@@ -115,28 +115,23 @@
                 </div>
                 <div v-if="view_order">
                     <!-- {{stockBudget.orders.length}} -->
-                    <BudgetOrder  v-for="(order,index) in stockBudget.orders" :key="order.id" 
-                        :orderIndex="index"
-                        :orderItem="order"
-                        :stockBudget="stockBudget.budget['budget_add']"
-                        >
-                    </BudgetOrder>
-                    <!-- {{budgetYear}} -->
-                    <!-- {{stockBudget.orders.length}} -->
-                     <!-- v-if="stockBudget.orders.length !=0"  -->
-                    <!-- :href="route('print-budget-order',stockBudget.id,budgetYear)" -->
-                     <!-- <a :href="route('print-budget-order',{stock_id:stockBudget.id,year:budgetYear})"
-                        v-if="stockBudget.budget['budget_add'] !=0"
-                        target="blank" class=" mx-6">
-                        <span
-                            class="inline-flex text-sm py-1 px-3  leading-5 text-white bg-blue-500 rounded-md"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd" />
-                            </svg>
-                                พิมพ์
-                        </span>
-                    </a> -->
+                    <div v-if="stockBudget.orders.length!=0">
+                         <label class=" px-6 font-bold">รายการใบสัญญาสั่งซื้อ</label>
+                        <BudgetOrder  v-for="(order,index) in stockBudget.orders" :key="order.id" 
+                            :orderIndex="index"
+                            :orderItem="order"
+                            >
+                        </BudgetOrder>
+                    </div>
+                    <div v-if="stockBudget.purchase_orders.length!=0">
+                         <label class=" px-6 font-bold">รายการใบสั่งซื้อ</label>
+                        <PurchaseOrder v-for="(purchase_order,index2) in stockBudget.purchase_orders" :key="purchase_order.id"
+                            :orderIndex="index2"
+                            :orderItem="purchase_order"
+                        />
+                    </div>
+                   
+          
                 </div>
                 <div v-if="stockBudget.budget['budget_add']!=0" class=" px-3">
                     <label class=" px-3 text-red-600 font-bold"> 
@@ -251,6 +246,7 @@
 </template>
 <script setup>
 import BudgetOrder from '@/Components/BudgetOrder.vue';
+import PurchaseOrder from '@/Components/PurchaseOrder.vue'
 import ModalUpToYou from '@/Components/ModalUpToYou.vue'
 import { Inertia } from '@inertiajs/inertia';
 import { useForm } from '@inertiajs/inertia-vue3';

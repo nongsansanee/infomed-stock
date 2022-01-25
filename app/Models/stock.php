@@ -29,6 +29,10 @@ class Stock extends Model
         return $this->hasMany(OrderItem::class,'unit_id','unit_id');
     }
 
+    public function orderPurchases(){
+        return $this->hasMany(OrderPurchase::class,'unit_id','unit_id');
+    }
+
 
     // public function scopeStudentLast($year)
     // {

@@ -13,11 +13,11 @@
                                         <label >ชื่อคลังพัสดุ:</label>
                                 </div>
                                
-                                <select v-model="form.stock_id"
+                                <select v-model="form.stock_select"
                                         class="block appearance-none w-full bg-white border  focus:border-indigo-600  rounded-md  " 
                                         :class="[stock_alert ? 'border-red-500 border-3 ' : 'border-gray-500' ]"
                                         >
-                                        <option v-for="(stock) in  stocks" :key=stock.id  v-bind:value="stock.id">{{stock.stockname}}</option>
+                                        <option v-for="(stock) in  stocks" :key=stock.id  v-bind:value="{stockid:stock.id,stockname:stock.stockname}">{{stock.stockname}}</option>
                                 </select>
                         </div>
                         <div class=" my-2 ">
@@ -91,9 +91,12 @@
                           class=" mt-2"
                           >
                                 <button 
-                                        class="w-full  bg-green-600 py-2 text-sm shadow-sm font-medium  border text-white rounded-md hover:shadow-lg hover:bg-green-400"
+                                        class="w-full flex justify-center bg-green-600 py-2 text-md shadow-sm font-medium  border text-white rounded-md hover:shadow-lg hover:bg-green-400"
                                         v-on:click="addOrderPurchase"
                                         >
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                                        </svg>
                                         บันทึกใบสั่งซื้อ
                                 </button>
                         </div>
@@ -101,14 +104,76 @@
                 <PurchaseItem 
                             @previewOrder="getOrder"
                          />
+
+                <ModalUpToYou :isModalOpen="confirm_add_purchase" >
+                        <template v-slot:header>
+                        <p class="text-md font-bold text-red-600 ">คุณต้องการบันทึกการสั่งซื้อใช่หรือไม่?</p> 
+                                                
+                        </template>
+
+                        <template v-slot:body>
+                        <div class="  text-gray-900 text-md font-medium dark:text-white">
+                                <div><label for="">{{form.stock_select.stockname}}</label></div>
+                                <div><label for="">วันที่สั่งซื้อ: {{form.date_purchase}}</label></div>
+                                <div><label for="">ราคารวม: {{show_total_bath}} บาท</label></div>
+                                <div><label for="">จำนวน: {{form.preview_orders.length}} รายการ</label></div>
+                        </div>
+                        </template>
+
+                        <template v-slot:footer>
+                        <div class=" w-full  text-center  md:block">
+                                <button 
+                                class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                                v-on:click="okConfirmAddPurchase"
+                                >
+                                ตกลง
+                                </button>
+                                <button 
+                                class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
+                                v-on:click="cancelAddPurchase"
+                                >
+                                ยกเลิก
+                                </button>
+                        </div>
+                        </template>
+                </ModalUpToYou>
+
+                <ModalUpToYou :isModalOpen="show_alert_msg" >
+                        <template v-slot:header>
+                        <p class="text-md font-bold text-red-600 ">กรุณาอ่าน </p> 
+                                                
+                        </template>
+                        <template v-slot:body>
+                        <div class="w-full flex flex-col text-gray-900 text-md font-medium dark:text-white">
+                                <div for="">
+                                {{ $page.props.flash.status }}:{{ $page.props.flash.msg }} 
+                                
+                                </div>
+                        </div>
+                        </template>
+                
+                        <template v-slot:footer>
+                        <div class=" w-full  text-center  md:block">
+                                <button 
+                                class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                                v-on:click="closeAlert"
+                                >
+                                ตกลง
+                                </button>
+                        
+                        </div>
+                        </template>
+                </ModalUpToYou>
          </div>
 </AppLayout>
 </template>
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import PurchaseItem from '@/Components/PurchaseItem.vue'
+import ModalUpToYou from '@/Components/ModalUpToYou.vue'
 import { useForm } from '@inertiajs/inertia-vue3';
 import { computed, ref } from '@vue/reactivity';
+
 defineProps({
    stocks:{type:Object,required:true},
 })
@@ -118,11 +183,12 @@ const date_alert=ref(false);
 const budget_alert=ref(false);
 const project_name_alert=ref(false);
 const show_total_bath=ref('');
-// const total_budget=ref(0.0);
+const confirm_add_purchase=ref(false);
+const show_alert_msg=ref(false);
 
 const form=useForm({
         date_purchase:'',
-        stock_id:0,
+        stock_select:'',
         //budget_purchase:0,
         preview_orders:[],
         total_budget:0.0,
@@ -134,7 +200,7 @@ const getOrder=(item)=>{
    // console.log(item[0].total);
     form.total_budget += Number(item[0].total);
     show_total_bath.value= form.total_budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-   console.log(show_total_bath.value);
+   //console.log(show_total_bath.value);
     form.preview_orders.push(item);
    // console.log(form.total_budget);
     // console.log(form.preview_orders.length)   
@@ -149,15 +215,14 @@ const removeItem=(index)=>{
        
 }
 const addOrderPurchase=()=>{
-        console.log('addOrderPurchase');
-        // console.log(form.stock_id);
+      //  console.log('addOrderPurchase');
+        // console.log(form.stock_select);
+        // console.log(form.stock_select.stockid);
+        // console.log(form.stock_select.stockname);
         // console.log(form.date_purchase);
         // console.log(form.total_budget);
-        if(form.stock_id==0){
+        if(form.stock_select.stockid==0){
                 stock_alert.value = true;
-                // msg_alert.value="กรุณาเลือกชื่อคลังพัสดุ";
-        //  console.log('กรุณาระบุวันที่เบิก');
-        //  document.getElementById("order_in").focus();
                 return false;
         }else{
                 stock_alert.value = false;
@@ -169,16 +234,40 @@ const addOrderPurchase=()=>{
                 date_alert.value = false;
         }
 
-        // form.post(route('add-order'), {
-        //         preserveState: false,
-        //         preserveScroll: true,
-        //         onSuccess: page => { console.log('success');},
-        //         onError: errors => { 
-        //         console.log('error');
-        //         },
-        //         onFinish: visit => { console.log('finish');},
-        // })
+        confirm_add_purchase.value = true;
+}
 
-    
+const okConfirmAddPurchase=()=>{
+       // console.log('okConfirmAddPurchase');
+        confirm_add_purchase.value = false;
+        
+        form.post(route('store-purchase'), {
+                preserveState: true,
+                preserveScroll: true,
+                onSuccess: page => { 
+                        console.log('success');
+                        form.date_purchase = '';
+                        form.preview_orders = [];
+                        show_total_bath.value = '';
+                        form.total_budget = 0.0;
+                },
+                onError: errors => { 
+                      //  console.log('error');
+                },
+                onFinish: visit => { //console.log('finish');
+                },
+        })
+        show_alert_msg.value = true;
+}
+
+const cancelAddPurchase=()=>{
+        confirm_add_purchase.value = false;
+}
+
+const  closeAlert=()=>{
+    // console.log('close alert');
+    show_alert_msg.value = false;
+   // Inertia.visit(route('budget-list'));
+
 }
 </script>
