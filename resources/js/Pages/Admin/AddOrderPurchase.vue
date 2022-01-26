@@ -1,11 +1,16 @@
 <template>
 <AppLayout>
         <div class="w-full p-2 ">
-                <div>
+                <div v-if="$page.props.auth.user.profile.division_name=='stockmed' ">
                         <h1 class=" text-center font-bold text-lg">บันทึกข้อมูลใบสั่งซื้อ(เก่า)</h1>
                 </div>
+                <div v-if="$page.props.auth.user.profile.division_id < 19 ">
+                        <h1 class=" text-center font-bold text-lg">สร้างเอกสารใบสั่งซื้อ</h1>
+                </div>
                 <div class=" p-2 bg-green-100 border-2 border-green-300 rounded-md ">
+                        
                         <div>
+                                {{form.user_division}}
                                 <div class="flex justify-start ">
                                         <svg xmlns="http://www.w3.org/2000/svg" v-if="stock_alert" class="h-5 w-5 text-red-600" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
@@ -17,9 +22,13 @@
                                         class="block appearance-none w-full bg-white border  focus:border-indigo-600  rounded-md  " 
                                         :class="[stock_alert ? 'border-red-500 border-3 ' : 'border-gray-500' ]"
                                         >
-                                        <option v-for="(stock) in  stocks" :key=stock.id  v-bind:value="{stockid:stock.id,stockname:stock.stockname}">{{stock.stockname}}</option>
+                                        <option v-for="(stock) in  stocks" :key=stock.id  
+                                                v-bind:value="{stockid:stock.id,stockname:stock.stockname}">
+                                                {{stock.stockname}}
+                                        </option>
                                 </select>
                         </div>
+                      
                         <div class=" my-2 ">
                                 <div class="flex justify-start ">
                                         <svg xmlns="http://www.w3.org/2000/svg" v-if="date_alert" class="h-5 w-5 text-red-600" viewBox="0 0 20 20" fill="currentColor">
@@ -171,8 +180,9 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import PurchaseItem from '@/Components/PurchaseItem.vue'
 import ModalUpToYou from '@/Components/ModalUpToYou.vue'
-import { useForm } from '@inertiajs/inertia-vue3';
+import { useForm, usePage } from '@inertiajs/inertia-vue3';
 import { computed, ref } from '@vue/reactivity';
+import { onMounted } from '@vue/runtime-core';
 
 defineProps({
    stocks:{type:Object,required:true},
@@ -193,6 +203,15 @@ const form=useForm({
         preview_orders:[],
         total_budget:0.0,
         project_name:'ขออนุมัติจัดจ้างซื้อวัสดุทางการแพทย์ วัสดุวิทยาศาสตร์ สารเคมี น้ำยาทดสอบ และวัสดุอื่นๆ โดยวิธีเฉพาะเจาะจง',
+      //  user_division:0,
+})
+
+ onMounted(() => {
+  //  console.log('onMounted');
+
+   // form.user_division = usePage().props.value.auth.user.profile.division_id;
+   
+     
 })
 
 const getOrder=(item)=>{

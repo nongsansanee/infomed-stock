@@ -15,6 +15,7 @@ use App\Http\Controllers\CheckInOrderController;
 use App\Http\Controllers\ItemTransactionController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PrintFormController;
+use App\Http\Controllers\PurchaseOrderController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
@@ -124,15 +125,25 @@ Route::get('/', function () {
  
  
  Route::controller(AdminOrderPurchaseController::class)
-        ->middleware('auth','can:manage_master_data')
+        ->middleware('auth')
         ->group(function(){
           //หน้าแรกบันทึกใบสั่งซื้อเก่า
           Route::get('/admin/add-order-purchase/','index')->name('add-order-purchase'); 
+           //หน้าแรกบันทึกใบสั่งซื้อเก่า
+          Route::get('/create-order-purchase/','index')->name('create-order-purchase'); 
           //เบิกพัสดุ
           Route::post('/admin/store-purchase/','store')->name('store-purchase');
         });
 //หน้าแรกบันทึกใบสั่งซื้อเก่า
 //Route::get('/admin/add-order-purchase/', [AdminOrderPurchaseController::class,'index'])->name('add-order-purchase')->middleware('auth','can:manage_master_data');
  
+Route::controller(PurchaseOrderController::class)
+        ->middleware('auth')
+        ->group(function(){
+          //หน้าแรกค้นหาใบสั่งซื้อ ตามปีงบ
+          Route::get('/purchase-order-list/','index')->name('purchase-order-list');
+          //ค้นหาใบสั่งซื้อ ตามปีงบ
+          Route::get('/get-purchase-order/{year}','show')->name('get-purchase-order');
+        });
 //printForm test
  Route::get('/testprint', [PrintFormController::class,'index'])->name('testprint');

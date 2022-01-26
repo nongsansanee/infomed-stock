@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->json('profile')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
@@ -36,7 +37,7 @@ class CreateUsersTable extends Migration
             $table->timestamps();
         });
 
-        //many to many  ตามข้กำหนด laravel ให้ใช้ชื่อเป็นเอกพจน์ และเรียงตามตัวอักษร
+        //many to many  ตามข้อกำหนด laravel ให้ใช้ชื่อเป็นเอกพจน์ และเรียงตามตัวอักษร
         Schema::create('ability_role', function (Blueprint $table) {
             $table->primary(['ability_id','role_id']);  //เรียงตามตัวอักษร
             $table->unsignedSmallInteger('ability_id')->constrained('abilities');

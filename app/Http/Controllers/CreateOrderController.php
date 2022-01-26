@@ -172,7 +172,7 @@ class CreateOrderController extends Controller
             $order_lists[$key]['created_at_format'] = $created_at_format;
         }
     
-        Log::info($order_lists);
+        //Log::info($order_lists);
         return Inertia::render('Stock/OrderList',[
                                                 'stocks'=>$stocks,
                                                 'unit'=> $unit,

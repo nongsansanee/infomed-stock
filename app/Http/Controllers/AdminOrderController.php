@@ -53,7 +53,7 @@ class AdminOrderController extends Controller
                 $order_lists[$key]['send_date_format'] = $send_datetime_format;
 
             }
-            Log::info($order_list->items);
+           // Log::info($order_list->items);
 
             //order status checkin get item_sum
 

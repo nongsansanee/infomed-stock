@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Unit;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -16,23 +17,30 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         $users = [
-            'officer',
-            'super_officer',
-            'admin_division_stock',
-            'admin_med_stock',
-            'admin_it',
+            'officer.ambu',
+            'officer.hypertension',
+            'officer.endocrine',
+            'super_officer.med',
+            'admin_division_stock.ambu',
+            'admin_med_stock.stockmed',
+            'admin_it.itmed',
         ];
 
         $password = Hash::make('11111111');
 
         foreach ($users as $user) {
+            $division = explode('.',$user);
+            $unit = Unit::select('unitid')->where('shortname',$division[1])->first();
+            $profile['division_name'] = $division[1];
+            $profile['division_id'] =$unit->unitid;
             $user = User::create([
                         'name' => $user,
                         'email' => $user.'@med.si',
                         'password' => $password,
+                        'profile'=> $profile
                     ]);
 
-           $user->assignRole($user);
+           $user->assignRole($division[0]);
         }
     }
 }

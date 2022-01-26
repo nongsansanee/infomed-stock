@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'profile'
     ];
 
     /**
@@ -32,7 +33,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'email',
     ];
+
 
     /**
      * The attributes that should be cast.
@@ -41,6 +44,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'profile' => 'array',
     ];
 
     public function roles(){

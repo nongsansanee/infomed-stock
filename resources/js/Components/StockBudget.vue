@@ -123,7 +123,9 @@
                             >
                         </BudgetOrder>
                     </div>
-                    <div v-if="stockBudget.purchase_orders.length!=0">
+                    <div v-if="stockBudget.purchase_orders.length!=0"
+                        class="mt-2"
+                        >
                          <label class=" px-6 font-bold">รายการใบสั่งซื้อ</label>
                         <PurchaseOrder v-for="(purchase_order,index2) in stockBudget.purchase_orders" :key="purchase_order.id"
                             :orderIndex="index2"
