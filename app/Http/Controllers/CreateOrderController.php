@@ -125,12 +125,17 @@ class CreateOrderController extends Controller
        // return "CreateOrderController store dubug";
         try{
             Log::info('create order');
+            if($split_date_now[1] > 9)
+                $year_budget = $split_date_now[0] + 1;
+            else
+                $year_budget = $split_date_now[0];
+                
             $timeline['item_sum_before_order']=$item_sum_before_order;
             OrderItem::create([
                 'create_no' => $last_create_number,
                 'unit_id' => $request->unit_id,
                 'user_id' => $user->id,
-                'year' => $split_date_now[0],
+                'year' => $year_budget,
                 'month' => $split_date_now[1],
                 'date_order' => $tmp_date_now[0],
                 'items' => $request->preview_orders,

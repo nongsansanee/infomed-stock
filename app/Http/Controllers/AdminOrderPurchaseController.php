@@ -61,11 +61,18 @@ class AdminOrderPurchaseController extends Controller
 
         try{
             Log::info('create order purchase');
+            //$split_date_purchase= explode('-',$request->date_purchase);
+            if($split_date_order[1] > 9)
+                $year_budget = $split_date_order[0] + 1;
+            else
+                $year_budget = $split_date_order[0];
+
+           // Log::info('year_budget=='.$year_budget);
             $timeline['create_by']='admin';
             OrderPurchase::create([
                 'unit_id' => $request->stock_select['stockid'],
                 'user_id' => $user->id,
-                'year' => $split_date_order[0],
+                'year' => $year_budget,
                 'month' => $split_date_order[1],
                 'date_order' => $request->date_purchase,
                 'project_name' => $request->project_name,
