@@ -145,5 +145,8 @@ Route::controller(PurchaseOrderController::class)
           //ค้นหาใบสั่งซื้อ ตามปีงบ
           Route::get('/get-purchase-order/{year}','show')->name('get-purchase-order');
         });
+
+//พิมพ์ใบสั่งซื้อ
+ Route::get('/purchase-order/print/{order}', [PrintFormController::class,'printPurchaseOrder'])->name('print-purchase-order')->middleware('auth');
 //printForm test
  Route::get('/testprint', [PrintFormController::class,'index'])->name('testprint');

@@ -553,6 +553,10 @@ class PrintFormController extends Controller
         
         $pdf->Output('I');
     }
+    public function printPurchaseOrder($purchase_id)
+    {
+            Log::info('printPurchaseOrder');
+    }
 
     /**
      * Update the specified resource in storage.
