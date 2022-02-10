@@ -42,4 +42,9 @@ class OrderPurchase extends Model
         return $this->belongsTo(Stock::class,'unit_id','id');
     }
 
+    public function Unit()
+    {
+        return $this->belongsTo(Unit::class,'unit_id','unitid');
+    }
+
 }

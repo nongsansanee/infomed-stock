@@ -556,7 +556,140 @@ class PrintFormController extends Controller
     public function printPurchaseOrder($purchase_id)
     {
             Log::info('printPurchaseOrder');
+
+        //$pdf = new FPDI('l'); //แนวนอน
+        $pdf = new FPDI();
+        $pdf->AddPage();
+        $pdf->AddFont('THSarabunNew','','THSarabunNew.php');
+        $pdf->AddFont('THSarabunNew','B','THSarabunNew_b.php');
+
+        //title
+        $pdf->SetFont('THSarabunNew','B');
+        $pdf->SetFontSize('18'); 
+     
+
+        $pdf->SetXY(170,5);
+        $pdf->Cell(0, 10, iconv('UTF-8', 'cp874', "แบบ บก.๐๖"), 0, 0);
+
+        $pdf->SetXY(18, 15);
+        $head = 'ตารางแสดงวงเงินงบประมาณที่ได้รับจัดสรรและรายละเอียดค่าใช้จ่าย';
+        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $head),0,0,'C');
+
+        $pdf->SetXY(18, 25);
+        $head2 = 'การจัดซื้อจัดจ้างที่มิใช่งานก่อสร้าง';
+        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $head2),0,0,'C');
+
+        //body
+        $purchase_order = OrderPurchase::find($purchase_id);
+      
+        $y=32;
+        $y = $y+8;
+        $pdf->SetFont('THSarabunNew');
+        $pdf->SetFontSize('16'); 
+
+        $pdf->SetXY(20, $y);
+        $line1 = "๑. ชื่อโครงการ ".$purchase_order->project_name." จำนวน ".count($purchase_order->items)." รายการ";
+        $pdf->MultiCell(0,7,iconv('UTF-8', 'cp874', $line1),0,0);
+
+        $y = $y+15;
+        $pdf->SetXY(20, $y);
+        $line2 = "๒. หน่วยงานเจ้าของโครงการ ".$purchase_order->Unit->unitname." ภาควิชาอายุรศาสตร์ คณะแพทยศาสตร์ศิริราชพยาบาล มหาวิทยาลัยมหิดล";
+        $pdf->MultiCell(0,7,iconv('UTF-8', 'cp874', $line2),0,0);
+
+        $y = $y+15;
+        $pdf->SetXY(20, $y);
+        $line3 = "๓. วงเงินงบประมาณที่ได้รับจัดสรร                        บาท";
+        $pdf->Cell(0,7,iconv('UTF-8', 'cp874', $line3),0,0);
+
+        $y = $y+8;
+        $pdf->SetXY(20, $y);
+        $line4 = "๔. วันที่กำหนดราคากลาง (ราคาอ้างอิง) ณ";
+        $pdf->Cell(0,7,iconv('UTF-8', 'cp874', $line4),0,0);
+
+        $y = $y+8;
+        $pdf->SetXY(25, $y);
+        $line4_1 = "เป็นเงิน ".number_format($purchase_order->budget,2)." บาท";
+        $pdf->Cell(0,7,iconv('UTF-8', 'cp874', $line4_1),0,0);
+
+        $y = $y+8;
+        $pdf->SetXY(20, $y);
+        $line5 = "๕. แหล่งที่มาของราคากลาง (ราคาอ้างอิง) ";
+        $pdf->Cell(0,7,iconv('UTF-8', 'cp874', $line5),0,0);
+
+        $tmp_business_name = '';
+        $num_thai= ['๐','๑','๒','๓','๔','๕','๖','๗','๘','๙'];
+        $i=1;
+        foreach($purchase_order->items as $index=>$item){
+            Log::info($item[0]['business_name']);
+            
+            if($tmp_business_name != $item[0]['business_name'])
+            {
+                $y = $y+8;
+                $pdf->SetXY(25, $y);
+                $line5 = "๕.".$num_thai[$i]." ".$item[0]['business_name'];
+                $pdf->Cell(0,7,iconv('UTF-8', 'cp874', $line5),0,0);
+                $i++;
+            }
+           
+            $tmp_business_name = $item[0]['business_name'];
+        }
+
+        $y = $y+8;
+        $pdf->SetXY(20, $y);
+        $line6 = "๖. รายชื่อเจ้าหน้าที่ผู้กำหนดราคากลาง (ราคาอ้างอิง) ทุกคน ";
+        $pdf->Cell(0,7,iconv('UTF-8', 'cp874', $line6),0,0);
+
+        $y = $y+8;
+        $pdf->SetXY(25, $y);
+        $line6 = "๖.๑ .................................................................................................................. ";
+        $pdf->Cell(0,7,iconv('UTF-8', 'cp874', $line6),0,0);
+
+        $y = $y+8;
+        $pdf->SetXY(25, $y);
+        $line6 = "๖.๒ .................................................................................................................. ";
+        $pdf->Cell(0,7,iconv('UTF-8', 'cp874', $line6),0,0);
+
+        $y = $y+8;
+        $pdf->SetXY(25, $y);
+        $line6 = "๖.๓ .................................................................................................................. ";
+        $pdf->Cell(0,7,iconv('UTF-8', 'cp874', $line6),0,0);
+
+        $y = $y+8;
+        $pdf->SetXY(25, $y);
+        $line6 = "๖.๔ .................................................................................................................. ";
+        $pdf->Cell(0,7,iconv('UTF-8', 'cp874', $line6),0,0);
+
+        $y = $y+8;
+        $pdf->SetXY(25, $y);
+        $line6 = "๖.๕ .................................................................................................................. ";
+        $pdf->Cell(0,7,iconv('UTF-8', 'cp874', $line6),0,0);
+
+        $y = $y+30;
+        $x = 100;
+        $pdf->SetFont('THSarabunNew');
+        $pdf->SetFontSize('16'); 
+        $pdf->SetXY($x, $y);
+        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', '(ลงชื่อ)..............................................................'));
+        $y = $y+10;
+        $pdf->SetXY($x, $y);
+        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', '   (                                                       )'));
+        $y = $y+10;
+        $pdf->SetXY($x, $y);
+        $sign_foot = "         หัวหน้า".$purchase_order->Unit->unitname;
+        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $sign_foot));
+   
+        $pdf->Output('I');
     }
+    // public static function convertNumThai($num)
+    // {
+    //     switch ($num){
+    //         case "1":
+    //             return "๑";
+    //             break;
+            
+    //     }
+       
+    // }
 
     /**
      * Update the specified resource in storage.

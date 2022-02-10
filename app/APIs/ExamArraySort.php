@@ -112,11 +112,11 @@ class ExamArraySort
 
   
 
-        ksort($logs);
+        krsort($logs);
 
         foreach($logs as $x=>$x_value)
         {
-            //echo "Key=" . $x . " , \n Value=" . $x_value['send'];
+            //echo "Key=" . $x ;
             echo "DATE=>" . $x  ;
             foreach($x_value as $y=>$y_value)
             {
