@@ -53,6 +53,8 @@ class AdminOrderPurchaseController extends Controller
       // Log::info($request->all());
         $user = Auth::user();
        // Log::info($user);
+       // Log::info($user->profile['division_id']);
+       // return "test";
         // $mutable = Carbon::now();
         // //\Log::info($mutable);
         // $tmp_date_now = explode(' ', $mutable);
@@ -60,7 +62,7 @@ class AdminOrderPurchaseController extends Controller
         $split_date_order = explode('-',$request->date_purchase);
 
         try{
-            Log::info('create order purchase');
+          //  Log::info('create order purchase');
             //$split_date_purchase= explode('-',$request->date_purchase);
             if($split_date_order[1] > 9)
                 $year_budget = $split_date_order[0] + 1;
@@ -68,7 +70,18 @@ class AdminOrderPurchaseController extends Controller
                 $year_budget = $split_date_order[0];
 
            // Log::info('year_budget=='.$year_budget);
-            $timeline['create_by']='admin';
+
+           if($user->profile['division_id']<19)
+           {
+                $timeline['create_by']=$user->profile['division_name'];
+                $status = 'created';
+           }
+           else
+           {
+                $timeline['create_by']='admin';
+                $status = 'approved';
+           }
+
             OrderPurchase::create([
                 'unit_id' => $request->stock_select['stockid'],
                 'user_id' => $user->id,
@@ -78,7 +91,7 @@ class AdminOrderPurchaseController extends Controller
                 'project_name' => $request->project_name,
                 'budget' => $request->total_budget,
                 'items' => $request->preview_orders,
-                'status' => 'approved',
+                'status' => $status,
                 'timeline' => $timeline,
             ]);
         }catch(\Illuminate\Database\QueryException $e){

@@ -20,9 +20,19 @@
                 class=" m-2 p-2 bg-pink-100 border-b-2 border-pink-600 rounded-md"
                 >
                 <div class=" font-bold"> {{purchase_order.stock['stockname']}}</div>
-                <div> วันที่สั่งซื้อ:{{purchase_order.date_order}}</div>
+                <div class="flex justify-between"> 
+                    <p>วันที่สั่งซื้อ:{{purchase_order.date_order}} </p> 
+                    <p class=" mx-4 text-red-700 font-bold" > สถานะ:{{purchase_order.status}}</p>
+                </div>
                 <div> ๑.ชื่อโครงการ:{{purchase_order.project_name}} จำนวน {{purchase_order.items.length}} รายการ</div>
                 <div> ๒.วงเงินงบประมาณที่ได้รับจัดสรร:{{purchase_order.budget}} บาท</div>
+                <div class="flex">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                    </svg>
+                    <p class=" text-green-600 font-bold" > {{purchase_order.user.name}} ({{purchase_order.timeline['create_by']}})</p>
+                    <p class=" px-2 text-gray-600">ผู้บันทึกข้อมูล</p>
+                </div>
                 <div>
                     <a :href="route('print-purchase-order',purchase_order.id)"  target="blank">
                         <span

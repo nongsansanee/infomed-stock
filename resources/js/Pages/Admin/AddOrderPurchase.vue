@@ -234,13 +234,13 @@ const removeItem=(index)=>{
        
 }
 const addOrderPurchase=()=>{
-      //  console.log('addOrderPurchase');
+        //console.log('addOrderPurchase');
         // console.log(form.stock_select);
-        // console.log(form.stock_select.stockid);
+         //console.log('stock id='+form.stock_select.stockid);
         // console.log(form.stock_select.stockname);
         // console.log(form.date_purchase);
         // console.log(form.total_budget);
-        if(form.stock_select.stockid==0){
+        if(form.stock_select.stockid==0 || form.stock_select.stockid==undefined){
                 stock_alert.value = true;
                 return false;
         }else{
@@ -249,6 +249,7 @@ const addOrderPurchase=()=>{
 
         if(form.date_purchase.length==0){
                 date_alert.value = true;
+                return false;
         }else{
                 date_alert.value = false;
         }

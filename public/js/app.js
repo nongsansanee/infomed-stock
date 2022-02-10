@@ -35927,13 +35927,13 @@ __webpack_require__.r(__webpack_exports__);
     };
 
     var addOrderPurchase = function addOrderPurchase() {
-      //  console.log('addOrderPurchase');
+      //console.log('addOrderPurchase');
       // console.log(form.stock_select);
-      // console.log(form.stock_select.stockid);
+      //console.log('stock id='+form.stock_select.stockid);
       // console.log(form.stock_select.stockname);
       // console.log(form.date_purchase);
       // console.log(form.total_budget);
-      if (form.stock_select.stockid == 0) {
+      if (form.stock_select.stockid == 0 || form.stock_select.stockid == undefined) {
         stock_alert.value = true;
         return false;
       } else {
@@ -35942,6 +35942,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (form.date_purchase.length == 0) {
         date_alert.value = true;
+        return false;
       } else {
         date_alert.value = false;
       }
@@ -43408,9 +43409,42 @@ var _hoisted_6 = {
 var _hoisted_7 = {
   "class": "font-bold"
 };
-var _hoisted_8 = ["href"];
+var _hoisted_8 = {
+  "class": "flex justify-between"
+};
+var _hoisted_9 = {
+  "class": "mx-4 text-red-700 font-bold"
+};
+var _hoisted_10 = {
+  "class": "flex"
+};
 
-var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+  xmlns: "http://www.w3.org/2000/svg",
+  "class": "h-6 w-6",
+  viewBox: "0 0 20 20",
+  fill: "currentColor"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+  "fill-rule": "evenodd",
+  d: "M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z",
+  "clip-rule": "evenodd"
+})], -1
+/* HOISTED */
+);
+
+var _hoisted_12 = {
+  "class": "text-green-600 font-bold"
+};
+
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+  "class": "px-2 text-gray-600"
+}, "ผู้บันทึกข้อมูล", -1
+/* HOISTED */
+);
+
+var _hoisted_14 = ["href"];
+
+var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "inline-flex text-sm py-1 px-2 leading-5 text-white bg-blue-500 rounded-md"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
@@ -43425,10 +43459,10 @@ var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 /* HOISTED */
 );
 
-var _hoisted_10 = [_hoisted_9];
-var _hoisted_11 = ["href"];
+var _hoisted_16 = [_hoisted_15];
+var _hoisted_17 = ["href"];
 
-var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "inline-flex text-sm ml-2 py-1 px-2 leading-5 text-white bg-blue-500 rounded-md"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
@@ -43443,7 +43477,7 @@ var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_13 = [_hoisted_12];
+var _hoisted_19 = [_hoisted_18];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["AppLayout"], null, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -43472,23 +43506,27 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           "class": "m-2 p-2 bg-pink-100 border-b-2 border-pink-600 rounded-md"
         }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(purchase_order.stock['stockname']), 1
         /* TEXT */
-        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, " วันที่สั่งซื้อ:" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(purchase_order.date_order), 1
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, "วันที่สั่งซื้อ:" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(purchase_order.date_order), 1
         /* TEXT */
-        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, " ๑.ชื่อโครงการ:" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(purchase_order.project_name) + " จำนวน " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(purchase_order.items.length) + " รายการ", 1
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_9, " สถานะ:" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(purchase_order.status), 1
+        /* TEXT */
+        )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, " ๑.ชื่อโครงการ:" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(purchase_order.project_name) + " จำนวน " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(purchase_order.items.length) + " รายการ", 1
         /* TEXT */
         ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, " ๒.วงเงินงบประมาณที่ได้รับจัดสรร:" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(purchase_order.budget) + " บาท", 1
         /* TEXT */
-        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+        ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [_hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(purchase_order.user.name) + " (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(purchase_order.timeline['create_by']) + ")", 1
+        /* TEXT */
+        ), _hoisted_13]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
           href: _ctx.route('print-purchase-order', purchase_order.id),
           target: "blank"
-        }, _hoisted_10, 8
+        }, _hoisted_16, 8
         /* PROPS */
-        , _hoisted_8), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+        , _hoisted_14), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
           href: _ctx.route('print-purchase-order', purchase_order.id),
           target: "blank"
-        }, _hoisted_13, 8
+        }, _hoisted_19, 8
         /* PROPS */
-        , _hoisted_11)])]);
+        , _hoisted_17)])]);
       }), 128
       /* KEYED_FRAGMENT */
       ))])];
