@@ -30,8 +30,8 @@ class UsersTableSeeder extends Seeder
 
         foreach ($users as $user) {
             $division = explode('.',$user);
-            $unit = Unit::select('unitid')->where('shortname',$division[1])->first();
-            $profile['division_name'] = $division[1];
+            $unit = Unit::select('unitid','unitname')->where('shortname',$division[1])->first();
+            $profile['division_name'] = $unit->unitname;
             $profile['division_id'] =$unit->unitid;
             $user = User::create([
                         'name' => $user,

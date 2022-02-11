@@ -72,12 +72,12 @@ class PurchaseOrderController extends Controller
      */
     public function show($year)
     {
-        Log::info($year);
+       // Log::info($year);
         $user = Auth::user();
         if($user->profile['division_id']==27)
             $purchase_orders = OrderPurchase::where('year',$year)
                                             ->with('stock:id,stockname')
-                                            ->with('user:id,name')
+                                            ->with('user:id,name,profile')
                                             ->orderBy('unit_id')
                                             ->orderBy('date_order','desc')
                                             ->get();
@@ -85,7 +85,7 @@ class PurchaseOrderController extends Controller
             $purchase_orders = OrderPurchase::where('year',$year)
                                             ->where('unit_id',$user->profile['division_id'])
                                             ->with('stock:id,stockname')
-                                            ->with('user:id,name')
+                                            ->with('user:id,name,profile')
                                             ->orderBy('date_order','desc')
                                             ->get();
 

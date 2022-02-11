@@ -15,14 +15,16 @@
             </div>
             
         </div>
-        <div class=" w-full  p-2">
+        <div class=" w-full  py-4">
             <div v-for="(purchase_order) in purchase_orders" :key="purchase_order.id"
                 class=" m-2 p-2 bg-pink-100 border-b-2 border-pink-600 rounded-md"
                 >
-                <div class=" font-bold"> {{purchase_order.stock['stockname']}}</div>
+                <div class=" py-2 font-bold"> {{purchase_order.stock['stockname']}}</div>
                 <div class="flex justify-between"> 
-                    <p>วันที่สั่งซื้อ:{{purchase_order.date_order}} </p> 
-                    <p class=" mx-4 text-red-700 font-bold" > สถานะ:{{purchase_order.status}}</p>
+                    <p class=" text-red-700 font-bold">วันที่สั่งซื้อ:{{purchase_order.date_order}} </p> 
+                    <p class=" bg-green-200 px-2 mx-4 text-red-700 font-bold rounded-md" >
+                         สถานะ:{{purchase_order.status}}
+                    </p>
                 </div>
                 <div> ๑.ชื่อโครงการ:{{purchase_order.project_name}} จำนวน {{purchase_order.items.length}} รายการ</div>
                 <div> ๒.วงเงินงบประมาณที่ได้รับจัดสรร:{{purchase_order.budget}} บาท</div>
@@ -30,8 +32,8 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
                     </svg>
-                    <p class=" text-green-600 font-bold" > {{purchase_order.user.name}} ({{purchase_order.timeline['create_by']}})</p>
-                    <p class=" px-2 text-gray-600">ผู้บันทึกข้อมูล</p>
+                    <p class=" text-green-600 font-bold" > คุณ{{purchase_order.user.name}} ({{purchase_order.user.profile['division_name']}})</p>
+                    <p class=" px-2 text-gray-600 text-sm">ผู้บันทึกข้อมูล</p>
                 </div>
                 <div>
                     <a :href="route('print-purchase-order',purchase_order.id)"  target="blank">
@@ -46,7 +48,7 @@
                     </a>
                        <a :href="route('print-purchase-order',purchase_order.id)"  target="blank">
                         <span
-                            class="inline-flex text-sm  ml-2 py-1 px-2  leading-5 text-white bg-blue-500 rounded-md"
+                            class="inline-flex text-sm  md:ml-2 py-1 px-2  leading-5 text-white bg-blue-500 rounded-md"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd" />
@@ -76,10 +78,7 @@ const form = useForm({
 
 
 const getListPurchase=()=>{
-    console.log('getListPurchase');
-
-
-
+    //console.log('getListPurchase');
     axios.get(route('get-purchase-order',{year:form.year_selected})).then(res => {
        // console.log(res.data.stocks);
         purchase_orders.value = res.data.purchase_orders;   
