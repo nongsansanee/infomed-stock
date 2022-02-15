@@ -555,7 +555,7 @@ class PrintFormController extends Controller
     }
     public function printPurchaseOrder($purchase_id)
     {
-            Log::info('printPurchaseOrder');
+           // Log::info('printPurchaseOrder');
 
         //$pdf = new FPDI('l'); //แนวนอน
         $pdf = new FPDI();
@@ -620,7 +620,7 @@ class PrintFormController extends Controller
         $num_thai= ['๐','๑','๒','๓','๔','๕','๖','๗','๘','๙'];
         $i=1;
         foreach($purchase_order->items as $index=>$item){
-            Log::info($item[0]['business_name']);
+           // Log::info($item[0]['business_name']);
             
             if($tmp_business_name != $item[0]['business_name'])
             {
@@ -680,17 +680,111 @@ class PrintFormController extends Controller
    
         $pdf->Output('I');
     }
-    // public static function convertNumThai($num)
-    // {
-    //     switch ($num){
-    //         case "1":
-    //             return "๑";
-    //             break;
-            
-    //     }
-       
-    // }
+    public function printPurchaseOrderItem($purchase_id)
+    {
+        //Log::info('printPurchaseOrderItem');
+        $pdf = new FPDI('l'); //แนวนอน
+        
+        $pdf->AddPage();
+        $pdf->AddFont('THSarabunNew','','THSarabunNew.php');
+        $pdf->AddFont('THSarabunNew','B','THSarabunNew_b.php');
 
+        //title
+        $pdf->SetFont('THSarabunNew','B');
+        $pdf->SetFontSize('18'); 
+
+        // วันเวลาที่พิมพ์
+        $mutable = Carbon::now();
+        //\Log::info($mutable);
+        $tmp_date_now = explode(' ', $mutable);
+        $split_date_now = explode('-', $tmp_date_now[0]);
+        $year = (int) $split_date_now[0] + 543;
+        //$thaimonth = ['', 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+        //$date_now_show = $split_date_now[2].'  '.$thaimonth[(int) $split_date_now[1]].' '.$year;
+
+
+        $purchase_order = OrderPurchase::find($purchase_id);
+      
+        $pdf->SetXY(14, 15);
+        $head = 'วัสดุวิทยาศาสตร์ สารเคมี ทางการแพทย์ และวัสดุอื่นๆ ภ.อายุรศาสตร์ '.$year;
+        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $head),0,0,'C');
+
+        $pdf->SetXY(14, 23);
+       // $head = 'สาขา'.$purchase_order->Unit->unitname;
+        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $purchase_order->Unit->unitname),0,0,'C');
+
+         //head column
+        $pdf->SetFont('THSarabunNew','B');
+        $pdf->SetFontSize('16'); 
+        $pdf->SetXY(12, 32);
+        $pdf->SetLineWidth(1);
+        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับที่             รายการ                          Material      จำนวน         หน่วยนับ          ราคา/หน่วย        ราคารวม                      บริษัท            '),'B');
+       
+        //body  list item
+
+        $y=45;
+        $x=15;
+        $pdf->SetFont('THSarabunNew');
+        $pdf->SetXY($x, $y);
+       // $pdf->SetLineWidth(0.1);
+        $pdf->SetLineWidth(0.1);
+       
+      //  if( $stock_orders->count()!=0){
+            $seq = 0;
+            $total_budget = 0.0;
+        foreach ($purchase_order->items as $item) {
+            $seq++;
+           // Log::info($item);
+            $pdf->SetFontSize('16'); 
+          
+            // $pdf->SetXY($x, $y);
+            // $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $seq),'B'); //print line buttom
+
+            $pdf->SetXY($x, $y);
+            $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $seq));
+
+            $pdf->SetXY(27, $y);
+            $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item[0]['item_name']));
+
+            $pdf->SetXY(83, $y);
+            $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item[0]['material']));
+
+            $pdf->SetXY(110, $y);
+            $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item[0]['order_input']));
+
+            $pdf->SetXY(130, $y);
+            $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item[0]['unit_count']));
+
+            $pdf->SetXY(160, $y);
+            $pdf->Cell(0,10,iconv('UTF-8', 'cp874',  number_format($item[0]['price'],2)));
+
+            $pdf->SetXY(185, $y);
+            $pdf->Cell(0,10,iconv('UTF-8', 'cp874',  number_format($item[0]['total'],2)));
+
+            $pdf->SetXY(210, $y);
+            $pdf->SetFontSize('14'); 
+            $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item[0]['business_name']));
+
+            $total_budget += $item[0]['total'];
+             $y = $y+10;
+             $pdf->SetXY($x, $y);
+        
+
+        }
+        $y=$y-5;
+        $pdf->SetXY($x, $y);
+        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', ''),'B'); //print line buttom
+
+        $y = $y+10;
+        $pdf->SetXY(160, $y);
+        $pdf->SetFont('THSarabunNew','B');
+        $pdf->SetFontSize('16'); 
+        $total_all_print = 'รวมเป็นเงิน    '.number_format($total_budget,2).'  บาท';
+        $pdf->Cell(0,10,iconv('UTF-8', 'cp874',  $total_all_print));
+
+        $pdf->Output('I');
+       
+    }
     /**
      * Update the specified resource in storage.
      *

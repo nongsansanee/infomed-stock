@@ -21,7 +21,7 @@ class AdminOrderPurchaseController extends Controller
     public function index()
     {
         $user = Auth::user();
-        Log::info($user);
+        //Log::info($user);
 
         if($user->profile['division_name'] != 'stockmed' )
             $stocks = Stock::where('unit_id',$user->profile['division_id'])->get();

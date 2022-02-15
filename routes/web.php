@@ -148,5 +148,6 @@ Route::controller(PurchaseOrderController::class)
 
 //พิมพ์ใบสั่งซื้อ
  Route::get('/purchase-order/print/{order}', [PrintFormController::class,'printPurchaseOrder'])->name('print-purchase-order')->middleware('auth');
+ Route::get('/purchase-order/print-item/{order}', [PrintFormController::class,'printPurchaseOrderItem'])->name('print-purchase-order-item')->middleware('auth');
 //printForm test
  Route::get('/testprint', [PrintFormController::class,'index'])->name('testprint');

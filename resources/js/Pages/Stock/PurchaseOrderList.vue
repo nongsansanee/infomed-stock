@@ -36,7 +36,9 @@
                     <p class=" px-2 text-gray-600 text-sm">ผู้บันทึกข้อมูล</p>
                 </div>
                 <div>
-                    <a :href="route('print-purchase-order',purchase_order.id)"  target="blank">
+                    <a :href="route('print-purchase-order',purchase_order.id)" 
+                        v-if="$page.props.auth.user.profile.division_id==purchase_order.unit_id"
+                         target="blank">
                         <span
                             class="inline-flex text-sm py-1 px-2  leading-5 text-white bg-blue-500 rounded-md"
                         >
@@ -46,7 +48,7 @@
                                 พิมพ์แบบ บก.๐๖
                         </span>
                     </a>
-                       <a :href="route('print-purchase-order',purchase_order.id)"  target="blank">
+                    <a :href="route('print-purchase-order-item',purchase_order.id)"  target="blank">
                         <span
                             class="inline-flex text-sm  md:ml-2 py-1 px-2  leading-5 text-white bg-blue-500 rounded-md"
                         >
@@ -56,6 +58,25 @@
                                 พิมพ์รายการพัสดุสั่งซื้อ
                         </span>
                     </a>
+                    <!-- <a :href="route('print-purchase-order-item',purchase_order.id)"  target="blank">
+                        <span
+                            class="inline-flex text-sm  md:ml-2 py-1 px-2  leading-5 text-white bg-blue-500 rounded-md"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd" />
+                            </svg>
+                                ส่งให้สำนักงานภาคฯ
+                        </span>
+                    </a> -->
+                 <!-- {{$page.props.auth.user.profile.division_id}} and {{purchase_order.unit_id}} -->
+                         <button v-if="purchase_order.status == 'created' &&  
+                                $page.props.auth.user.profile.division_id==purchase_order.unit_id"
+                            class=" inline-flex text-sm ml-3 bg-green-500 hover:bg-green-700 text-white  py-1 px-2 border border-green-500 rounded">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                            </svg>
+                            ส่งเอกสาร
+                        </button>
                 </div>
                
             </div>
