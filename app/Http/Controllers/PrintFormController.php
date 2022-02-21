@@ -718,7 +718,7 @@ class PrintFormController extends Controller
         $pdf->SetFontSize('16'); 
         $pdf->SetXY(12, 32);
         $pdf->SetLineWidth(1);
-        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับที่             รายการ                          Material      จำนวน         หน่วยนับ          ราคา/หน่วย        ราคารวม                      บริษัท            '),'B');
+        $pdf->Cell(0,10,iconv('UTF-8', 'cp874', 'ลำดับที่             รายการ                          Material      จำนวน      หน่วยนับ      ราคา/หน่วย        ราคารวม                             บริษัท            '),'B');
        
         //body  list item
 
@@ -743,25 +743,27 @@ class PrintFormController extends Controller
             $pdf->SetXY($x, $y);
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $seq));
 
-            $pdf->SetXY(27, $y);
+            $pdf->SetXY(23, $y);
+            $pdf->SetFontSize('14'); 
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item[0]['item_name']));
 
+            $pdf->SetFontSize('16'); 
             $pdf->SetXY(83, $y);
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item[0]['material']));
 
             $pdf->SetXY(110, $y);
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item[0]['order_input']));
 
-            $pdf->SetXY(130, $y);
+            $pdf->SetXY(126, $y);
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item[0]['unit_count']));
 
-            $pdf->SetXY(160, $y);
+            $pdf->SetXY(148, $y);
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874',  number_format($item[0]['price'],2)));
 
-            $pdf->SetXY(185, $y);
+            $pdf->SetXY(174, $y);
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874',  number_format($item[0]['total'],2)));
 
-            $pdf->SetXY(210, $y);
+            $pdf->SetXY(200, $y);
             $pdf->SetFontSize('14'); 
             $pdf->Cell(0,10,iconv('UTF-8', 'cp874', $item[0]['business_name']));
 
