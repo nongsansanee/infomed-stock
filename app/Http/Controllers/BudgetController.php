@@ -138,7 +138,7 @@ class BudgetController extends Controller
                 $purchase_orders = OrderPurchase::select('date_order','project_name','budget','timeline')
                                         ->where('unit_id',$stock->id)
                                         ->where('year',$year)
-                                        ->where('status','approved')
+                                        ->whereIn('status',['created','approved'])
                                         ->get();
                 if( $purchase_orders->count()!=0){
                     foreach($purchase_orders as $purchase_order){

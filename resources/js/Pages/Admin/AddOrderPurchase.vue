@@ -1,7 +1,7 @@
 <template>
 <AppLayout>
         <div class="w-full p-2 ">
-                <div v-if="$page.props.auth.user.profile.division_name=='stockmed' ">
+                <div v-if="$page.props.auth.user.profile.division_id==27 ">
                         <h1 class=" text-center font-bold text-lg">บันทึกข้อมูลใบสั่งซื้อ(เก่า)</h1>
                 </div>
                 <div v-if="$page.props.auth.user.profile.division_id < 19 ">
@@ -9,25 +9,24 @@
                 </div>
                 <div class=" p-2 bg-green-100 border-2 border-green-300 rounded-md ">
                         
-                        <div>
-                                {{form.user_division}}
+                        <div >
                                 <div class="flex justify-start ">
                                         <svg xmlns="http://www.w3.org/2000/svg" v-if="stock_alert" class="h-5 w-5 text-red-600" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
                                         </svg>
                                         <label >ชื่อคลังพัสดุ:</label>
                                 </div>
-                               
                                 <select v-model="form.stock_select"
                                         class="block appearance-none w-full bg-white border  focus:border-indigo-600  rounded-md  " 
                                         :class="[stock_alert ? 'border-red-500 border-3 ' : 'border-gray-500' ]"
                                         >
                                         <option v-for="(stock) in  stocks" :key=stock.id  
-                                                v-bind:value="{stockid:stock.id,stockname:stock.stockname}">
+                                                v-bind:value="{stockid:stock.id,stockname:stock.stockname}" selected>
                                                 {{stock.stockname}}
                                         </option>
                                 </select>
                         </div>
+                       
                       
                         <div class=" my-2 ">
                                 <div class="flex justify-start ">

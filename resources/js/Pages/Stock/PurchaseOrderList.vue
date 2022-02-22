@@ -13,71 +13,24 @@
                     <option v-for="(year,index) in  years" :key=index v-bind:value="year">{{year+543}}</option>
                 </select>
             </div>
-            
+            <div class=" text-red-500">
+                note:เพิ่มตัวกรองค้นหาด้วยชื่อสาขา/หน่วย
+            </div>
         </div>
-        <div class=" w-full  py-4">
+        <div class="flex flex-col p-2 bg-yellow-100">
+            <label class=" font-bold text-red-500">ขั้นตอน/คำแนะนำ:(ให้ user ยืนยันขั้นตอนการทำงาน)</label>
+            <label >1.กดปุ่มพิมพ์แบบ บก.๐๖ เพื่อเสนอหัวหน้าสาขาเซ็น</label>
+            <label >2.หลังจากหัวหน้าสาขาเซ็นแล้ว ให้กดปุ่มส่ง พร้อมส่งเอกสารแบบ บก.๐๖ ตัวจริงมาให้หน่วยพัสดุ สำนักงานภาคฯ</label>
+        </div>
+        <div v-if="purchase_orders.length !=0" class=" w-full  py-4">
             <div v-for="(purchase_order) in purchase_orders" :key="purchase_order.id"
                 class=" m-2 p-2 bg-pink-100 border-b-2 border-pink-600 rounded-md"
                 >
-                <div class=" py-2 font-bold"> {{purchase_order.stock['stockname']}}</div>
-                <div class="flex justify-between"> 
-                    <p class=" text-red-700 font-bold">วันที่สั่งซื้อ:{{purchase_order.date_order}} </p> 
-                    <p class=" bg-green-200 px-2 mx-4 text-red-700 font-bold rounded-md" >
-                         สถานะ:{{purchase_order.status}}
-                    </p>
-                </div>
-                <div> ๑.ชื่อโครงการ:{{purchase_order.project_name}} จำนวน {{purchase_order.items.length}} รายการ</div>
-                <div> ๒.วงเงินงบประมาณที่ได้รับจัดสรร:{{purchase_order.budget}} บาท</div>
-                <div class="flex">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-                    </svg>
-                    <p class=" text-green-600 font-bold" > คุณ{{purchase_order.user.name}} ({{purchase_order.user.profile['division_name']}})</p>
-                    <p class=" px-2 text-gray-600 text-sm">ผู้บันทึกข้อมูล</p>
-                </div>
-                <div>
-                    <a :href="route('print-purchase-order',purchase_order.id)" 
-                        v-if="$page.props.auth.user.profile.division_id==purchase_order.unit_id"
-                         target="blank">
-                        <span
-                            class="inline-flex text-sm py-1 px-2  leading-5 text-white bg-blue-500 rounded-md"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd" />
-                            </svg>
-                                พิมพ์แบบ บก.๐๖
-                        </span>
-                    </a>
-                    <a :href="route('print-purchase-order-item',purchase_order.id)"  target="blank">
-                        <span
-                            class="inline-flex text-sm  md:ml-2 py-1 px-2  leading-5 text-white bg-blue-500 rounded-md"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd" />
-                            </svg>
-                                พิมพ์รายการพัสดุสั่งซื้อ
-                        </span>
-                    </a>
-                    <!-- <a :href="route('print-purchase-order-item',purchase_order.id)"  target="blank">
-                        <span
-                            class="inline-flex text-sm  md:ml-2 py-1 px-2  leading-5 text-white bg-blue-500 rounded-md"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd" />
-                            </svg>
-                                ส่งให้สำนักงานภาคฯ
-                        </span>
-                    </a> -->
-                 <!-- {{$page.props.auth.user.profile.division_id}} and {{purchase_order.unit_id}} -->
-                         <button v-if="purchase_order.status == 'created' &&  
-                                $page.props.auth.user.profile.division_id==purchase_order.unit_id"
-                            class=" inline-flex text-sm ml-3 bg-green-500 hover:bg-green-700 text-white  py-1 px-2 border border-green-500 rounded">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                            </svg>
-                            ส่งเอกสาร
-                        </button>
-                </div>
+                <!-- {{purchase_order}} -->
+                    <!-- @purchaseOrder = "purchase_order" -->
+                <ShowPurchaseOrder 
+                    :purchase-order="purchase_order"
+                />
                
             </div>
            
@@ -86,6 +39,7 @@
 </template>
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
+import ShowPurchaseOrder from '@/Components/ShowPurchaseOrder.vue';
 import { useForm } from '@inertiajs/inertia-vue3';
 import { ref } from '@vue/reactivity';
 defineProps({
@@ -98,6 +52,7 @@ const form = useForm({
 })
 
 
+
 const getListPurchase=()=>{
     //console.log('getListPurchase');
     axios.get(route('get-purchase-order',{year:form.year_selected})).then(res => {
@@ -106,4 +61,5 @@ const getListPurchase=()=>{
     });
    // forceUpdate();
 }
+
 </script>
