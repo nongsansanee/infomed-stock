@@ -70,6 +70,7 @@
   
 </template>
 <script setup>
+import { Inertia } from '@inertiajs/inertia';
 const { onMounted, ref }=require("@vue/runtime-core");
 
 const props = defineProps({
@@ -86,6 +87,13 @@ onMounted(() => {
 const editOrderPurchase=(purchase_order_id)=>{
     console.log('editOrderPurchase');
     console.log(purchase_order_id);
+
+    Inertia.visit(route('get-edit-order-purchase'),{
+       method: 'post',
+        data: {
+            id: purchase_order_id,
+        },
+   })
 }
 
 </script>

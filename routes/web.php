@@ -131,8 +131,10 @@ Route::get('/', function () {
           Route::get('/admin/add-order-purchase/','index')->name('add-order-purchase'); 
            //หน้าแรกบันทึกใบสั่งซื้อเก่า
           Route::get('/create-order-purchase/','index')->name('create-order-purchase'); 
-          //เบิกพัสดุ
+          //บันทึกใบสั่งซื้อ
           Route::post('/admin/store-purchase/','store')->name('store-purchase');
+          //ดึงข้อมูลใบสั่งซื้อมาแก้ไข
+          Route::post('/edit-order-purchase/','edit')->name('get-edit-order-purchase'); 
         });
 //หน้าแรกบันทึกใบสั่งซื้อเก่า
 //Route::get('/admin/add-order-purchase/', [AdminOrderPurchaseController::class,'index'])->name('add-order-purchase')->middleware('auth','can:manage_master_data');

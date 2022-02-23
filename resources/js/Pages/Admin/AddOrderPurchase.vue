@@ -67,14 +67,38 @@
                                     readonly
                                  >
                         </div>
-                            <!-- {{form.preview_orders}} -->
-                        <div v-if="form.preview_orders.length!=0"
+                           <!-- {{status}} ,  {{form.preview_orders.length}} ,  -->
+                        <div v-if="status == 'edit'"  class=" p-2 border-2 border-green-600 rounded-md">
+                                <div v-for="(order_old,seq) in form.preview_orders[0]" :key=order_old.id
+                                 class=" bg-white my-2"
+                                        >
+                                        <!-- {{seq}} {{order_old}} -->
+                                        <div>
+                                                {{seq+1}}. {{order_old[0].item_name}} ({{order_old[0].material}})   บริษัท {{order_old[0].business_name}}
+                                                <button class=" p-1 bg-red-600 text-white rounded-full "
+                                                   @click="removeItemEdit(index)"
+                                                  >
+                                                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                        </svg>
+                                                </button>
+                                        </div>
+                                    
+                                        <div class=" pl-4">
+                                                จำนวน {{order_old[0].order_old_input}} {{order_old[0].unit_count}} 
+                                                x {{order_old[0].price}}  ราคารวม {{order_old[0].total}} บาท 
+                                        </div>
+                                </div>
+                        </div>
+                        <div v-if="form.preview_orders.length!=0 && status == 'add' "
                                 class=" p-2 border-2 border-green-600 rounded-md">
                                
                                 <label class="font-bold">รายการพัสดุที่สั่งซื้อ:</label>
                                 <div v-for="(order,index) in form.preview_orders" :key=order.id
                                         class=" bg-white my-2"
                                         >
+                                        <!-- {{order[0]}}
+                                        {{order[0][0]}} -->
                                         <div>
                                                 {{index+1}}. {{order[0].item_name}} ({{order[0].material}})   บริษัท {{order[0].business_name}}
                                                 <button class=" p-1 bg-red-600 text-white rounded-full "
@@ -91,9 +115,7 @@
                                                 x {{order[0].price}}  ราคารวม {{order[0].total}} บาท 
                                         </div>
                                       
-                                </div>
-                              
-                             
+                                </div>    
                         </div>
                         <div v-if="form.preview_orders.length!=0"
                           class=" mt-2"
@@ -185,6 +207,8 @@ import { onMounted } from '@vue/runtime-core';
 
 defineProps({
    stocks:{type:Object,required:true},
+   order_purchase :{type:Object},
+   status :{type:String,required:true},
 })
 
 const stock_alert=ref(false);
@@ -206,9 +230,21 @@ const form=useForm({
 })
 
  onMounted(() => {
-  //  console.log('onMounted');
+   console.log('onMounted');
+   console.log(usePage().props.value.order_purchase);
+        // usePage().props.value.order_purchase.items.forEach(myFunction);
+       
+        // function myFunction(item) {
+        //            console.log(item);
+        //        //form.preview_orders.push(item[0]);
+        // }
+        if(usePage().props.value.status == 'edit'){
+                 form.preview_orders.push(usePage().props.value.order_purchase.items);
+                 show_total_bath.value = usePage().props.value.order_purchase.budget;
+        }
 
-   // form.user_division = usePage().props.value.auth.user.profile.division_id;
+  
+  
    
      
 })
@@ -230,6 +266,13 @@ const removeItem=(index)=>{
         // console.log(form.preview_orders[index][0].total);
         form.total_budget -= Number(form.preview_orders[index][0].total);
         form.preview_orders.splice(index ,1);
+       
+}
+const removeItemEdit=(index)=>{
+         console.log(form.preview_orders);
+ 
+        // form.total_budget -= Number(form.preview_orders[index][0].total);
+        // form.preview_orders.splice(index ,1);
        
 }
 const addOrderPurchase=()=>{

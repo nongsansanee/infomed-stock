@@ -21,14 +21,16 @@ class AdminOrderPurchaseController extends Controller
     public function index()
     {
         $user = Auth::user();
-        Log::info($user);
+        //Log::info($user);
 
         if($user->profile['division_id'] != 27 )
             $stocks = Stock::where('unit_id',$user->profile['division_id'])->get();
         else
              $stocks = Stock::all();
+
         return Inertia::render('Admin/AddOrderPurchase',[
                 'stocks'=>$stocks,
+                'status'=>'add',
         ]);
     }
 
@@ -118,9 +120,24 @@ class AdminOrderPurchaseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        //
+        $user = Auth::user();
+        if($user->profile['division_id'] != 27 )
+            $stocks = Stock::where('unit_id',$user->profile['division_id'])->get();
+        else
+             $stocks = Stock::all();
+
+        
+        $order_purchase = OrderPurchase::find($request->id)->first();
+
+        return Inertia::render('Admin/AddOrderPurchase',[
+                                'stocks'=>$stocks,
+                                'order_purchase' => $order_purchase,
+                                'status'=>'edit',
+                        ]);
+        return $request->all();
+        return "edit purchase order";
     }
 
     /**
