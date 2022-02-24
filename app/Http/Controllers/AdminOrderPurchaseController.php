@@ -30,7 +30,7 @@ class AdminOrderPurchaseController extends Controller
 
         return Inertia::render('Admin/AddOrderPurchase',[
                 'stocks'=>$stocks,
-                'status'=>'add',
+                'action'=>'add',
         ]);
     }
 
@@ -134,10 +134,10 @@ class AdminOrderPurchaseController extends Controller
         return Inertia::render('Admin/AddOrderPurchase',[
                                 'stocks'=>$stocks,
                                 'order_purchase' => $order_purchase,
-                                'status'=>'edit',
+                                'action'=>'edit',
                         ]);
-        return $request->all();
-        return "edit purchase order";
+        // return $request->all();
+        // return "edit purchase order";
     }
 
     /**
@@ -147,9 +147,10 @@ class AdminOrderPurchaseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        Log::info($request->all());
+        return "update purchase order";
     }
 
     /**

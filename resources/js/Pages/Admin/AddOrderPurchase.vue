@@ -21,7 +21,7 @@
                                         :class="[stock_alert ? 'border-red-500 border-3 ' : 'border-gray-500' ]"
                                         >
                                         <option v-for="(stock) in  stocks" :key=stock.id  
-                                                v-bind:value="{stockid:stock.id,stockname:stock.stockname}" selected>
+                                                v-bind:value="{stockid:stock.id,stockname:stock.stockname}" >
                                                 {{stock.stockname}}
                                         </option>
                                 </select>
@@ -68,7 +68,7 @@
                                  >
                         </div>
                            <!-- {{status}} ,  {{form.preview_orders.length}} ,  -->
-                        <div v-if="status == 'edit'"  class=" p-2 border-2 border-green-600 rounded-md">
+                        <div v-if="action == 'edit'"  class=" p-2 border-2 border-green-600 rounded-md">
                                 <div v-for="(order_old,seq) in form.preview_orders[0]" :key=order_old.id
                                  class=" bg-white my-2"
                                         >
@@ -76,7 +76,7 @@
                                         <div>
                                                 {{seq+1}}. {{order_old[0].item_name}} ({{order_old[0].material}})   บริษัท {{order_old[0].business_name}}
                                                 <button class=" p-1 bg-red-600 text-white rounded-full "
-                                                   @click="removeItemEdit(index)"
+                                                   @click="removeItemEdit(seq)"
                                                   >
                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -90,7 +90,7 @@
                                         </div>
                                 </div>
                         </div>
-                        <div v-if="form.preview_orders.length!=0 && status == 'add' "
+                        <div v-if="form.preview_orders.length!=0 && action == 'add' "
                                 class=" p-2 border-2 border-green-600 rounded-md">
                                
                                 <label class="font-bold">รายการพัสดุที่สั่งซื้อ:</label>
@@ -117,7 +117,7 @@
                                       
                                 </div>    
                         </div>
-                        <div v-if="form.preview_orders.length!=0"
+                        <div v-if="form.preview_orders.length!=0  "
                           class=" mt-2"
                           >
                                 <button 
@@ -127,9 +127,11 @@
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
                                         </svg>
-                                        บันทึกใบสั่งซื้อ
+                                       <label v-if=" action == 'add'">บันทึกใบสั่งซื้อ</label> 
+                                       <label v-else>แก้ไขใบสั่งซื้อ</label> 
                                 </button>
                         </div>
+                      
                 </div>
                 <PurchaseItem 
                             @previewOrder="getOrder"
@@ -146,7 +148,10 @@
                                 <div><label for="">{{form.stock_select.stockname}}</label></div>
                                 <div><label for="">วันที่สั่งซื้อ: {{form.date_purchase}}</label></div>
                                 <div><label for="">ราคารวม: {{show_total_bath}} บาท</label></div>
-                                <div><label for="">จำนวน: {{form.preview_orders.length}} รายการ</label></div>
+                                <div v-if="action=='add'"><label for="">จำนวน: {{form.preview_orders.length}} รายการ</label></div>
+                                <div v-if="action=='edit' && form.preview_orders!=''">
+                                        <label for="">จำนวน: {{form.preview_orders[0].length}} รายการ</label>
+                                </div>
                         </div>
                         </template>
 
@@ -208,7 +213,7 @@ import { onMounted } from '@vue/runtime-core';
 defineProps({
    stocks:{type:Object,required:true},
    order_purchase :{type:Object},
-   status :{type:String,required:true},
+   action :{type:String,required:true},
 })
 
 const stock_alert=ref(false);
@@ -218,6 +223,7 @@ const project_name_alert=ref(false);
 const show_total_bath=ref('');
 const confirm_add_purchase=ref(false);
 const show_alert_msg=ref(false);
+const count_order_edit = ref('');
 
 const form=useForm({
         date_purchase:'',
@@ -238,26 +244,35 @@ const form=useForm({
         //            console.log(item);
         //        //form.preview_orders.push(item[0]);
         // }
-        if(usePage().props.value.status == 'edit'){
-                 form.preview_orders.push(usePage().props.value.order_purchase.items);
-                 show_total_bath.value = usePage().props.value.order_purchase.budget;
+        if(usePage().props.value.action == 'edit'){
+                form.preview_orders.push(usePage().props.value.order_purchase.items);
+                 console.log(form.preview_orders[0].length)   
+                count_order_edit.value = form.preview_orders[0].length;
+                show_total_bath.value = usePage().props.value.order_purchase.budget;
+                form.total_budget = usePage().props.value.order_purchase.budget;
+                console.log(form.total_budget);
+                form.project_name = usePage().props.value.order_purchase.project_name;
+                form.date_purchase = usePage().props.value.order_purchase.date_order;
+               // form.stock_select = usePage().props.value.order_purchase.unit_id;
         }
-
-  
-  
-   
      
 })
 
 const getOrder=(item)=>{
-   // console.log('Parent getOrder  item----->');
-   // console.log(item[0].total);
+    console.log('Parent getOrder  item----->');
+    console.log(item[0].total);
+     console.log(form.total_budget);
     form.total_budget += Number(item[0].total);
     show_total_bath.value= form.total_budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-   //console.log(show_total_bath.value);
-    form.preview_orders.push(item);
+   console.log(show_total_bath.value);
+    if(usePage().props.value.action == 'edit'){
+             form.preview_orders[0].push(item);
+    }else{
+             form.preview_orders.push(item);
+    }
+   
    // console.log(form.total_budget);
-    // console.log(form.preview_orders.length)   
+     console.log(form.preview_orders.length)   
     
 }
 
@@ -269,10 +284,16 @@ const removeItem=(index)=>{
        
 }
 const removeItemEdit=(index)=>{
-         console.log(form.preview_orders);
- 
-        // form.total_budget -= Number(form.preview_orders[index][0].total);
-        // form.preview_orders.splice(index ,1);
+        console.log('removeEdit');
+        console.log(index);
+        //console.log(form.preview_orders);
+        console.log(form.preview_orders[0][index]);
+        console.log(form.preview_orders[0][index][0].total);
+        form.total_budget = form.total_budget-Number(form.preview_orders[0][index][0].total);
+        console.log(form.total_budget);
+        show_total_bath.value= form.total_budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        // show_total_bath.value -= Number(form.preview_orders[0][index][0].total);
+         form.preview_orders[0].splice(index ,1);
        
 }
 const addOrderPurchase=()=>{
@@ -298,27 +319,52 @@ const addOrderPurchase=()=>{
 
         confirm_add_purchase.value = true;
 }
+// const editOrderPurchase=()=>{
+//          console.log('editOrderPurchase');
+// }
 
 const okConfirmAddPurchase=()=>{
        // console.log('okConfirmAddPurchase');
         confirm_add_purchase.value = false;
+
+        if(usePage().props.value.action=='add'){
+                form.post(route('store-purchase'), {
+                        preserveState: true,
+                        preserveScroll: true,
+                        onSuccess: page => { 
+                                console.log('success');
+                                form.date_purchase = '';
+                                form.preview_orders = [];
+                                show_total_bath.value = '';
+                                form.total_budget = 0.0;
+                        },
+                        onError: errors => { 
+                        //  console.log('error');
+                        },
+                        onFinish: visit => { //console.log('finish');
+                        },
+                })
+        }else{
+                console.log('okConfirmAddPurchase edit');
+                   form.post(route('edit-purchase'), {
+                        preserveState: true,
+                        preserveScroll: true,
+                        onSuccess: page => { 
+                                console.log('success');
+                                form.date_purchase = '';
+                                form.preview_orders = [];
+                                show_total_bath.value = '';
+                                form.total_budget = 0.0;
+                        },
+                        onError: errors => { 
+                        //  console.log('error');
+                        },
+                        onFinish: visit => { //console.log('finish');
+                        },
+                })
+        }
         
-        form.post(route('store-purchase'), {
-                preserveState: true,
-                preserveScroll: true,
-                onSuccess: page => { 
-                        console.log('success');
-                        form.date_purchase = '';
-                        form.preview_orders = [];
-                        show_total_bath.value = '';
-                        form.total_budget = 0.0;
-                },
-                onError: errors => { 
-                      //  console.log('error');
-                },
-                onFinish: visit => { //console.log('finish');
-                },
-        })
+      
         show_alert_msg.value = true;
 }
 

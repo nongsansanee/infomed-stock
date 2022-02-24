@@ -135,6 +135,8 @@ Route::get('/', function () {
           Route::post('/admin/store-purchase/','store')->name('store-purchase');
           //ดึงข้อมูลใบสั่งซื้อมาแก้ไข
           Route::post('/edit-order-purchase/','edit')->name('get-edit-order-purchase'); 
+          //แก้ไขข้อมูลใบสั่งซื้อ
+          Route::post('/update-order-purchase/','update')->name('edit-purchase'); 
         });
 //หน้าแรกบันทึกใบสั่งซื้อเก่า
 //Route::get('/admin/add-order-purchase/', [AdminOrderPurchaseController::class,'index'])->name('add-order-purchase')->middleware('auth','can:manage_master_data');
