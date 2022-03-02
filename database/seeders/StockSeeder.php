@@ -19,6 +19,7 @@ class StockSeeder extends Seeder
             ['stockname' => 'คลังพัสดุทางการแพทย์ของสาขาวิชาความดันโลหิตสูง', 'stockengname' => 'Medical Hypertension ','unit_id'=>2, 'user_id' => '1'],
             ['stockname' => 'คลังพัสดุทางการแพทย์ของสาขาวิชาเคมีบำบัด', 'stockengname' => 'Medical Oncology','unit_id'=>3, 'user_id' => '1'],
             ['stockname' => 'คลังพัสดุทางการแพทย์ของสาขาวิชาต่อมไร้ท่อ', 'stockengname' => 'Medical Endocrin','unit_id'=>4, 'user_id' => '1'],
+            ['stockname' => 'คลังพัสดุทางการแพทย์ของสาขาวิชาโรคติดเชื้อและอายุรศาสตร์เขตร้อน', 'stockengname' => 'Medical Id','unit_id'=>5, 'user_id' => '1'],
             ['stockname' => 'คลังพัสดุสำนักงาน', 'stockengname' => 'stock office','unit_id'=>99, 'user_id' => '1'],
            
         );

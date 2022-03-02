@@ -23,12 +23,17 @@ class CreateOrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($division_id)
+    public function index()
     {
-        $stocks = Stock::where('unit_id',$division_id)->get();
+        $user = Auth::user();
+        // if($division_id != $user->profile['division_id']){
+        //    // return Inertia::route('annouce');
+        //     return Inertia::render('Annouce');
+        // }
+        $stocks = Stock::where('unit_id',$user->profile['division_id'])->get();
        //$stocks = Stock::all();
-        $stock_items = StockItem::where('stock_id',$division_id)->get();
-        $unit = Unit::where('unitid',$division_id)->first();
+        $stock_items = StockItem::where('stock_id',$user->profile['division_id'])->get();
+        $unit = Unit::where('unitid',$user->profile['division_id'])->first();
 
     
         // \Log::info($stocks);
@@ -155,15 +160,17 @@ class CreateOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($division_id)
+    public function show()
     {
-        $stocks = Stock::where('unit_id',$division_id)->get();
-        // $stock_items = StockItem::where('stock_id',$division_id)->get();
-        $unit = Unit::where('unitid',$division_id)->first();
+
+        $user = Auth::user();
+        $stocks = Stock::where('unit_id',$user->profile['division_id'])->get();
+        // $stock_items = StockItem::where('stock_id',$user->profile['division_id'])->get();
+        $unit = Unit::where('unitid',$user->profile['division_id'])->first();
 
         //get data order list (mock up test UI)
         $order_lists = OrderItem::with('User:id,name')
-                                ->where('unit_id',$division_id)
+                                ->where('unit_id',$user->profile['division_id'])
                                 ->where('type','contract')
                                 ->orderBy('order_no')
                                 ->get();

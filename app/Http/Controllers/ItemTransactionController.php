@@ -43,6 +43,7 @@ class ItemTransactionController extends Controller
     public function store(Request $request)
     {
       
+        $user = Auth::user();
          Log::info('ItemTransactionController store');
        //  Log::info($request->all());
        //  return "store";
@@ -60,7 +61,7 @@ class ItemTransactionController extends Controller
                 ItemTransaction::create([
                                         'stock_id'=>$stock_item->stock_id ,
                                         'stock_item_id'=>$stock_item->id ,
-                                        'user_id'=>1,
+                                        'user_id'=>$user->id,
                                         'year'=>$year_checkout,
                                         'month'=>$month_checkout,
                                         'date_action'=>$request->confirm_item_date,

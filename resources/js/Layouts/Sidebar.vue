@@ -17,7 +17,7 @@
   <!-- {{$page.props.flash.mainMenuLinks}} -->
       <div v-if="!$page.props.auth.abilities.includes('manage_master_data')" class="mb-4 px-4 text-sm">
         <p class="pl-4  font-semibold mb-1">เมนูหลักของสาขา</p>
-        <Link :href="route('stock',1)">
+        <Link :href="route('stock')">
           <div class="w-full flex items-center text-blue-600 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
               <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clip-rule="evenodd" />
@@ -43,8 +43,8 @@
               <span class="text-gray-700 ml-2">รายงานการเบิกใช้พัสดุ</span>
             </div>
             </Link> -->
-
-        <Link :href="route('create-order',1)">
+<!-- {{$page.props.auth.user.id}} -->
+        <Link :href="route('create-order')">
           <div class="w-full flex items-center text-blue-600 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -52,7 +52,7 @@
             <span class="text-gray-700 ml-2">สร้างเอกสารสัญญาซื้อพัสดุ</span>
           </div>
         </Link>
-        <Link :href="route('order-list',1)">
+        <Link :href="route('order-list')">
           <div class="w-full flex items-center text-blue-600 h-10 pl-4 hover:bg-gray-200 rounded-lg cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z" />

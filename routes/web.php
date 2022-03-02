@@ -60,9 +60,9 @@ Route::get('/', function () {
 //      return Inertia::render('Calendar');
 //  })->name('calendar');
  
- Route::get('/annouce', [LoginController::class,'index'])->middleware('auth');
+ Route::get('/annouce', [LoginController::class,'index'])->name('annouce')->middleware('auth');
 //แสดงหน้าเบิกพัสดุ
- Route::get('/stock/{division_id}', [StockController::class,'index'])->name('stock')->middleware('auth','can:checkout_item');
+ Route::get('/stock', [StockController::class,'index'])->name('stock')->middleware('auth','can:checkout_item');
 
  Route::controller(ItemTransactionController::class)
         ->middleware('auth')
@@ -86,13 +86,13 @@ Route::get('/', function () {
 
  
  //หน้าแรกสร้างใบสั่งซื้อแบบสัญญา
- Route::get('/create-order/{division_id}', [CreateOrderController::class,'index'])->name('create-order')->middleware('auth');
+ Route::get('/create-order', [CreateOrderController::class,'index'])->name('create-order')->middleware('auth');
  //สร้างใบสั่งซื้อแบบสัญญา
  Route::post('/create-order/add', [CreateOrderController::class,'store'])->name('add-order')->middleware('auth');
  //พิมพ์ใบสั่งซื้อแบบสัญญา
  Route::get('/create-order/print/{order}', [PrintFormController::class,'show'])->name('print-order')->middleware('auth');
  //แสดงรายการสร้างเอกสารใบสั่งซื้อแบบสัญญา
- Route::get('/order-list/{division_id}', [CreateOrderController::class,'show'])->name('order-list')->middleware('auth');
+ Route::get('/order-list', [CreateOrderController::class,'show'])->name('order-list')->middleware('auth');
  //ส่งเอกสารใบสั่งซื้อแบบสัญญา
  Route::post('/order-list/update', [CreateOrderController::class,'update'])->name('send-order')->middleware('auth');
  //บันทึกรับพัสดุใหม่ลงคลัง

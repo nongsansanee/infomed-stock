@@ -51,6 +51,10 @@ class AuthServiceProvider extends ServiceProvider
                 return true;
             }
         });
+
+        // Gate::define('can_owner_stock',function(User $user){
+        //     if()
+        // });
      
         // Gate::define('manage_master_data',function(User $user){
         //     return $user->email=='admin_stock@med.si';
