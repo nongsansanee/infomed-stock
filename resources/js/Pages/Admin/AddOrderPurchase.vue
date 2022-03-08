@@ -199,6 +199,33 @@
                         </div>
                         </template>
                 </ModalUpToYou>
+
+                <ModalUpToYou :isModalOpen="show_alert_msg_edit_success" >
+                        <template v-slot:header>
+                        <p class="text-md font-bold text-red-600 ">กรุณาอ่าน: </p> 
+                                                
+                        </template>
+                        <template v-slot:body>
+                        <div class="w-full flex flex-col text-gray-900 text-md font-medium dark:text-white">
+                                <div for="">
+                                <!-- {{ $page.props.flash.status }}:{{ $page.props.flash.msg }}  -->
+                                <label for="">แก้ไขสำเร็จ</label>
+                                </div>
+                        </div>
+                        </template>
+                
+                        <template v-slot:footer>
+                        <div class=" w-full  text-center  md:block">
+                                <button 
+                                class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                                v-on:click="closeAlertEdit"
+                                >
+                                ตกลง
+                                </button>
+                        
+                        </div>
+                        </template>
+                </ModalUpToYou>
          </div>
 </AppLayout>
 </template>
@@ -224,6 +251,7 @@ const show_total_bath=ref('');
 const confirm_add_purchase=ref(false);
 const show_alert_msg=ref(false);
 const count_order_edit = ref('');
+const show_alert_msg_edit_success=ref(false);
 
 const form=useForm({
         date_purchase:'',
@@ -233,6 +261,7 @@ const form=useForm({
         total_budget:0.0,
         project_name:'ขออนุมัติจัดจ้างซื้อวัสดุทางการแพทย์ วัสดุวิทยาศาสตร์ สารเคมี น้ำยาทดสอบ และวัสดุอื่นๆ โดยวิธีเฉพาะเจาะจง',
       //  user_division:0,
+        order_purchase_id:0,
 })
 
  onMounted(() => {
@@ -253,6 +282,7 @@ const form=useForm({
                 console.log(form.total_budget);
                 form.project_name = usePage().props.value.order_purchase.project_name;
                 form.date_purchase = usePage().props.value.order_purchase.date_order;
+                form.order_purchase_id = usePage().props.value.order_purchase.id;
                // form.stock_select = usePage().props.value.order_purchase.unit_id;
         }
      
@@ -344,6 +374,7 @@ const okConfirmAddPurchase=()=>{
                         onFinish: visit => { //console.log('finish');
                         },
                 })
+                show_alert_msg.value = true;
         }else{
                 console.log('okConfirmAddPurchase edit');
                    form.post(route('edit-purchase'), {
@@ -351,10 +382,11 @@ const okConfirmAddPurchase=()=>{
                         preserveScroll: true,
                         onSuccess: page => { 
                                 console.log('success');
-                                form.date_purchase = '';
-                                form.preview_orders = [];
-                                show_total_bath.value = '';
-                                form.total_budget = 0.0;
+                                // form.date_purchase = '';
+                                // form.preview_orders = [];
+                                // show_total_bath.value = '';
+                                // form.total_budget = 0.0;
+                                show_alert_msg_edit_success.value = true;
                         },
                         onError: errors => { 
                         //  console.log('error');
@@ -365,7 +397,7 @@ const okConfirmAddPurchase=()=>{
         }
         
       
-        show_alert_msg.value = true;
+        // 
 }
 
 const cancelAddPurchase=()=>{
@@ -375,6 +407,13 @@ const cancelAddPurchase=()=>{
 const  closeAlert=()=>{
     // console.log('close alert');
     show_alert_msg.value = false;
+   // Inertia.visit(route('budget-list'));
+
+}
+
+const  closeAlertEdit=()=>{
+    // console.log('close alert');
+    show_alert_msg_edit_success.value = false;
    // Inertia.visit(route('budget-list'));
 
 }

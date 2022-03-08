@@ -35965,14 +35965,16 @@ __webpack_require__.r(__webpack_exports__);
     var confirm_add_purchase = (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_4__.ref)(false);
     var show_alert_msg = (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_4__.ref)(false);
     var count_order_edit = (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_4__.ref)('');
+    var show_alert_msg_edit_success = (0,_vue_reactivity__WEBPACK_IMPORTED_MODULE_4__.ref)(false);
     var form = (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_3__.useForm)({
       date_purchase: '',
       stock_select: '',
       //budget_purchase:0,
       preview_orders: [],
       total_budget: 0.0,
-      project_name: 'ขออนุมัติจัดจ้างซื้อวัสดุทางการแพทย์ วัสดุวิทยาศาสตร์ สารเคมี น้ำยาทดสอบ และวัสดุอื่นๆ โดยวิธีเฉพาะเจาะจง' //  user_division:0,
-
+      project_name: 'ขออนุมัติจัดจ้างซื้อวัสดุทางการแพทย์ วัสดุวิทยาศาสตร์ สารเคมี น้ำยาทดสอบ และวัสดุอื่นๆ โดยวิธีเฉพาะเจาะจง',
+      //  user_division:0,
+      order_purchase_id: 0
     });
     (0,_vue_runtime_core__WEBPACK_IMPORTED_MODULE_5__.onMounted)(function () {
       console.log('onMounted');
@@ -35990,7 +35992,8 @@ __webpack_require__.r(__webpack_exports__);
         form.total_budget = (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_3__.usePage)().props.value.order_purchase.budget;
         console.log(form.total_budget);
         form.project_name = (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_3__.usePage)().props.value.order_purchase.project_name;
-        form.date_purchase = (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_3__.usePage)().props.value.order_purchase.date_order; // form.stock_select = usePage().props.value.order_purchase.unit_id;
+        form.date_purchase = (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_3__.usePage)().props.value.order_purchase.date_order;
+        form.order_purchase_id = (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_3__.usePage)().props.value.order_purchase.id; // form.stock_select = usePage().props.value.order_purchase.unit_id;
       }
     });
 
@@ -36079,26 +36082,27 @@ __webpack_require__.r(__webpack_exports__);
           onFinish: function onFinish(visit) {//console.log('finish');
           }
         });
+        show_alert_msg.value = true;
       } else {
         console.log('okConfirmAddPurchase edit');
         form.post(route('edit-purchase'), {
           preserveState: true,
           preserveScroll: true,
           onSuccess: function onSuccess(page) {
-            console.log('success');
-            form.date_purchase = '';
-            form.preview_orders = [];
-            show_total_bath.value = '';
-            form.total_budget = 0.0;
+            console.log('success'); // form.date_purchase = '';
+            // form.preview_orders = [];
+            // show_total_bath.value = '';
+            // form.total_budget = 0.0;
+
+            show_alert_msg_edit_success.value = true;
           },
           onError: function onError(errors) {//  console.log('error');
           },
           onFinish: function onFinish(visit) {//console.log('finish');
           }
         });
-      }
+      } // 
 
-      show_alert_msg.value = true;
     };
 
     var cancelAddPurchase = function cancelAddPurchase() {
@@ -36110,6 +36114,11 @@ __webpack_require__.r(__webpack_exports__);
       show_alert_msg.value = false; // Inertia.visit(route('budget-list'));
     };
 
+    var closeAlertEdit = function closeAlertEdit() {
+      // console.log('close alert');
+      show_alert_msg_edit_success.value = false; // Inertia.visit(route('budget-list'));
+    };
+
     var __returned__ = {
       stock_alert: stock_alert,
       date_alert: date_alert,
@@ -36119,6 +36128,7 @@ __webpack_require__.r(__webpack_exports__);
       confirm_add_purchase: confirm_add_purchase,
       show_alert_msg: show_alert_msg,
       count_order_edit: count_order_edit,
+      show_alert_msg_edit_success: show_alert_msg_edit_success,
       form: form,
       getOrder: getOrder,
       removeItem: removeItem,
@@ -36127,6 +36137,7 @@ __webpack_require__.r(__webpack_exports__);
       okConfirmAddPurchase: okConfirmAddPurchase,
       cancelAddPurchase: cancelAddPurchase,
       closeAlert: closeAlert,
+      closeAlertEdit: closeAlertEdit,
       AppLayout: _Layouts_AppLayout_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
       PurchaseItem: _Components_PurchaseItem_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
       ModalUpToYou: _Components_ModalUpToYou_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
@@ -40974,6 +40985,23 @@ var _hoisted_58 = {
 var _hoisted_59 = {
   "for": ""
 };
+
+var _hoisted_60 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+  "class": "text-md font-bold text-red-600"
+}, "กรุณาอ่าน: ", -1
+/* HOISTED */
+);
+
+var _hoisted_61 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "w-full flex flex-col text-gray-900 text-md font-medium dark:text-white"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "for": ""
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ $page.props.flash.status }}:{{ $page.props.flash.msg }}  "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "for": ""
+}, "แก้ไขสำเร็จ")])], -1
+/* HOISTED */
+);
+
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)($setup["AppLayout"], null, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -41120,6 +41148,28 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
             "class": "mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400",
             onClick: $setup.closeAlert
+          }, " ตกลง ")])];
+        }),
+        _: 1
+        /* STABLE */
+
+      }, 8
+      /* PROPS */
+      , ["isModalOpen"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["ModalUpToYou"], {
+        isModalOpen: $setup.show_alert_msg_edit_success
+      }, {
+        header: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+          return [_hoisted_60];
+        }),
+        body: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+          return [_hoisted_61];
+        }),
+        footer: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+          return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+            "class": "w-full text-center md:block"
+          }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+            "class": "mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400",
+            onClick: $setup.closeAlertEdit
           }, " ตกลง ")])];
         }),
         _: 1
