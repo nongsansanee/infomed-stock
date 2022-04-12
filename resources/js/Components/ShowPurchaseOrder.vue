@@ -1,7 +1,7 @@
 <template>
  <div class=" py-2 font-bold"> {{purchaseOrder.stock['stockname']}}</div>
                 <div class="flex justify-between"> 
-                    <p class=" text-red-700 font-bold">วันที่สั่งซื้อ:{{purchaseOrder.date_order}} </p> 
+                    <p class=" text-red-700 font-bold">วันที่สั่งซื้อ: {{date_purchase}}</p> 
                     <p class=" bg-green-200 px-2 mx-4 text-red-700 font-bold rounded-md" >
                          สถานะ:{{purchaseOrder.status}}
                     </p>
@@ -16,7 +16,7 @@
                     <p class=" px-2 text-gray-600 text-sm">ผู้บันทึกข้อมูล</p>
                 </div>
                 <div>
-                    <a :href="route('print-purchase-order',purchaseOrder.id)" 
+                    <!-- <a :href="route('print-purchase-order',purchaseOrder.id)" 
                         v-if="$page.props.auth.user.profile.division_id==purchaseOrder.unit_id"
                          target="blank">
                         <span
@@ -27,7 +27,7 @@
                             </svg>
                                 พิมพ์แบบ บก.๐๖
                         </span>
-                    </a>
+                    </a> -->
                     <a :href="route('print-purchase-order-item',purchaseOrder.id)"  target="blank">
                         <span
                             class="inline-flex text-sm  ml-2 py-1 px-2  leading-5 text-white bg-blue-500 rounded-md"
@@ -38,40 +38,41 @@
                                 พิมพ์รายการพัสดุสั่งซื้อ
                         </span>
                     </a>
-                         <button v-if="purchaseOrder.status == 'created' &&  
-                                $page.props.auth.user.profile.division_id==purchaseOrder.unit_id"
-                            class=" inline-flex text-sm ml-3 bg-green-500 hover:bg-green-700 text-white  py-1 px-4 border border-green-500 rounded">
+                    <button v-if="purchaseOrder.status == 'created' &&  
+                            $page.props.auth.user.profile.division_id==purchaseOrder.unit_id"
+                              v-on:click="confirmSendOrder(purchaseOrder)"
+                        class=" inline-flex text-sm ml-3 bg-green-500 hover:bg-green-700 text-white  py-1 px-4 border border-green-500 rounded">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                            </svg>
-                            ส่ง
-                        </button>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                        </svg>
+                        ส่งเอกสารสั่งซื้อ
+                    </button>    
 
-                        <button v-if="purchaseOrder.status == 'created' &&  
-                                $page.props.auth.user.profile.division_id==purchaseOrder.unit_id"
-                            class=" inline-flex text-sm ml-3 bg-yellow-500 hover:bg-yellow-700 text-white  py-1 px-2 border border-yellow-500 rounded"
-                            @click="editOrderPurchase(purchaseOrder.id)"
-                            >
-                           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                            </svg>
-                            แก้ไข
-                        </button>
+                    <button v-if="purchaseOrder.status == 'created' &&  
+                            $page.props.auth.user.profile.division_id==purchaseOrder.unit_id"
+                        class=" inline-flex text-sm ml-3 bg-yellow-500 hover:bg-yellow-700 text-white  py-1 px-2 border border-yellow-500 rounded"
+                        @click="editOrderPurchase(purchaseOrder.id)"
+                        >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                        แก้ไข
+                    </button>
 
-                        <button v-if="purchaseOrder.status == 'created' &&  
-                                $page.props.auth.user.profile.division_id==purchaseOrder.unit_id"
-                            class=" inline-flex text-sm ml-3 bg-red-500 hover:bg-red-700 text-white  py-1 px-2 border border-red-500 rounded">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                            </svg>
-                            ลบ
-                        </button>
+                    <button v-if="purchaseOrder.status == 'created' &&  
+                            $page.props.auth.user.profile.division_id==purchaseOrder.unit_id"
+                        class=" inline-flex text-sm ml-3 bg-red-500 hover:bg-red-700 text-white  py-1 px-2 border border-red-500 rounded">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                        ลบ
+                    </button>
                 </div>
   
 </template>
 <script setup>
 import { Inertia } from '@inertiajs/inertia';
-const { onMounted, ref }=require("@vue/runtime-core");
+const { onMounted, ref,computed }=require("@vue/runtime-core");
 
 const props = defineProps({
       purchaseOrder:{type:Object,required:true},
@@ -94,6 +95,26 @@ const editOrderPurchase=(purchase_order_id)=>{
             id: purchase_order_id,
         },
    })
+}
+
+const date_purchase = computed(()=>{
+    //console.log(props.stockBudget.budget)
+    let thaimonth = ['', 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+    //let output = props.purchaseOrder.date_order.split('-').reverse().join('/');
+    let date_arr = props.purchaseOrder.date_order.split('-');
+
+    let month = thaimonth[parseInt(date_arr[1])];
+    let year = parseInt(date_arr[0])+543;
+    let output = parseInt(date_arr[2]) + ' ' + month + ' ' + year;
+    return output;
+})
+
+const confirmSendOrder=(order)=>{
+    console.log(order);
+    // confirm_send_order.value = true;
+    // confirm_items.value = order.items;
+    // form.confirm_order_id = order.id;
+           
 }
 
 </script>

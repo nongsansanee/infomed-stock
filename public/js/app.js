@@ -35444,7 +35444,8 @@ __webpack_require__.r(__webpack_exports__);
 
     var _require = __webpack_require__(/*! @vue/runtime-core */ "./node_modules/@vue/runtime-core/dist/runtime-core.esm-bundler.js"),
         onMounted = _require.onMounted,
-        ref = _require.ref;
+        ref = _require.ref,
+        computed = _require.computed;
 
     var budget_show = ref(0);
     onMounted(function () {
@@ -35462,12 +35463,32 @@ __webpack_require__.r(__webpack_exports__);
       });
     };
 
+    var date_purchase = computed(function () {
+      //console.log(props.stockBudget.budget)
+      var thaimonth = ['', 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม']; //let output = props.purchaseOrder.date_order.split('-').reverse().join('/');
+
+      var date_arr = props.purchaseOrder.date_order.split('-');
+      var month = thaimonth[parseInt(date_arr[1])];
+      var year = parseInt(date_arr[0]) + 543;
+      var output = parseInt(date_arr[2]) + ' ' + month + ' ' + year;
+      return output;
+    });
+
+    var confirmSendOrder = function confirmSendOrder(order) {
+      console.log(order); // confirm_send_order.value = true;
+      // confirm_items.value = order.items;
+      // form.confirm_order_id = order.id;
+    };
+
     var __returned__ = {
       onMounted: onMounted,
       ref: ref,
+      computed: computed,
       props: props,
       budget_show: budget_show,
       editOrderPurchase: editOrderPurchase,
+      date_purchase: date_purchase,
+      confirmSendOrder: confirmSendOrder,
       Inertia: _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_0__.Inertia
     };
     Object.defineProperty(__returned__, '__isScriptSetup', {
@@ -39302,24 +39323,6 @@ var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 var _hoisted_9 = ["href"];
 
 var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "inline-flex text-sm py-1 px-2 leading-5 text-white bg-blue-500 rounded-md"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
-  xmlns: "http://www.w3.org/2000/svg",
-  "class": "h-6 w-6",
-  viewBox: "0 0 20 20",
-  fill: "currentColor"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
-  "fill-rule": "evenodd",
-  d: "M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z",
-  "clip-rule": "evenodd"
-})]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" พิมพ์แบบ บก.๐๖ ")], -1
-/* HOISTED */
-);
-
-var _hoisted_11 = [_hoisted_10];
-var _hoisted_12 = ["href"];
-
-var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "inline-flex text-sm ml-2 py-1 px-2 leading-5 text-white bg-blue-500 rounded-md"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
@@ -39334,13 +39337,9 @@ var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_14 = [_hoisted_13];
-var _hoisted_15 = {
-  key: 1,
-  "class": "inline-flex text-sm ml-3 bg-green-500 hover:bg-green-700 text-white py-1 px-4 border border-green-500 rounded"
-};
+var _hoisted_11 = [_hoisted_10];
 
-var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
   "class": "h-6 w-6",
   fill: "none",
@@ -39355,11 +39354,11 @@ var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ส่ง ");
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ส่งเอกสารสั่งซื้อ ");
 
-var _hoisted_18 = [_hoisted_16, _hoisted_17];
+var _hoisted_14 = [_hoisted_12, _hoisted_13];
 
-var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
   "class": "h-6 w-6",
   fill: "none",
@@ -39374,15 +39373,15 @@ var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" แก้ไข ");
+var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" แก้ไข ");
 
-var _hoisted_21 = [_hoisted_19, _hoisted_20];
-var _hoisted_22 = {
-  key: 3,
+var _hoisted_17 = [_hoisted_15, _hoisted_16];
+var _hoisted_18 = {
+  key: 2,
   "class": "inline-flex text-sm ml-3 bg-red-500 hover:bg-red-700 text-white py-1 px-2 border border-red-500 rounded"
 };
 
-var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
   "class": "h-6 w-6",
   fill: "none",
@@ -39397,13 +39396,13 @@ var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ลบ ");
+var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ลบ ");
 
-var _hoisted_25 = [_hoisted_23, _hoisted_24];
+var _hoisted_21 = [_hoisted_19, _hoisted_20];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.purchaseOrder.stock['stockname']), 1
   /* TEXT */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_3, "วันที่สั่งซื้อ:" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.purchaseOrder.date_order), 1
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_3, "วันที่สั่งซื้อ: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.date_purchase), 1
   /* TEXT */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_4, " สถานะ:" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.purchaseOrder.status), 1
   /* TEXT */
@@ -39413,24 +39412,24 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [_hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_7, " คุณ" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.purchaseOrder.user.name) + " (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.purchaseOrder.user.profile['division_name']) + ")", 1
   /* TEXT */
-  ), _hoisted_8]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_ctx.$page.props.auth.user.profile.division_id == $props.purchaseOrder.unit_id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("a", {
-    key: 0,
-    href: _ctx.route('print-purchase-order', $props.purchaseOrder.id),
+  ), _hoisted_8]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <a :href=\"route('print-purchase-order',purchaseOrder.id)\" \r\n                        v-if=\"$page.props.auth.user.profile.division_id==purchaseOrder.unit_id\"\r\n                         target=\"blank\">\r\n                        <span\r\n                            class=\"inline-flex text-sm py-1 px-2  leading-5 text-white bg-blue-500 rounded-md\"\r\n                        >\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6\" viewBox=\"0 0 20 20\" fill=\"currentColor\">\r\n                            <path fill-rule=\"evenodd\" d=\"M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z\" clip-rule=\"evenodd\" />\r\n                            </svg>\r\n                                พิมพ์แบบ บก.๐๖\r\n                        </span>\r\n                    </a> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+    href: _ctx.route('print-purchase-order-item', $props.purchaseOrder.id),
     target: "blank"
   }, _hoisted_11, 8
   /* PROPS */
-  , _hoisted_9)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
-    href: _ctx.route('print-purchase-order-item', $props.purchaseOrder.id),
-    target: "blank"
-  }, _hoisted_14, 8
-  /* PROPS */
-  , _hoisted_12), $props.purchaseOrder.status == 'created' && _ctx.$page.props.auth.user.profile.division_id == $props.purchaseOrder.unit_id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", _hoisted_15, _hoisted_18)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.purchaseOrder.status == 'created' && _ctx.$page.props.auth.user.profile.division_id == $props.purchaseOrder.unit_id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
-    key: 2,
-    "class": "inline-flex text-sm ml-3 bg-yellow-500 hover:bg-yellow-700 text-white py-1 px-2 border border-yellow-500 rounded",
+  , _hoisted_9), $props.purchaseOrder.status == 'created' && _ctx.$page.props.auth.user.profile.division_id == $props.purchaseOrder.unit_id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    key: 0,
     onClick: _cache[0] || (_cache[0] = function ($event) {
+      return $setup.confirmSendOrder($props.purchaseOrder);
+    }),
+    "class": "inline-flex text-sm ml-3 bg-green-500 hover:bg-green-700 text-white py-1 px-4 border border-green-500 rounded"
+  }, _hoisted_14)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.purchaseOrder.status == 'created' && _ctx.$page.props.auth.user.profile.division_id == $props.purchaseOrder.unit_id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    key: 1,
+    "class": "inline-flex text-sm ml-3 bg-yellow-500 hover:bg-yellow-700 text-white py-1 px-2 border border-yellow-500 rounded",
+    onClick: _cache[1] || (_cache[1] = function ($event) {
       return $setup.editOrderPurchase($props.purchaseOrder.id);
     })
-  }, _hoisted_21)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.purchaseOrder.status == 'created' && _ctx.$page.props.auth.user.profile.division_id == $props.purchaseOrder.unit_id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", _hoisted_22, _hoisted_25)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])], 64
+  }, _hoisted_17)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.purchaseOrder.status == 'created' && _ctx.$page.props.auth.user.profile.division_id == $props.purchaseOrder.unit_id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", _hoisted_18, _hoisted_21)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])], 64
   /* STABLE_FRAGMENT */
   );
 }
