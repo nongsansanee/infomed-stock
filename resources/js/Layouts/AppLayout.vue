@@ -8,7 +8,7 @@
 
         <Navbar @toggleSidebar="sideMenuShowHide" />
 
-        <div class="p-6 bg-gray-100 mb-20">
+        <div class="  p-6   bg-white mb-20">
             <!-- Page Content -->
             <!-- <main> -->
                 <slot></slot>

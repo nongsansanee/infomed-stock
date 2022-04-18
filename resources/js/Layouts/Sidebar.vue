@@ -9,7 +9,7 @@
           ระบบพัสดุ
         </p> -->
       </div>
-      <div class="w-full  border-t flex px-4 items-center mb-4">
+      <div class="w-full   flex px-4 items-center mb-4">
         <!-- <p class="font-semibold text-2xl text-blue-400 pl-4">
           ระบบพัสดุ
         </p> -->

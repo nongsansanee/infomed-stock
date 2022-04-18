@@ -148,6 +148,8 @@ Route::controller(PurchaseOrderController::class)
           Route::get('/purchase-order-list/','index')->name('purchase-order-list');
           //ค้นหาใบสั่งซื้อ ตามปีงบ
           Route::get('/get-purchase-order/{year}','show')->name('get-purchase-order');
+          //ส่งใบสั่งซื้อ
+          Route::post('/send-order-purchase','update')->name('send-order-purchase');
         });
 
 //พิมพ์ใบสั่งซื้อ

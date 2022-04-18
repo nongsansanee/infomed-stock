@@ -1,6 +1,6 @@
 <template>
     <div class="sticky top-0 z-40">
-            <div class="w-full  px-6 bg-gray-100 border-b flex items-center justify-between">
+            <div class="w-full  px-6 py-2 bg-gray-100 border-b flex items-center justify-between">
 
               <!-- left navbar -->
               <div class="flex">
@@ -33,7 +33,7 @@
                 
                      <!-- <img src="/storage/images/hq_med_v3.png" class=""> -->
                 <div>
-                    <p class="font-semibold mt-4 text-2xl text-blue-400 ">
+                    <p class="font-semibold mt-2 text-2xl text-blue-400 ">
                     ระบบพัสดุ
                   </p>
                  
