@@ -13,18 +13,24 @@
                     <option v-for="(year,index) in  years" :key=index v-bind:value="year">{{year+543}}</option>
                 </select>
             </div>
-            <div class=" text-red-500">
-                note:เพิ่มตัวกรองค้นหาด้วยชื่อสาขา/หน่วย
-            </div>
+           
         </div>
         <div class="flex flex-col p-2 bg-yellow-100">
             <label class=" font-bold text-red-500">ขั้นตอน/คำแนะนำ:(ให้ user ยืนยันขั้นตอนการทำงาน)</label>
-            <label >1.กดปุ่มพิมพ์แบบ บก.๐๖ เพื่อเสนอหัวหน้าสาขาเซ็น</label>
-            <label >2.หลังจากหัวหน้าสาขาเซ็นแล้ว ให้กดปุ่มส่ง พร้อมส่งเอกสารแบบ บก.๐๖ ตัวจริงมาให้หน่วยพัสดุ สำนักงานภาคฯ</label>
+            <label >1.กดปุ่มส่งเอกสารสั่งซื้อ เพื่อส่งให้สำนักงานภาคฯ</label>
+            <label >2.หลังจากหัวหน้าภาคฯอนุมัติแล้ว จึงจะเห็นปุ่มตรวจรับพัสดุ </label>
+            <label >3.เมื่อได้รับพัสดุแล้ว จึงมากดปุ่มตรวจรับพัสดุ </label>
         </div>
-        <div v-if="purchase_orders.length !=0" class=" w-full  py-4">
-            <div v-for="(purchase_order) in purchase_orders" :key="purchase_order.id"
-                class=" m-2 p-2 bg-pink-100 border-b-2 border-pink-600 rounded-md"
+
+         <div>
+                <input type="text" placeholder="พิมพ์คำที่ต้องการค้นหา จากชื่อคลังพัสดุ/วันที่สั่งซื้อ/ผู้บันทึกข้อมูล" 
+                 @keyup="purchase_filter" v-model="filter_key" 
+                    class="mt-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-500 rounded-md">
+        </div>
+        <div v-if="show_purchase_orders.length !=0" class=" w-full  py-4">
+           
+            <div v-for="(purchase_order) in show_purchase_orders" :key="purchase_order.id"
+                class=" m-2 p-2 bg-pink-50 border-b-2 border-pink-600 rounded-md"
                 >
                 <!-- {{purchase_order}} -->
                     <!-- @purchaseOrder = "purchase_order" -->
@@ -46,10 +52,13 @@ defineProps({
   years:{type:Object,required:true},
 })
 
-const purchase_orders = ref('');
+const filter_key=ref('');
+const purchase_orders = ref([]);
 const form = useForm({
     year_selected:'',
 })
+
+const show_purchase_orders = ref([]);
 
 
 
@@ -58,8 +67,44 @@ const getListPurchase=()=>{
     axios.get(route('get-purchase-order',{year:form.year_selected})).then(res => {
        // console.log(res.data.stocks);
         purchase_orders.value = res.data.purchase_orders;   
+        show_purchase_orders.value = res.data.purchase_orders; 
+       // console.log(purchase_orders); 
+        //console.log(show_purchase_orders);
     });
    // forceUpdate();
+}
+
+const purchase_filter = () => {
+  console.log(filter_key.value)
+ // purchaseOrder.stock['stockname']
+  let filter_purchase = purchase_orders.value.filter( (elmt) => {
+    //console.log(elmt.sap_id)
+    //  if( elmt.stock['stockname'].match(filter_key.value) || elmt.fname_th.match(filter_key.value) || elmt.lname_th.match(filter_key.value) ) {
+    //   return elmt
+    // }
+    if( elmt.stock['stockname'].match(filter_key.value) 
+        || elmt.project_name.match(filter_key.value)   
+        || elmt.user.name.match(filter_key.value) 
+        || date_purchase_convert(elmt.date_order).match(filter_key.value)
+        ) {
+      return elmt
+    }
+  })
+
+  console.log(filter_purchase)
+  show_purchase_orders.value = filter_purchase
+}
+
+const date_purchase_convert = (date_order)=>{
+    //console.log(props.stockBudget.budget)
+    let thaimonth = ['', 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+    //let output = props.purchaseOrder.date_order.split('-').reverse().join('/');
+    let date_arr = date_order.split('-');
+
+    let month = thaimonth[parseInt(date_arr[1])];
+    let year = parseInt(date_arr[0])+543;
+    let output = parseInt(date_arr[2]) + ' ' + month + ' ' + year;
+    return output;
 }
 
 </script>
