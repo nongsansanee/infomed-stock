@@ -30,7 +30,7 @@
         <div v-if="show_purchase_orders.length !=0" class=" w-full  py-4">
            
             <div v-for="(purchase_order) in show_purchase_orders" :key="purchase_order.id"
-                class=" m-2 p-2 bg-pink-50 border-b-2 border-pink-600 rounded-md"
+                class=" m-2 p-2 bg-pink-50 border-b-2 border-pink-600 rounded-md shadow-md"
                 >
                 <!-- {{purchase_order}} -->
                     <!-- @purchaseOrder = "purchase_order" -->
