@@ -116,11 +116,7 @@ class ReportStockController extends Controller
         return response()->json([
             'item_trans' => $stock_item_checkouts
         ]);
-        // return Inertia::render('Stock/ReportStockList',[
-        //                             'stocks'=>$stocks,
-        //                             'unit'=> $unit,
-        //                             'report_stock_lists' =>$report_stock_lists,
-        //                         ]);
+       
     }
 
     /**

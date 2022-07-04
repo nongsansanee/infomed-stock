@@ -19,7 +19,7 @@ class CreateStockItemsTable extends Migration
             $table->uuid('slug');
             $table->unsignedSmallInteger('stock_id');
             $table->unsignedSmallInteger('user_id')->default(1);
-            $table->string('item_code');
+            $table->string('item_code');   //SAP พัสดุ
             $table->string('item_name');
             $table->integer('unit_count_id');
             $table->integer('item_sum');
@@ -28,7 +28,7 @@ class CreateStockItemsTable extends Migration
             $table->float('price');
             $table->string('catalog_number')->nullable();
             $table->string('lot_number')->nullable();
-            $table->integer('status')->default(1);
+            $table->integer('status')->default(1);    // 1 = พัสดุตามสัญญาสั่งซื้อ , 2= พัสดุตามใบสั่งซื้อ
             $table->json('profile')->nullable();
             $table->timestamps();
         });

@@ -16,6 +16,7 @@ use App\Http\Controllers\ItemTransactionController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PrintFormController;
 use App\Http\Controllers\PurchaseOrderController;
+use App\Http\Controllers\StockItemController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
@@ -155,5 +156,8 @@ Route::controller(PurchaseOrderController::class)
 //พิมพ์ใบสั่งซื้อ
  Route::get('/purchase-order/print/{order}', [PrintFormController::class,'printPurchaseOrder'])->name('print-purchase-order')->middleware('auth');
  Route::get('/purchase-order/print-item/{order}', [PrintFormController::class,'printPurchaseOrderItem'])->name('print-purchase-order-item')->middleware('auth');
-//printForm test
+
+//ค้นหาพัสดุ
+Route::get('/search-stock-item/{item_name_search}', [StockItemController::class,'searchByItemName'])->name('search-stock-item')->middleware('auth');
+ //printForm test
  Route::get('/testprint', [PrintFormController::class,'index'])->name('testprint');
