@@ -8,7 +8,6 @@
                         <h1 class=" text-center font-bold text-lg">สร้างเอกสารใบสั่งซื้อ</h1>
                 </div>
                 <div class=" p-2 bg-green-100 border-2 border-green-300 rounded-md ">
-                        
                         <div >
                                 <div class="flex justify-start ">
                                         <svg xmlns="http://www.w3.org/2000/svg" v-if="stock_alert" class="h-5 w-5 text-red-600" viewBox="0 0 20 20" fill="currentColor">
@@ -21,8 +20,8 @@
                                         :class="[stock_alert ? 'border-red-500 border-3 ' : 'border-gray-500' ]"
                                         >
                                         <option v-for="(stock) in  stocks" :key=stock.id  
-                                                v-bind:value="{stockid:stock.id,stockname:stock.stockname}" >
-                                                {{stock.stockname}}
+                                                :value="{stockid:stock.id,stockname:stock.stockname}" >
+                                               {{stock.stockname}}
                                         </option>
                                 </select>
                         </div>
@@ -237,7 +236,7 @@ import { useForm, usePage } from '@inertiajs/inertia-vue3';
 import { computed, ref } from '@vue/reactivity';
 import { onMounted } from '@vue/runtime-core';
 
-defineProps({
+const props = defineProps({
    stocks:{type:Object,required:true},
    order_purchase :{type:Object},
    action :{type:String,required:true},
@@ -255,7 +254,7 @@ const show_alert_msg_edit_success=ref(false);
 
 const form=useForm({
         date_purchase:'',
-        stock_select:'',
+        stock_select: '',
         //budget_purchase:0,
         preview_orders:[],
         total_budget:0.0,
@@ -263,7 +262,11 @@ const form=useForm({
       //  user_division:0,
         order_purchase_id:0,
 })
-
+console.log(`{stockid:${props.stocks[0].id},stockname:${props.stocks[0].stockname}}`);
+ 
+// const testStock = ()=>{
+//         alert(form.stock_select.stockid)
+// } 
  onMounted(() => {
    console.log('onMounted');
    console.log(usePage().props.value.order_purchase);
@@ -273,6 +276,7 @@ const form=useForm({
         //            console.log(item);
         //        //form.preview_orders.push(item[0]);
         // }
+         console.log(usePage().props.value.action);
         if(usePage().props.value.action == 'edit'){
                 form.preview_orders.push(usePage().props.value.order_purchase.items);
                  console.log(form.preview_orders[0].length)   
@@ -283,7 +287,9 @@ const form=useForm({
                 form.project_name = usePage().props.value.order_purchase.project_name;
                 form.date_purchase = usePage().props.value.order_purchase.date_order;
                 form.order_purchase_id = usePage().props.value.order_purchase.id;
-               // form.stock_select = usePage().props.value.order_purchase.unit_id;
+                //form.stock_select = usePage().props.value.order_purchase.unit_id;
+        }else{
+
         }
      
 })

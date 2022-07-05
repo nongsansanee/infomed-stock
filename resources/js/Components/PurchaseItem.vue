@@ -69,9 +69,10 @@
              <ModalUpToYou :isModalOpen="show_search_item" modalSize="large" >
                         <template v-slot:header>
                                 <p class="text-md font-bold text-blue-800 ">ค้นหาพัสดุ </p> 
-                                <p class="text-sm font-bold text-red-600 ">***พิมพ์ชื่อพัสดุอย่างน้อย 3 ตัวอักษร</p> 
+                                <!-- <p class="text-sm font-bold text-red-600 ">***พิมพ์ชื่อพัสดุอย่างน้อย 3 ตัวอักษร</p>  -->
                         </template>
                         <template v-slot:body>
+                         <p class="text-sm font-bold text-red-600 ">***พิมพ์ชื่อพัสดุอย่างน้อย 3 ตัวอักษร</p> 
                         <div class="w-full flex  text-gray-900 text-md font-medium dark:text-white">
                                <div class=" w-3/4">
                                                   <!-- {{ $page.props.flash.status }}:{{ $page.props.flash.msg }}  -->
@@ -101,7 +102,10 @@
                                         <div class="w-full  justify-between mt-2 border-b-2 border-blue-900"
                                                 v-for="(item,index) in  form.stock_items" :key=item.id  
                                         >
-                                                {{index+1}}. {{item.item_name}} ({{item.item_code}}) ราคา {{item.price}} / {{item.unit_count.countname}} [{{item.business}}]
+                                                {{index+1}}. {{item.item_name}} ({{item.item_code}}) 
+                                                ราคา {{item.price}} / {{item.unit_count.countname}} 
+                                                <label v-if="!item.profile"> [ไม่พบข้อมูลชื่อบริษัท]</label>
+                                                <label v-else>[{{item.profile.business_name}}]</label>
                                                 <button
                                                         class=" mx-2 px-2  justify-center text-sm  text-white bg-green-700 rounded-md hover:bg-green-400 focus:outline-none"
                                                         @click="fillItemToForm(item)"
@@ -198,7 +202,7 @@ const searchStockItem=()=>{
         axios.get(route('search-stock-item',
                          {item_name_search:form.item_name_search }
                     )).then(res => {
-                //console.log(res.data);
+               // console.log(res.data);
                 form.stock_items = res.data.items;
 
         });
