@@ -1,5 +1,17 @@
 <template>
 <AppLayout>
+        <!--Header Alert-->
+        <div v-if="$page.props.flash.status=='success'" 
+                class="alert-banner  fixed  right-0 m-2 w-5/6 md:w-full max-w-sm ">
+                <input type="checkbox" class="hidden" id="banneralert">
+                
+                <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow rounded-md text-green-800 font-bold" title="close" for="banneralert">
+                        {{ $page.props.flash.msg }}
+                        <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
+                        <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                        </svg>
+                </label>
+        </div>
         <div class="w-full p-2 ">
                 <div v-if="$page.props.auth.user.profile.division_id==27 ">
                         <h1 class=" text-center font-bold text-lg">บันทึกข้อมูลใบสั่งซื้อ(เก่า)</h1>
@@ -15,12 +27,24 @@
                                         </svg>
                                         <label >ชื่อคลังพัสดุ:</label>
                                 </div>
+                                <!-- <div class=" w-full  bg-blue-100 p-2 rounded-md ">
+                                        <div class="bg-blue-800 text-white text-xl text-center ">
+                                                {{$page.props.auth.user.profile.division_id}}
+                                        </div>
+                                
+                                        
+                                </div> -->
+                                <!-- {{stocks}} -->
                                 <select v-model="form.stock_select"
                                         class="block appearance-none w-full bg-white border  focus:border-indigo-600  rounded-md  " 
                                         :class="[stock_alert ? 'border-red-500 border-3 ' : 'border-gray-500' ]"
                                         >
-                                        <option v-for="(stock) in  stocks" :key=stock.id  
+                                        <!-- <option v-for="(stock) in  stocks" :key=stock.id  
                                                 :value="{stockid:stock.id,stockname:stock.stockname}" >
+                                               {{stock.stockname}}
+                                        </option> -->
+                                           <option v-for="(stock) in  stocks" :key=stock.id  
+                                                :value="stock.id" >
                                                {{stock.stockname}}
                                         </option>
                                 </select>
@@ -269,13 +293,14 @@ console.log(`{stockid:${props.stocks[0].id},stockname:${props.stocks[0].stocknam
 // } 
  onMounted(() => {
    console.log('onMounted');
-   console.log(usePage().props.value.order_purchase);
-        // usePage().props.value.order_purchase.items.forEach(myFunction);
+   //console.log(usePage().props.value.order_purchase);
+   // console.log(usePage().props.value.stocks);
        
-        // function myFunction(item) {
-        //            console.log(item);
-        //        //form.preview_orders.push(item[0]);
-        // }
+        if(usePage().props.value.stocks.length==1){
+                form.stock_select = usePage().props.value.stocks[0].id;
+                console.log(form.stock_select);
+        }
+     
          console.log(usePage().props.value.action);
         if(usePage().props.value.action == 'edit'){
                 form.preview_orders.push(usePage().props.value.order_purchase.items);
@@ -334,12 +359,21 @@ const removeItemEdit=(index)=>{
 }
 const addOrderPurchase=()=>{
         //console.log('addOrderPurchase');
-        // console.log(form.stock_select);
-         //console.log('stock id='+form.stock_select.stockid);
+         console.log(form.stock_select);
+         console.log('stock id='+form.stock_select.stockid);
         // console.log(form.stock_select.stockname);
         // console.log(form.date_purchase);
         // console.log(form.total_budget);
-        if(form.stock_select.stockid==0 || form.stock_select.stockid==undefined){
+
+
+        // if(form.stock_select.stockid==0 || form.stock_select.stockid==undefined){
+        //         stock_alert.value = true;
+        //         return false;
+        // }else{
+        //         stock_alert.value = false;
+        // }
+
+        if(form.stock_select==0 || form.stock_select==undefined){
                 stock_alert.value = true;
                 return false;
         }else{

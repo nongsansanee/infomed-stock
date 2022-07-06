@@ -7,6 +7,7 @@ use App\Models\OrderPurchase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class PurchaseOrderController extends Controller
@@ -37,9 +38,34 @@ class PurchaseOrderController extends Controller
         $year_end = $year_end->year + 1;
         array_push($year_send,$year_end);
         //Log::info($year_send);
+
+        if($year_selected = request()->input('year_selected')){
+            $user = Auth::user();
+            if($user->profile['division_id']==27)
+                $purchase_orders = OrderPurchase::where('year',$year_selected)
+                                                ->with('stock:id,stockname')
+                                                ->with('user:id,name,profile')
+                                                ->orderBy('unit_id')
+                                                ->orderBy('date_order','desc')
+                                                ->get();
+            else
+                $purchase_orders = OrderPurchase::where('year',$year_selected)
+                                                ->where('unit_id',$user->profile['division_id'])
+                                                ->with('stock:id,stockname')
+                                                ->with('user:id,name,profile')
+                                                ->orderBy('date_order','desc')
+                                                ->get();
+        }else{
+            $purchase_orders= null;
+            $year_selected = null;
+        }
+
+        
+
         return Inertia::render('Stock/PurchaseOrderList',[
                             'years'=>$year_send,
-                           
+                            'year_selected'=> $year_selected,
+                            'purchase_orders' => $purchase_orders
                         ]);
     }
 
@@ -115,7 +141,32 @@ class PurchaseOrderController extends Controller
      */
     public function update(Request $request)
     {
-       dd($request->id);
+       
+       $user = Auth::user();
+       $order_purchase = OrderPurchase::find($request->confirm_order_id);
+       // dd($order_purchase);
+       $timeline = $order_purchase->timeline;
+
+       $timeline['send_by']=$user->id;
+
+       $order_purchase->timeline = $timeline;
+
+       $order_purchase->status = 'sended' ;
+
+       $order_purchase->save();
+
+       $order_purchase_years = OrderPurchase::select('year')->distinct()->get();
+        Log::info($order_purchase->year);
+        //Log::info($order_purchase_years);
+       return redirect::route('purchase-order-list',[
+                    'year_selected'=>$order_purchase->year,
+                  //  'years' => $order_purchase_years,
+                  ]
+        );
+
+       //return Redirect::back()->with(['status' => 'success', 'msg' => 'ส่งใบสั่งซื้อไปสำนักงานภาควิชาฯ เรียบร้อยแล้ว']);
+       
+
     }
 
     /**

@@ -42,24 +42,6 @@ Route::get('/', function () {
  // return view('welcome');
  return Inertia('Auth/Login');
 });
-
-
-// Route::get('/menu', function () {
-//   return view('testmenuweb');
-//  //  return Redirect::route('/login');
-//  });
- 
-//  Route::get('/dashboardtest', function () {
-//      return Inertia::render('Dashboard');
-//  })->name('dashboard');
- 
- 
-//  Route::get('/login-as/{division_id}', [StockController::class,'index'])->middleware('auth');
-
- 
-//  Route::get('/calendar', function () {
-//      return Inertia::render('Calendar');
-//  })->name('calendar');
  
  Route::get('/annouce', [LoginController::class,'index'])->name('annouce')->middleware('auth');
 //แสดงหน้าเบิกพัสดุ

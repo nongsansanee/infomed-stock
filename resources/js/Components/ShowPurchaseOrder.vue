@@ -7,7 +7,7 @@
             </p>
         </div>
         <div> ๑.ชื่อโครงการ:{{purchaseOrder.project_name}} จำนวน {{purchaseOrder.items.length}} รายการ</div>
-        <div> ๒.วงเงินงบประมาณที่ได้รับจัดสรร:{{budget_show}} บาท</div>
+        <div> ๒.วงเงินงบประมาณ:{{budget_show}} บาท</div>
         <div class="flex">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
@@ -67,17 +67,95 @@
                 ลบ
             </button>
         </div>
+
+        <ModalUpToYou :isModalOpen="confirm_send_order" >
+            <template v-slot:header>
+                <p class="text-md font-bold text-red-600 ">คุณต้องการส่งเอกสารใบสั่งซื้อพัสดุนี้ใช่หรือไม่?</p> 
+                                        
+            </template>
+
+            <template v-slot:body>
+                <div class="text-gray-900 text-md font-medium dark:text-white">
+                    <!-- <label v-for="(confirm_item,index) in confirm_items" :key=confirm_item.id
+                            class="  flex  justify-start w-full bg-red-100 text-sm text-red-900">
+                        {{index+1}}.{{confirm_item[0].item_name}} จำนวน {{confirm_item[0].order_input}} x {{confirm_item[0].price}}  เป็นเงิน {{confirm_item[0].total}} บาท
+                    
+                    </label> -->
+                    <label for="">วงเงินงบประมาณ {{confirm_budget}} บาท</label>
+                </div>
+            </template>
+
+            <template v-slot:footer>
+                <div class=" w-full  text-center  md:block">
+                    <button 
+                        class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                        v-on:click="okConfirmSendOrder"
+                        >
+                        ตกลง
+                    </button>
+                    <button 
+                        class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
+                        v-on:click="cancelSendOrder"
+                    >
+                        ยกเลิก
+                    </button>
+                </div>
+            </template>
+        </ModalUpToYou>
   
 </template>
 <script setup>
 import { Inertia } from '@inertiajs/inertia';
+import ModalUpToYou from '@/Components/ModalUpToYou.vue'
+import { useForm } from '@inertiajs/inertia-vue3';
 const { onMounted, ref,computed }=require("@vue/runtime-core");
 
 const props = defineProps({
       purchaseOrder:{type:Object,required:true},
 })
 
+const form = useForm({
+    confirm_order_id:0,
+})
+
 const budget_show = ref(0);
+
+const confirm_send_order=ref(false);
+const confirm_budget=ref(0);
+
+const confirmSendOrder=(order)=>{
+    //console.log(order);
+    confirm_send_order.value = true;
+    confirm_budget.value = order.budget;
+    form.confirm_order_id = order.id;
+           
+}
+
+const  cancelSendOrder=()=>{
+    confirm_send_order.value = false;
+}
+
+const okConfirmSendOrder=(order)=>{
+    confirm_send_order.value = false;
+    // console.log(form.confirm_order_id);
+       console.log(order);
+    // Inertia.visit(route('send-order-purchase'),{
+    //     method: 'post',
+    //     data: {
+    //         id: order.id,
+    //     },
+    // })
+    
+      form.post(route('send-order-purchase'), {
+        preserveState: false,
+        preserveScroll: true,
+        onSuccess: page => { console.log('success');},
+        onError: errors => { 
+            console.log('error');
+        },
+        onFinish: visit => { console.log('finish');},
+    })
+}
 
 onMounted(() => {
     budget_show.value = props.purchaseOrder['budget'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -108,15 +186,15 @@ const date_purchase = computed(()=>{
     return output;
 })
 
-const confirmSendOrder=(order)=>{
-    console.log(order);
-    Inertia.visit(route('send-order-purchase'),{
-        method: 'post',
-        data: {
-            id: order.id,
-        },
-    })
+// const confirmSendOrder=(order)=>{
+//     console.log(order);
+//     Inertia.visit(route('send-order-purchase'),{
+//         method: 'post',
+//         data: {
+//             id: order.id,
+//         },
+//     })
            
-}
+// }
 
 </script>

@@ -60,8 +60,10 @@ class AdminOrderPurchaseController extends Controller
      */
     public function store(Request $request)
     {
-      // Log::info($request->all());
+       Log::info($request->all());
         $user = Auth::user();
+
+       // dd('test');
        // Log::info($user);
        // Log::info($user->profile['division_id']);
        // return "test";
@@ -84,16 +86,18 @@ class AdminOrderPurchaseController extends Controller
            if($user->profile['division_id']<19)
            {
                 $timeline['create_by']=$user->profile['division_name'];
+                $timeline['user_name']=$user->name;
                 $status = 'created';
            }
            else
            {
                 $timeline['create_by']='admin';
+                $timeline['user_name']=$user->name;
                 $status = 'approved';
            }
 
             OrderPurchase::create([
-                'unit_id' => $request->stock_select['stockid'],
+                'unit_id' => $request->stock_select,
                 'user_id' => $user->id,
                 'year' => $year_budget,
                 'month' => $split_date_order[1],

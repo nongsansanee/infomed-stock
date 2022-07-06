@@ -94,12 +94,12 @@
                                         </button>
                                </div>       
                         </div>
-                        <div class=" bg-blue-200">
+                        <div class=" bg-blue-50">
                                 <div v-if="form.stock_items.length == 0">
                                         <p>ไม่พบชื่อพัสดุที่ต้องการค้นหา</p>
                                 </div>
                                 <div v-else>
-                                        <div class="w-full  justify-between mt-2 border-b-2 border-blue-900"
+                                        <div class="w-full  justify-between mt-2 border-b-2 border-blue-800"
                                                 v-for="(item,index) in  form.stock_items" :key=item.id  
                                         >
                                                 {{index+1}}. {{item.item_name}} ({{item.item_code}}) 

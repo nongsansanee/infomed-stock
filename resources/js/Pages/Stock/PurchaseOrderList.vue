@@ -3,6 +3,13 @@
         <div class=" w-full flex justify-center">
                 <label class="text-lg font-bold">รายการใบสั่งซื้อ</label>
         </div>
+        <div class=" w-full  bg-blue-100 p-2 rounded-md ">
+            <div class="bg-blue-800 text-white text-xl text-center ">
+                {{$page.props.auth.user.profile.division_name}}
+            </div>
+       
+         
+        </div>
         <div class="flex flex-col  mb-2 text-md font-bold text-gray-900 ">
             <div class=" m-2">
                 <label for="">ระบุปีงบประมาณ:</label>
@@ -22,7 +29,7 @@
             <label >3.เมื่อได้รับพัสดุแล้ว จึงมากดปุ่มตรวจรับพัสดุ </label>
         </div>
 
-         <div>
+         <div v-if="$page.props.auth.user.profile.division_id > 20">
                 <input type="text" placeholder="พิมพ์คำที่ต้องการค้นหา จากชื่อคลังพัสดุ/วันที่สั่งซื้อ/ผู้บันทึกข้อมูล" 
                  @keyup="purchase_filter" v-model="filter_key" 
                     class="mt-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-500 rounded-md">
@@ -41,6 +48,7 @@
             </div>
            
         </div>
+        
     </AppLayout>
 </template>
 <script setup>
@@ -48,17 +56,20 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import ShowPurchaseOrder from '@/Components/ShowPurchaseOrder.vue';
 import { useForm } from '@inertiajs/inertia-vue3';
 import { ref } from '@vue/reactivity';
-defineProps({
+const props = defineProps({
   years:{type:Object,required:true},
+  year_selected : {type:Number},
+  purchase_orders : {type:Object},
 })
-
+console.log('year_selected='+ props.year_selected);
 const filter_key=ref('');
 const purchase_orders = ref([]);
+
 const form = useForm({
-    year_selected:'',
+    year_selected: props.year_selected ? props.year_selected : '',
 })
 
-const show_purchase_orders = ref([]);
+const show_purchase_orders = props.purchase_orders ? ref(props.purchase_orders) : ref([]);
 
 
 
