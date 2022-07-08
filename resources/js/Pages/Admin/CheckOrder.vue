@@ -118,7 +118,7 @@
 <!-- {{order_lists}} -->
         <ModalUpToYou :isModalOpen="confirm_approve_order" >
             <template v-slot:header>
-                <p class="text-md font-bold text-red-600 ">คุณต้องการอนุมัติเอกสารการสั่งซื้อพัสดุนี้ใช่หรือไม่?</p> 
+                <p class="text-md font-bold text-red-600 ">คุณต้องการอนุมัติใบสัญญาสั่งซื้อพัสดุนี้ใช่หรือไม่?</p> 
                                         
             </template>
 

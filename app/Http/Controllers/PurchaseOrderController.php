@@ -19,6 +19,7 @@ class PurchaseOrderController extends Controller
      */
     public function index()
     {
+        //dd($year);
         $year_send= array();
       
         $year_start = budget::select('year')->orderBy('year','asc')->first();
@@ -38,16 +39,18 @@ class PurchaseOrderController extends Controller
         $year_end = $year_end->year + 1;
         array_push($year_send,$year_end);
         //Log::info($year_send);
-
-        if($year_selected = request()->input('year_selected')){
+       // dd(Request()->input('year'));
+       Log::info(Request()->input('year'));
+        if($year_selected = Request()->input('year')){
             $user = Auth::user();
             if($user->profile['division_id']==27)
                 $purchase_orders = OrderPurchase::where('year',$year_selected)
+                                                ->where('status','!=','created')
                                                 ->with('stock:id,stockname')
                                                 ->with('user:id,name,profile')
                                                 ->orderBy('unit_id')
                                                 ->orderBy('date_order','desc')
-                                                ->get();
+                                                ->paginate(4)->withQueryString();
             else
                 $purchase_orders = OrderPurchase::where('year',$year_selected)
                                                 ->where('unit_id',$user->profile['division_id'])
@@ -60,11 +63,9 @@ class PurchaseOrderController extends Controller
             $year_selected = null;
         }
 
-        
-
         return Inertia::render('Stock/PurchaseOrderList',[
                             'years'=>$year_send,
-                            'year_selected'=> $year_selected,
+                            'year_selected'=> (int)$year_selected,
                             'purchase_orders' => $purchase_orders
                         ]);
     }
@@ -96,30 +97,31 @@ class PurchaseOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($year)
-    {
-       // Log::info($year);
-        $user = Auth::user();
-        if($user->profile['division_id']==27)
-            $purchase_orders = OrderPurchase::where('year',$year)
-                                            ->with('stock:id,stockname')
-                                            ->with('user:id,name,profile')
-                                            ->orderBy('unit_id')
-                                            ->orderBy('date_order','desc')
-                                            ->get();
-        else
-            $purchase_orders = OrderPurchase::where('year',$year)
-                                            ->where('unit_id',$user->profile['division_id'])
-                                            ->with('stock:id,stockname')
-                                            ->with('user:id,name,profile')
-                                            ->orderBy('date_order','desc')
-                                            ->get();
+    // public function show($year)
+    // {
+    //    // Log::info($year);
+    //     $user = Auth::user();
+    //     if($user->profile['division_id']==27)
+    //         $purchase_orders = OrderPurchase::where('year',$year)
+    //                                         ->where('status','!=','created')
+    //                                         ->with('stock:id,stockname')
+    //                                         ->with('user:id,name,profile')
+    //                                         ->orderBy('unit_id')
+    //                                         ->orderBy('date_order')
+    //                                         ->paginate(5)->withQueryString();
+    //     else
+    //         $purchase_orders = OrderPurchase::where('year',$year)
+    //                                         ->where('unit_id',$user->profile['division_id'])
+    //                                         ->with('stock:id,stockname')
+    //                                         ->with('user:id,name,profile')
+    //                                         ->orderBy('date_order')
+    //                                         ->get();
 
-        return response()->json([
-            'purchase_orders' => $purchase_orders
-        ]);
-       // return "test";
-    }
+    //     return response()->json([
+    //         'purchase_orders' => $purchase_orders
+    //     ]);
+    //    // return "test";
+    // }
 
     /**
      * Show the form for editing the specified resource.

@@ -1,7 +1,7 @@
 <template>
 <AppLayout>
         <!--Header Alert-->
-        <div v-if="$page.props.flash.status=='success'" 
+        <!-- <div v-if="$page.props.flash.status=='success'" 
                 class="alert-banner  fixed  right-0 m-2 w-5/6 md:w-full max-w-sm ">
                 <input type="checkbox" class="hidden" id="banneralert">
                 
@@ -11,7 +11,7 @@
                         <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
                         </svg>
                 </label>
-        </div>
+        </div> -->
         <div class="w-full p-2 ">
                 <div v-if="$page.props.auth.user.profile.division_id==27 ">
                         <h1 class=" text-center font-bold text-lg">บันทึกข้อมูลใบสั่งซื้อ(เก่า)</h1>

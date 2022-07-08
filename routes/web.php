@@ -128,7 +128,7 @@ Route::controller(PurchaseOrderController::class)
         ->middleware('auth')
         ->group(function(){
           //หน้าแรกค้นหาใบสั่งซื้อ ตามปีงบ
-          Route::get('/purchase-order-list/','index')->name('purchase-order-list');
+          Route::match(['get', 'post'],'/purchase-order-list/','index')->name('purchase-order-list');
           //ค้นหาใบสั่งซื้อ ตามปีงบ
           Route::get('/get-purchase-order/{year}','show')->name('get-purchase-order');
           //ส่งใบสั่งซื้อ

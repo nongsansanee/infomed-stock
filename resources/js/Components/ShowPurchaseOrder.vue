@@ -37,6 +37,19 @@
                         พิมพ์รายการพัสดุสั่งซื้อ
                 </div>
             </a>
+
+            <!-- for admin -->
+               <button v-if="purchaseOrder.status == 'sended' &&  
+                    $page.props.auth.user.profile.division_id==27"
+                        v-on:click="confirmApprovePurchaseOrder(purchaseOrder)"
+                class=" inline-flex text-sm md:ml-3 bg-green-200 hover:bg-green-500   py-1 px-2 border border-green-500 rounded">
+                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                </svg>
+                อนุมัติ
+            </button>    
+
+            <!-- for officer division -->
             <button v-if="purchaseOrder.status == 'created' &&  
                     $page.props.auth.user.profile.division_id==purchaseOrder.unit_id"
                         v-on:click="confirmSendOrder(purchaseOrder)"
@@ -102,6 +115,40 @@
                 </div>
             </template>
         </ModalUpToYou>
+
+        <ModalUpToYou :isModalOpen="confirm_approve_order" >
+            <template v-slot:header>
+                <p class="text-md font-bold text-red-600 ">คุณต้องการอนุมัติใบสั่งซื้อพัสดุนี้ใช่หรือไม่?</p> 
+                                        
+            </template>
+
+            <template v-slot:body>
+                <div class="text-gray-900 text-md font-medium dark:text-white">
+                    <label 
+                            class="  flex  justify-start w-full text-sm text-red-900">
+                        <!-- ใบสั่งซื้อเลขที่:{{confirm_order_no}}/{{form.confirm_order_year}} ของ {{form.confirm_stockname_order}} -->
+                        วงเงินงบประมาณ {{confirm_approve_budget}} บาท
+                    </label>
+                </div>
+            </template>
+
+            <template v-slot:footer>
+                <div class=" w-full  text-center  md:block">
+                    <button 
+                        class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                        v-on:click="okConfirmApprovePurchaseOrder"
+                        >
+                        ตกลง
+                    </button>
+                    <button 
+                        class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
+                        v-on:click="cancelApproveOrder"
+                    >
+                        ยกเลิก
+                    </button>
+                </div>
+            </template>
+        </ModalUpToYou>
   
 </template>
 <script setup>
@@ -116,12 +163,15 @@ const props = defineProps({
 
 const form = useForm({
     confirm_order_id:0,
+    confirm_approve_order_id:0,
 })
 
 const budget_show = ref(0);
 
 const confirm_send_order=ref(false);
 const confirm_budget=ref(0);
+const confirm_approve_order=ref(false);
+const confirm_approve_budget=ref(0);
 
 const confirmSendOrder=(order)=>{
     //console.log(order);
@@ -139,12 +189,7 @@ const okConfirmSendOrder=(order)=>{
     confirm_send_order.value = false;
     // console.log(form.confirm_order_id);
        console.log(order);
-    // Inertia.visit(route('send-order-purchase'),{
-    //     method: 'post',
-    //     data: {
-    //         id: order.id,
-    //     },
-    // })
+ 
     
       form.post(route('send-order-purchase'), {
         preserveState: false,
@@ -155,6 +200,42 @@ const okConfirmSendOrder=(order)=>{
         },
         onFinish: visit => { console.log('finish');},
     })
+}
+
+const confirmApprovePurchaseOrder=(order)=>{
+    // console.log('confirmApproveOrder');
+        // console.log(order);
+        // console.log(order.id);
+        // console.log(order.stock['stockname']);
+    
+    confirm_approve_order.value = true;
+    confirm_approve_budget.value = order.budget;
+    form.confirm_approve_order_id = order.id;
+    // form.confirm_order_year = order.year;
+    // form.confirm_stockname_order = order.stock['stockname'];
+          
+}
+const cancelApproveOrder=()=>{
+    confirm_approve_order.value = false;
+}
+
+const okConfirmApprovePurchaseOrder=()=>{
+    confirm_approve_order.value = false;
+    // console.log('OK ApproveOrder');
+     console.log(form.confirm_approve_order_id);
+    
+    // form.post(route('approve-purchase-order'), {
+    //         preserveState: false,
+    //         preserveScroll: true,
+    //         onSuccess: page => { 
+    //             console.log('success');
+    //             },
+    //         onError: errors => { 
+    //             console.log('error');
+    //         },
+    //         onFinish: visit => { console.log('finish');},
+    // })
+           
 }
 
 onMounted(() => {
