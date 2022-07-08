@@ -1,5 +1,16 @@
 <template>
     <AppLayout>
+        <div v-if="$page.props.flash.status=='success'" 
+            class="alert-banner  fixed  right-0 m-2 w-2/3 md:w-full max-w-sm ">
+            <input type="checkbox" class="hidden" id="banneralert">
+            
+            <label class="close cursor-pointer flex items-center justify-between w-full p-2 bg-green-300 shadow rounded-md text-green-800 font-bold" title="close" for="banneralert">
+                {{ $page.props.flash.msg }}
+                <svg class="fill-current text-white " xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 18 18">
+                    <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                </svg>
+            </label>
+        </div>
         <div class=" w-full flex justify-center">
                 <label class="text-lg font-bold">รายการใบสั่งซื้อ</label>
         </div>
@@ -28,12 +39,14 @@
             <label >2.หลังจากหัวหน้าภาคฯอนุมัติแล้ว จึงจะเห็นปุ่มตรวจรับพัสดุ </label>
             <label >3.เมื่อได้รับพัสดุแล้ว จึงมากดปุ่มตรวจรับพัสดุ </label>
         </div>
-
-         <div v-if="$page.props.auth.user.profile.division_id > 20">
+        <!-- search word in data -->
+         <!-- <div v-if="$page.props.auth.user.profile.division_id > 20">
                 <input type="text" placeholder="พิมพ์คำที่ต้องการค้นหา จากชื่อคลังพัสดุ/วันที่สั่งซื้อ/ผู้บันทึกข้อมูล" 
-                 @keyup="true" v-model="filter_key" 
+                 @keyup="purchase_filter" v-model="filter_key" 
                     class="mt-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-500 rounded-md">
-        </div>
+        </div> -->
+
+
         <!-- <div v-if="show_purchase_orders.length !=0" class=" w-full  py-4"> -->
             <div v-if="purchase_orders" class=" w-full  py-4">
               <paginateMe :pagination="purchase_orders" />
@@ -86,13 +99,7 @@ const form = useForm({
 
 const getListPurchase = () => {
     console.log('getListPurchase');
-    // axios.get(route('purchase-order-list',{year:form.year_selected})).then(res => {
-    //    // console.log(res.data.stocks);
-    //     purchase_orders.value = res.data.purchase_orders;   
-    //     show_purchase_orders.value = res.data.purchase_orders; 
-    //    // console.log(purchase_orders); 
-    //     //console.log(show_purchase_orders);
-    // });
+
 
     Inertia.get(route('purchase-order-list'), { year: form.year_selected }, {
         preserveState: true,
@@ -101,26 +108,21 @@ const getListPurchase = () => {
    // forceUpdate();
 }
 
-// const purchase_filter = () => {
-//   console.log(filter_key.value)
-//  // purchaseOrder.stock['stockname']
-//   let filter_purchase = purchase_orders.value.filter( (elmt) => {
-//     //console.log(elmt.sap_id)
-//     //  if( elmt.stock['stockname'].match(filter_key.value) || elmt.fname_th.match(filter_key.value) || elmt.lname_th.match(filter_key.value) ) {
-//     //   return elmt
-//     // }
-//     if( elmt.stock['stockname'].match(filter_key.value) 
-//         || elmt.project_name.match(filter_key.value)   
-//         || elmt.user.name.match(filter_key.value) 
-//         || date_purchase_convert(elmt.date_order).match(filter_key.value)
-//         ) {
-//       return elmt
-//     }
-//   })
+const purchase_filter = () => {
+  console.log(filter_key.value)
+ // purchaseOrder.stock['stockname']
+  let filter_purchase = props.purchase_orders.data.filter( (elmt) => {
 
-//   console.log(filter_purchase)
-//   show_purchase_orders.value = filter_purchase
-// }
+    if( elmt.stock['stockname'].match(filter_key.value) 
+        || elmt.project_name.match(filter_key.value)   
+        || elmt.user.name.match(filter_key.value) 
+        || date_purchase_convert(elmt.date_order).match(filter_key.value)
+        ) {
+      return elmt
+    }
+  })
+
+}
 
 const date_purchase_convert = (date_order)=>{
     //console.log(props.stockBudget.budget)

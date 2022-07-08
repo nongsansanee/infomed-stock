@@ -39,7 +39,7 @@
             </a>
 
             <!-- for admin -->
-               <button v-if="purchaseOrder.status == 'sended' &&  
+            <button v-if="purchaseOrder.status == 'sended' &&  
                     $page.props.auth.user.profile.division_id==27"
                         v-on:click="confirmApprovePurchaseOrder(purchaseOrder)"
                 class=" inline-flex text-sm md:ml-3 bg-green-200 hover:bg-green-500   py-1 px-2 border border-green-500 rounded">
@@ -48,6 +48,15 @@
                 </svg>
                 อนุมัติ
             </button>    
+            <button v-if="purchaseOrder.status == 'sended' &&  
+                    $page.props.auth.user.profile.division_id==27"
+                        v-on:click="confirmReturnPurchaseOrder(purchaseOrder)"
+                class=" inline-flex text-sm md:ml-3 bg-yellow-100 hover:bg-yellow-500   py-1 px-2 border border-yellow-500 rounded">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+                </svg>
+                ส่งคืนเพื่อแก้ไข
+            </button>   
 
             <!-- for officer division -->
             <button v-if="purchaseOrder.status == 'created' &&  
@@ -162,8 +171,8 @@ const props = defineProps({
 })
 
 const form = useForm({
-    confirm_order_id:0,
-    confirm_approve_order_id:0,
+    order_id:0,
+    order_action:'',
 })
 
 const budget_show = ref(0);
@@ -177,7 +186,8 @@ const confirmSendOrder=(order)=>{
     //console.log(order);
     confirm_send_order.value = true;
     confirm_budget.value = order.budget;
-    form.confirm_order_id = order.id;
+    form.order_id = order.id;
+    form.order_action = 'sended';
            
 }
 
@@ -187,11 +197,11 @@ const  cancelSendOrder=()=>{
 
 const okConfirmSendOrder=(order)=>{
     confirm_send_order.value = false;
-    // console.log(form.confirm_order_id);
+    // console.log(form.order_id);
        console.log(order);
  
     
-      form.post(route('send-order-purchase'), {
+      form.post(route('send-order-purchase',form.order_id), {
         preserveState: false,
         preserveScroll: true,
         onSuccess: page => { console.log('success');},
@@ -210,7 +220,8 @@ const confirmApprovePurchaseOrder=(order)=>{
     
     confirm_approve_order.value = true;
     confirm_approve_budget.value = order.budget;
-    form.confirm_approve_order_id = order.id;
+    form.order_id = order.id;
+    form.order_action = 'approved';
     // form.confirm_order_year = order.year;
     // form.confirm_stockname_order = order.stock['stockname'];
           
@@ -222,20 +233,30 @@ const cancelApproveOrder=()=>{
 const okConfirmApprovePurchaseOrder=()=>{
     confirm_approve_order.value = false;
     // console.log('OK ApproveOrder');
-     console.log(form.confirm_approve_order_id);
+     console.log(form.order_id);
+    console.log(form.order_action);
     
-    // form.post(route('approve-purchase-order'), {
-    //         preserveState: false,
-    //         preserveScroll: true,
-    //         onSuccess: page => { 
-    //             console.log('success');
-    //             },
-    //         onError: errors => { 
-    //             console.log('error');
-    //         },
-    //         onFinish: visit => { console.log('finish');},
-    // })
+    form.post(route('approve-order-purchase',form.order_id), {
+            preserveState: false,
+            preserveScroll: true,
+            onSuccess: page => { 
+                console.log('success');
+                },
+            onError: errors => { 
+                console.log('error');
+            },
+            onFinish: visit => { console.log('finish');},
+    })
            
+}
+const confirmReturnPurchaseOrder=(order)=>{
+     console.log('confirmReturnPurchaseOrder');
+      
+    // confirm_approve_order.value = true;
+    // confirm_approve_budget.value = order.budget;
+    // form.order_id = order.id;
+  
+          
 }
 
 onMounted(() => {

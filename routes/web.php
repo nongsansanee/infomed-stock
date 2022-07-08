@@ -132,7 +132,9 @@ Route::controller(PurchaseOrderController::class)
           //ค้นหาใบสั่งซื้อ ตามปีงบ
           Route::get('/get-purchase-order/{year}','show')->name('get-purchase-order');
           //ส่งใบสั่งซื้อ
-          Route::post('/send-order-purchase','update')->name('send-order-purchase');
+          Route::post('/send-order-purchase/{order}','update')->name('send-order-purchase');
+          //admin อนุมัติใบสั่งซื้อ
+          Route::post('/approve-order-purchase/{order}','update')->name('approve-order-purchase');
         });
 
 //พิมพ์ใบสั่งซื้อ

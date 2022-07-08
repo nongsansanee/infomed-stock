@@ -17,6 +17,12 @@ class PurchaseOrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('remember')->only('index');
+    }
+
     public function index()
     {
         //dd($year);
@@ -50,14 +56,14 @@ class PurchaseOrderController extends Controller
                                                 ->with('user:id,name,profile')
                                                 ->orderBy('unit_id')
                                                 ->orderBy('date_order','desc')
-                                                ->paginate(4)->withQueryString();
+                                                ->paginate(5)->withQueryString();
             else
                 $purchase_orders = OrderPurchase::where('year',$year_selected)
                                                 ->where('unit_id',$user->profile['division_id'])
                                                 ->with('stock:id,stockname')
                                                 ->with('user:id,name,profile')
                                                 ->orderBy('date_order','desc')
-                                                ->get();
+                                                ->paginate(5)->withQueryString();
         }else{
             $purchase_orders= null;
             $year_selected = null;
@@ -141,30 +147,35 @@ class PurchaseOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(OrderPurchase $order)
     {
-       
-       $user = Auth::user();
-       $order_purchase = OrderPurchase::find($request->confirm_order_id);
-       // dd($order_purchase);
-       $timeline = $order_purchase->timeline;
+     //  dd(request()->all());
+      //  Log::info($order);
+        $user = Auth::user();
+       // $year_selected = $order->year;
+      //  Log::info($order->year);
+        // $order_purchase = OrderPurchase::find($request->confirm_order_id);
 
-       $timeline['send_by']=$user->id;
+        $timeline = $order->timeline;
+    
+        $timeline[request()->input('order_action')]=$user->id;
 
-       $order_purchase->timeline = $timeline;
+        $order->timeline = $timeline;
 
-       $order_purchase->status = 'sended' ;
+        $order->status = request()->input('order_action') ;
 
-       $order_purchase->save();
+        $order->save();
 
-       $order_purchase_years = OrderPurchase::select('year')->distinct()->get();
-        Log::info($order_purchase->year);
-        //Log::info($order_purchase_years);
-       return redirect::route('purchase-order-list',[
-                    'year_selected'=>$order_purchase->year,
-                  //  'years' => $order_purchase_years,
-                  ]
-        );
+       //***** return use middleware remember 
+        return redirect::route('purchase-order-list')
+                        ->with(['status' => 'success', 'msg' => 'ส่งใบสั่งซื้อไปสำนักงานภาควิชาฯ เรียบร้อยแล้ว']);
+      
+        //***** return not use middleware remember 
+    //    return redirect::route('purchase-order-list',[
+    //                 'year'=>$order->year,
+    //                // 'years' => $order_purchase_years,
+    //               ]
+    //     );
 
        //return Redirect::back()->with(['status' => 'success', 'msg' => 'ส่งใบสั่งซื้อไปสำนักงานภาควิชาฯ เรียบร้อยแล้ว']);
        

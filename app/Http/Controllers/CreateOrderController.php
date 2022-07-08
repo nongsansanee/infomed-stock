@@ -148,7 +148,7 @@ class CreateOrderController extends Controller
             ]);
         }catch(\Illuminate\Database\QueryException $e){
             //rollback
-            return redirect()->back()->whit(['status' => 'error', 'msg' =>  $e->getMessage()]);
+            return redirect()->back()->with(['status' => 'error', 'msg' =>  $e->getMessage()]);
         }
        
         return Redirect::back()->with(['status' => 'success', 'msg' => 'สร้างใบสั่งซื้อสำเร็จ']);
