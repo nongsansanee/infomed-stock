@@ -88,6 +88,16 @@
                 </svg>
                 ลบ
             </button>
+
+            <button v-if="purchaseOrder.status == 'approved' &&  
+                    $page.props.auth.user.profile.division_id==purchaseOrder.unit_id"
+                        v-on:click="confirmSendOrder(purchaseOrder)"
+                     class="flex flex-row text-sm py-1 px-2 ml-3  leading-5 text-white bg-green-500 hover:bg-green-700 rounded">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2m-4-1v8m0 0l3-3m-3 3L9 8m-5 5h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293h3.172a1 1 0 00.707-.293l2.414-2.414a1 1 0 01.707-.293H20" />
+                </svg>
+                ตรวจรับพัสดุ
+            </button>    
         </div>
 
         <ModalUpToYou :isModalOpen="confirm_send_order" >
@@ -158,6 +168,40 @@
                 </div>
             </template>
         </ModalUpToYou>
+
+        <ModalUpToYou :isModalOpen="confirm_return_order" >
+            <template v-slot:header>
+                <p class="text-md font-bold text-red-600 ">คุณต้องการส่งคืนใบสั่งซื้อพัสดุนี้ใช่หรือไม่?</p> 
+                                        
+            </template>
+
+            <template v-slot:body>
+                <div class="text-gray-900 text-md font-medium dark:text-white">
+                    <label 
+                            class="  flex  justify-start w-full text-sm text-red-900">
+                        <!-- ใบสั่งซื้อเลขที่:{{confirm_order_no}}/{{form.confirm_order_year}} ของ {{form.confirm_stockname_order}} -->
+                        วงเงินงบประมาณ {{confirm_approve_budget}} บาท
+                    </label>
+                </div>
+            </template>
+
+            <template v-slot:footer>
+                <div class=" w-full  text-center  md:block">
+                    <button 
+                        class="mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400"
+                        v-on:click="okConfirmReturnPurchaseOrder"
+                        >
+                        ตกลง
+                    </button>
+                    <button 
+                        class="mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
+                        v-on:click="cancelReturnOrder"
+                    >
+                        ยกเลิก
+                    </button>
+                </div>
+            </template>
+        </ModalUpToYou>
   
 </template>
 <script setup>
@@ -181,6 +225,7 @@ const confirm_send_order=ref(false);
 const confirm_budget=ref(0);
 const confirm_approve_order=ref(false);
 const confirm_approve_budget=ref(0);
+const confirm_return_order=ref(false);
 
 const confirmSendOrder=(order)=>{
     //console.log(order);
@@ -249,16 +294,37 @@ const okConfirmApprovePurchaseOrder=()=>{
     })
            
 }
+
 const confirmReturnPurchaseOrder=(order)=>{
      console.log('confirmReturnPurchaseOrder');
       
-    // confirm_approve_order.value = true;
-    // confirm_approve_budget.value = order.budget;
-    // form.order_id = order.id;
-  
-          
+    confirm_return_order.value = true;
+    confirm_approve_budget.value = order.budget;
+    form.order_id = order.id; 
+    form.order_action = 'created';
 }
-
+const cancelReturnOrder=()=>{
+    confirm_return_order.value = false;
+}
+const okConfirmReturnPurchaseOrder=()=>{
+    confirm_approve_order.value = false;
+    // console.log('OK ApproveOrder');
+     console.log(form.order_id);
+    console.log(form.order_action);
+    
+    form.post(route('approve-order-purchase',form.order_id), {
+            preserveState: false,
+            preserveScroll: true,
+            onSuccess: page => { 
+                console.log('success');
+                },
+            onError: errors => { 
+                console.log('error');
+            },
+            onFinish: visit => { console.log('finish');},
+    })
+           
+}
 onMounted(() => {
     budget_show.value = props.purchaseOrder['budget'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 

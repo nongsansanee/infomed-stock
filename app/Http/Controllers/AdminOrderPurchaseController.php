@@ -93,7 +93,7 @@ class AdminOrderPurchaseController extends Controller
            {
                 $timeline['create_by']='admin';
                 $timeline['user_name']=$user->name;
-                $status = 'approved';
+                $status = 'received';
            }
 
             OrderPurchase::create([

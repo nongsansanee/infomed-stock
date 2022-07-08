@@ -156,19 +156,33 @@ class PurchaseOrderController extends Controller
       //  Log::info($order->year);
         // $order_purchase = OrderPurchase::find($request->confirm_order_id);
 
-        $timeline = $order->timeline;
+        if($order->status =='sended'){
+            $timeline = $order->timeline;
     
-        $timeline[request()->input('order_action')]=$user->id;
+            $timeline['return']=$user->id;
+    
+            $order->timeline = $timeline;
+    
+            $order->status = request()->input('order_action') ;
+    
+            $order->save();
+        }else{
+            $timeline = $order->timeline;
+    
+            $timeline[request()->input('order_action')]=$user->id;
+    
+            $order->timeline = $timeline;
+    
+            $order->status = request()->input('order_action') ;
+    
+            $order->save();
+        }
 
-        $order->timeline = $timeline;
-
-        $order->status = request()->input('order_action') ;
-
-        $order->save();
+      
 
        //***** return use middleware remember 
         return redirect::route('purchase-order-list')
-                        ->with(['status' => 'success', 'msg' => 'ส่งใบสั่งซื้อไปสำนักงานภาควิชาฯ เรียบร้อยแล้ว']);
+                        ->with(['status' => 'success', 'msg' => 'บันทึกเรียบร้อยแล้ว']);
       
         //***** return not use middleware remember 
     //    return redirect::route('purchase-order-list',[

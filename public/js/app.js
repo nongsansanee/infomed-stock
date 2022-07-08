@@ -35600,6 +35600,7 @@ __webpack_require__.r(__webpack_exports__);
     var confirm_budget = ref(0);
     var confirm_approve_order = ref(false);
     var confirm_approve_budget = ref(0);
+    var confirm_return_order = ref(false);
 
     var confirmSendOrder = function confirmSendOrder(order) {
       //console.log(order);
@@ -35669,9 +35670,35 @@ __webpack_require__.r(__webpack_exports__);
     };
 
     var confirmReturnPurchaseOrder = function confirmReturnPurchaseOrder(order) {
-      console.log('confirmReturnPurchaseOrder'); // confirm_approve_order.value = true;
-      // confirm_approve_budget.value = order.budget;
-      // form.order_id = order.id;
+      console.log('confirmReturnPurchaseOrder');
+      confirm_return_order.value = true;
+      confirm_approve_budget.value = order.budget;
+      form.order_id = order.id;
+      form.order_action = 'created';
+    };
+
+    var cancelReturnOrder = function cancelReturnOrder() {
+      confirm_return_order.value = false;
+    };
+
+    var okConfirmReturnPurchaseOrder = function okConfirmReturnPurchaseOrder() {
+      confirm_approve_order.value = false; // console.log('OK ApproveOrder');
+
+      console.log(form.order_id);
+      console.log(form.order_action);
+      form.post(route('approve-order-purchase', form.order_id), {
+        preserveState: false,
+        preserveScroll: true,
+        onSuccess: function onSuccess(page) {
+          console.log('success');
+        },
+        onError: function onError(errors) {
+          console.log('error');
+        },
+        onFinish: function onFinish(visit) {
+          console.log('finish');
+        }
+      });
     };
 
     onMounted(function () {
@@ -35719,6 +35746,7 @@ __webpack_require__.r(__webpack_exports__);
       confirm_budget: confirm_budget,
       confirm_approve_order: confirm_approve_order,
       confirm_approve_budget: confirm_approve_budget,
+      confirm_return_order: confirm_return_order,
       confirmSendOrder: confirmSendOrder,
       cancelSendOrder: cancelSendOrder,
       okConfirmSendOrder: okConfirmSendOrder,
@@ -35726,6 +35754,8 @@ __webpack_require__.r(__webpack_exports__);
       cancelApproveOrder: cancelApproveOrder,
       okConfirmApprovePurchaseOrder: okConfirmApprovePurchaseOrder,
       confirmReturnPurchaseOrder: confirmReturnPurchaseOrder,
+      cancelReturnOrder: cancelReturnOrder,
+      okConfirmReturnPurchaseOrder: okConfirmReturnPurchaseOrder,
       editOrderPurchase: editOrderPurchase,
       date_purchase: date_purchase,
       Inertia: _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_0__.Inertia,
@@ -40048,22 +40078,28 @@ var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNo
 
 var _hoisted_28 = [_hoisted_26, _hoisted_27];
 
-var _hoisted_29 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
-  "class": "text-md font-bold text-red-600"
-}, "คุณต้องการส่งเอกสารใบสั่งซื้อพัสดุนี้ใช่หรือไม่?", -1
+var _hoisted_29 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+  xmlns: "http://www.w3.org/2000/svg",
+  "class": "h-6 w-6",
+  fill: "none",
+  viewBox: "0 0 24 24",
+  stroke: "currentColor"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+  "stroke-linecap": "round",
+  "stroke-linejoin": "round",
+  "stroke-width": "2",
+  d: "M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2m-4-1v8m0 0l3-3m-3 3L9 8m-5 5h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293h3.172a1 1 0 00.707-.293l2.414-2.414a1 1 0 01.707-.293H20"
+})], -1
 /* HOISTED */
 );
 
-var _hoisted_30 = {
-  "class": "text-gray-900 text-md font-medium dark:text-white"
-};
-var _hoisted_31 = {
-  "for": ""
-};
+var _hoisted_30 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ตรวจรับพัสดุ ");
+
+var _hoisted_31 = [_hoisted_29, _hoisted_30];
 
 var _hoisted_32 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
   "class": "text-md font-bold text-red-600"
-}, "คุณต้องการอนุมัติใบสั่งซื้อพัสดุนี้ใช่หรือไม่?", -1
+}, "คุณต้องการส่งเอกสารใบสั่งซื้อพัสดุนี้ใช่หรือไม่?", -1
 /* HOISTED */
 );
 
@@ -40071,6 +40107,32 @@ var _hoisted_33 = {
   "class": "text-gray-900 text-md font-medium dark:text-white"
 };
 var _hoisted_34 = {
+  "for": ""
+};
+
+var _hoisted_35 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+  "class": "text-md font-bold text-red-600"
+}, "คุณต้องการอนุมัติใบสั่งซื้อพัสดุนี้ใช่หรือไม่?", -1
+/* HOISTED */
+);
+
+var _hoisted_36 = {
+  "class": "text-gray-900 text-md font-medium dark:text-white"
+};
+var _hoisted_37 = {
+  "class": "flex justify-start w-full text-sm text-red-900"
+};
+
+var _hoisted_38 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+  "class": "text-md font-bold text-red-600"
+}, "คุณต้องการส่งคืนใบสั่งซื้อพัสดุนี้ใช่หรือไม่?", -1
+/* HOISTED */
+);
+
+var _hoisted_39 = {
+  "class": "text-gray-900 text-md font-medium dark:text-white"
+};
+var _hoisted_40 = {
   "class": "flex justify-start w-full text-sm text-red-900"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -40116,14 +40178,20 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[3] || (_cache[3] = function ($event) {
       return $setup.editOrderPurchase($props.purchaseOrder.id);
     })
-  }, _hoisted_24)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.purchaseOrder.status == 'created' && _ctx.$page.props.auth.user.profile.division_id == $props.purchaseOrder.unit_id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", _hoisted_25, _hoisted_28)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["ModalUpToYou"], {
+  }, _hoisted_24)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.purchaseOrder.status == 'created' && _ctx.$page.props.auth.user.profile.division_id == $props.purchaseOrder.unit_id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", _hoisted_25, _hoisted_28)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.purchaseOrder.status == 'approved' && _ctx.$page.props.auth.user.profile.division_id == $props.purchaseOrder.unit_id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    key: 5,
+    onClick: _cache[4] || (_cache[4] = function ($event) {
+      return $setup.confirmSendOrder($props.purchaseOrder);
+    }),
+    "class": "flex flex-row text-sm py-1 px-2 ml-3 leading-5 text-white bg-green-500 hover:bg-green-700 rounded"
+  }, _hoisted_31)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["ModalUpToYou"], {
     isModalOpen: $setup.confirm_send_order
   }, {
     header: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_29];
+      return [_hoisted_32];
     }),
     body: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <label v-for=\"(confirm_item,index) in confirm_items\" :key=confirm_item.id\r\n                            class=\"  flex  justify-start w-full bg-red-100 text-sm text-red-900\">\r\n                        {{index+1}}.{{confirm_item[0].item_name}} จำนวน {{confirm_item[0].order_input}} x {{confirm_item[0].price}}  เป็นเงิน {{confirm_item[0].total}} บาท\r\n                    \r\n                    </label> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_31, "วงเงินงบประมาณ " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.confirm_budget) + " บาท", 1
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <label v-for=\"(confirm_item,index) in confirm_items\" :key=confirm_item.id\r\n                            class=\"  flex  justify-start w-full bg-red-100 text-sm text-red-900\">\r\n                        {{index+1}}.{{confirm_item[0].item_name}} จำนวน {{confirm_item[0].order_input}} x {{confirm_item[0].price}}  เป็นเงิน {{confirm_item[0].total}} บาท\r\n                    \r\n                    </label> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_34, "วงเงินงบประมาณ " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.confirm_budget) + " บาท", 1
       /* TEXT */
       )])];
     }),
@@ -40147,10 +40215,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     isModalOpen: $setup.confirm_approve_order
   }, {
     header: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_32];
+      return [_hoisted_35];
     }),
     body: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_34, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ใบสั่งซื้อเลขที่:{{confirm_order_no}}/{{form.confirm_order_year}} ของ {{form.confirm_stockname_order}} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" วงเงินงบประมาณ " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.confirm_approve_budget) + " บาท ", 1
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_36, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_37, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ใบสั่งซื้อเลขที่:{{confirm_order_no}}/{{form.confirm_order_year}} ของ {{form.confirm_stockname_order}} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" วงเงินงบประมาณ " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.confirm_approve_budget) + " บาท ", 1
       /* TEXT */
       )])])];
     }),
@@ -40163,6 +40231,33 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, " ตกลง "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
         "class": "mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600",
         onClick: $setup.cancelApproveOrder
+      }, " ยกเลิก ")])];
+    }),
+    _: 1
+    /* STABLE */
+
+  }, 8
+  /* PROPS */
+  , ["isModalOpen"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["ModalUpToYou"], {
+    isModalOpen: $setup.confirm_return_order
+  }, {
+    header: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [_hoisted_38];
+    }),
+    body: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_39, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_40, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ใบสั่งซื้อเลขที่:{{confirm_order_no}}/{{form.confirm_order_year}} ของ {{form.confirm_stockname_order}} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" วงเงินงบประมาณ " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.confirm_approve_budget) + " บาท ", 1
+      /* TEXT */
+      )])])];
+    }),
+    footer: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+        "class": "w-full text-center md:block"
+      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+        "class": "mx-4 md:mb-0 bg-green-600 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-white rounded-full hover:shadow-lg hover:bg-green-400",
+        onClick: $setup.okConfirmReturnPurchaseOrder
+      }, " ตกลง "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+        "class": "mx-4 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600",
+        onClick: $setup.cancelReturnOrder
       }, " ยกเลิก ")])];
     }),
     _: 1
