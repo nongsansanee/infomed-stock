@@ -2,9 +2,20 @@
  <div class=" py-2 font-bold"> {{purchaseOrder.stock['stockname']}}</div>
         <div class="flex flex-col space-y-2 md:flex-row md:space-y-0 md:justify-between"> 
             <p class=" text-red-700 font-bold">วันที่สั่งซื้อ: {{date_purchase}}</p> 
-            <p class=" bg-none md:bg-green-200  md:px-2  md:mx-4 text-red-700 font-bold rounded-md" >
+            <!-- <p class=" bg-none md:bg-green-200  md:px-2  md:mx-4 text-red-700 font-bold rounded-md" >
                     สถานะ:{{purchaseOrder.status}}
             </p>
+           -->
+            <span
+                class="inline-flex px-2 text-sm font-semibold leading-5 text-red-900 bg-red-200 rounded-md"
+            >
+                <span v-if="purchaseOrder.status=='created'" >ยังไม่ส่งไปภาคฯ</span>
+                <span v-if="purchaseOrder.status=='sended'" >รอภาคฯอนุมัติ</span>
+                <span v-if="purchaseOrder.status=='approved'" >ภาคฯอนุมัติแล้ว</span>
+                <span v-if="purchaseOrder.status=='received'"  >ตรวจรับพัสดุแล้ว</span>
+                <span v-if="purchaseOrder.status=='received' && purchaseOrder.timeline['create_by']=='admin'" > บันทึกข้อมูลย้อนหลัง</span>
+            </span>
+           
         </div>
         <div> ๑.ชื่อโครงการ:{{purchaseOrder.project_name}} จำนวน {{purchaseOrder.items.length}} รายการ</div>
         <div> ๒.วงเงินงบประมาณ:{{budget_show}} บาท</div>
@@ -89,15 +100,19 @@
                 ลบ
             </button>
 
-            <button v-if="purchaseOrder.status == 'approved' &&  
-                    $page.props.auth.user.profile.division_id==purchaseOrder.unit_id"
-                        v-on:click="confirmSendOrder(purchaseOrder)"
-                     class="flex flex-row text-sm py-1 px-2 ml-3  leading-5 text-white bg-green-500 hover:bg-green-700 rounded">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2m-4-1v8m0 0l3-3m-3 3L9 8m-5 5h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293h3.172a1 1 0 00.707-.293l2.414-2.414a1 1 0 01.707-.293H20" />
+          
+            <a :href="route('receive-order-purchase',purchaseOrder)" 
+                v-if="purchaseOrder.status == 'approved' &&  
+                    $page.props.auth.user.profile.division_id==purchaseOrder.unit_id" >
+                <span
+                    class="flex flex-row text-sm py-1 px-2 ml-3  leading-5 text-white bg-green-500 hover:bg-green-700 rounded"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2m-4-1v8m0 0l3-3m-3 3L9 8m-5 5h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293h3.172a1 1 0 00.707-.293l2.414-2.414a1 1 0 01.707-.293H20" />
                 </svg>
                 ตรวจรับพัสดุ
-            </button>    
+                </span>
+            </a>
         </div>
 
         <ModalUpToYou :isModalOpen="confirm_send_order" >

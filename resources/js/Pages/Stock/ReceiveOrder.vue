@@ -24,8 +24,8 @@
                 </label>
         </div>
 
-        <div class=" bg-pink-200">
-            <div class=" w-full flex justify-center font-bold  ">บันทึกการตรวจรับพัสดุ</div>
+        <div class=" bg-pink-50">
+            <div class=" w-full flex justify-center font-bold  ">บันทึกการตรวจรับพัสดุจากใบสัญญาสั่งซื้อ</div>
             <div class=" w-full flex justify-center font-bold">{{stockname}} </div>
             
             <div class="w-full flex justify-between p-2 my-2  border-b-2 border-gray-600 font-bold " >

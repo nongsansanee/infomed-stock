@@ -67,8 +67,8 @@
     >
         <template v-slot:messagesuggest>
             <span v-if="order_list.status == 'created'" class=" text-sm text-red-500">กดปุ่มพิมพ์และเซ็นเอกสาร แล้วส่งเอกสารตัวจริงไปที่ภาควิชาฯ แล้วกดปุ่มส่ง</span>
-            <span v-if="order_list.status == 'send'" class=" text-sm text-red-500">รออนุมัติการสั่งซื้อ จากภาควิชาฯ</span>
-            <span v-if="order_list.status == 'approve'" class=" text-sm text-red-500">
+            <span v-if="order_list.status == 'sended'" class=" text-sm text-red-500">รออนุมัติการสั่งซื้อ จากภาควิชาฯ</span>
+            <span v-if="order_list.status == 'approved'" class=" text-sm text-red-500">
                 รีบดำเนินการให้บริษัทเซ็นใบสั่งซื้อ+ส่งของ+ตรวจรับ ภายใน 7 วันทำการ นับจากวันที่ได้รับอนุมัติ เมื่อตรวจรับพัสดุตามเอกสารสั่งซื้อแล้ว ให้กดปุ่มตรวจรับพัสดุ แล้วกดปุ่มพิมพ์เอกสารตรวจรับพัสดุและเซ็นเอกสาร แล้วส่งเอกสารตัวจริงไปที่ภาควิชาฯ   
             </span>
         </template>
@@ -103,7 +103,7 @@
                             </svg>
                             ส่งเอกสารสั่งซื้อ
                         </button>
-                        <a :href="route('receive-order',order_list)" v-if="order_list.status == 'approve'" >
+                        <a :href="route('receive-order',order_list)" v-if="order_list.status == 'approved'" >
                             <span
                                 class="flex flex-row text-sm py-1 px-2 ml-3  leading-5 text-white bg-green-500 hover:bg-green-700 rounded"
                             >

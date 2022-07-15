@@ -172,7 +172,7 @@ class CreateOrderController extends Controller
         $order_lists = OrderItem::with('User:id,name')
                                 ->where('unit_id',$user->profile['division_id'])
                                 ->where('type','contract')
-                                ->orderBy('order_no')
+                                ->orderBy('updated_at','desc')
                                 ->get();
         
         foreach ($order_lists as $key=>$order_list) {
@@ -254,7 +254,7 @@ class CreateOrderController extends Controller
          //   Log::info($old_timeline);
             $order = OrderItem::find($request->confirm_order_id)->update([
                                                                 'order_no'=>$last_order_number,
-                                                                'status'=>'send',
+                                                                'status'=>'sended',
                                                                 'timeline'=>$old_timeline
                                                             ]);
         }catch(\Illuminate\Database\QueryException $e){

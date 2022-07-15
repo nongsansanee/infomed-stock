@@ -21,7 +21,7 @@ class StockItem extends Model
         'item_name',
         'unit_count_id',
         'item_sum',
-        'status' ,
+        'status' ,     // 1 = พัสดุตามสัญญาสั่งซื้อ , 2= พัสดุตามใบสั่งซื้อ
         'profile',
     ];
 

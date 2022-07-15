@@ -155,7 +155,7 @@ class AdminOrderController extends Controller
          
             Log::info($old_timeline);
             OrderItem::find($request->confirm_order_id)->update([
-                                                        'status'=>'approve',
+                                                        'status'=>'approved',
                                                         'timeline'=>$old_timeline
                                                             ]);
         }catch(\Illuminate\Database\QueryException $e){
@@ -163,7 +163,7 @@ class AdminOrderController extends Controller
             return redirect()->back()->whit(['status' => 'error', 'msg' =>  $e->getMessage()]);
         }
        
-        return Redirect::back()->with(['status' => 'success', 'msg' => 'อนุมัติใบสั่งซื้อเรียบร้อยแล้ว']);
+        return Redirect::back()->with(['status' => 'success', 'msg' => 'อนุมัติใบสัญญาสั่งซื้อเรียบร้อยแล้ว']);
     }
 
     /**

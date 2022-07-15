@@ -12,6 +12,7 @@ use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminOrderPurchaseController;
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\CheckInOrderController;
+use App\Http\Controllers\CheckInOrderPurchaseController;
 use App\Http\Controllers\ItemTransactionController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PrintFormController;
@@ -140,6 +141,9 @@ Route::controller(PurchaseOrderController::class)
 //พิมพ์ใบสั่งซื้อ
  Route::get('/purchase-order/print/{order}', [PrintFormController::class,'printPurchaseOrder'])->name('print-purchase-order')->middleware('auth');
  Route::get('/purchase-order/print-item/{order}', [PrintFormController::class,'printPurchaseOrderItem'])->name('print-purchase-order-item')->middleware('auth');
+
+//แสดงหน้าตรวจรับพัสดุ จากใบสั่งซื้อ
+Route::get('/receive-order-purchase/{order}', [CheckInOrderPurchaseController::class,'show'])->name('receive-order-purchase')->middleware('auth');
 
 //ค้นหาพัสดุ
 Route::get('/search-stock-item/{item_name_search}', [StockItemController::class,'searchByItemName'])->name('search-stock-item')->middleware('auth');

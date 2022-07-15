@@ -9,9 +9,9 @@
                 </div>
                 <div class=" flex justify-between border-b-2 border-blue-500  py-1 mb-2">
                     <p  class="flex items-center font-bold  ">
-                        {{orderIndex+1}}.เลขที่ใบสั่งซื้อ:{{orderList.create_no}}/{{orderList.year}}
+                        {{orderIndex+1}}.เลขที่ใบสัญญาสั่งซื้อ:{{orderList.create_no}}/{{orderList.year}}
                     </p>
-                    <p v-if="orderList.status == 'approve' || orderList.status == 'checkin'" class=" font-bold  ">
+                    <p v-if="orderList.status == 'approved' || orderList.status == 'checkin'" class=" font-bold  ">
                          ใช้งบไป: {{orderList.timeline.approve_budget}}  บาท
                     </p>
                     <Link >
@@ -19,8 +19,8 @@
                                 class="inline-flex px-2 text-sm font-semibold leading-5 text-red-900 bg-red-200 rounded-md"
                             >
                                <span v-if="orderList.status=='created'" >ยังไม่ส่งไปภาคฯ</span>
-                                <span v-if="orderList.status=='send'" >รอภาคฯอนุมัติ</span>
-                                <span v-if="orderList.status=='approve'" >ภาคฯอนุมัติแล้ว</span>
+                                <span v-if="orderList.status=='sended'" >รอภาคฯอนุมัติ</span>
+                                <span v-if="orderList.status=='approved'" >ภาคฯอนุมัติแล้ว</span>
                                 <span v-if="orderList.status=='checkin'"  >ตรวจรับพัสดุแล้ว</span>
                             </span>
                     </Link>
@@ -42,18 +42,18 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                    
-                    <span class="inline-block w-1/3  font-bold">วันที่ส่งใบสั่งซื้อ</span>
+                    <span class="inline-block w-1/3  font-bold">วันที่ส่งใบสัญญาสั่งซื้อ</span>
                     <span v-if="orderList.order_no" class=" px-1" >
                         <span class=" ">{{orderList.timeline['send_datetime']}}</span>
                     </span>
                 </div>
-                 <div v-if="orderList.status == 'approve' || orderList.status == 'checkin'">
+                 <div v-if="orderList.status == 'approved' || orderList.status == 'checkin'">
                     <!-- arrow2 -->
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 17l-4 4m0 0l-4-4m4 4V3" />
                     </svg>
                 </div>
-                 <div v-if="orderList.status == 'approve' || orderList.status == 'checkin'" class=" flex flex-row ">
+                 <div v-if="orderList.status == 'approved' || orderList.status == 'checkin'" class=" flex flex-row ">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>

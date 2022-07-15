@@ -426,7 +426,7 @@ class PrintFormController extends Controller
         $pdf->SetLineWidth(0.1);
         $stock_orders = OrderItem::where('unit_id',$stock_id)
                                     ->where('year',$year)
-                                    ->whereIn('status',['approve','checkin'])
+                                    ->whereIn('status',['approved','checkin'])
                                     ->orderBy('date_order')
                                     ->get();
       //  if( $stock_orders->count()!=0){
